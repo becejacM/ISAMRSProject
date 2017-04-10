@@ -1,0 +1,12 @@
+log {
+	width:500px;
+	position: absolute;
+}
+
+#logB { 
+	border-radius:4px;
+	border:1px solid #404040;
+	background-color: #404040;
+	color:white;
+	padding: 4px;
+}
