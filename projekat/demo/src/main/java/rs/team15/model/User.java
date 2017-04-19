@@ -1,5 +1,7 @@
 package rs.team15.model;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -7,6 +9,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.Type;
@@ -15,36 +18,38 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name="app_users")
-public class User {
+@PrimaryKeyJoinColumn(name="id")
+@Inheritance(strategy = InheritanceType.JOINED)
+public class User implements Serializable{
 	
 	@Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
-    private Long id;
+	protected Long id;
 	
 	@Column(name="email", unique=true, nullable=false)
-	private String email;
+	protected String email;
 	
 	@Column(name = "firstName", nullable=false)
-    private String fname;
+	protected String fname;
 
     @Column(name = "lastName", nullable=false)
-    private String lname;
-
-    @Column(name = "image")
-    private String image;
+    protected String lname;
 
     @Column(name = "password", nullable=false)
-    private String password;
+    protected String password;
+    
+    @Column(name = "image")
+    protected String image;
 
     @Column(name = "role", nullable=false)
-    private String role;
+    protected String role;
     
     @Column(name = "verified")
-    private String verified;
+    protected String verified;
 
     @Column(name = "login")
-    private String login;
+    protected String login;
 
     public User(Long id, String email, String firstName, String lastName, String password){
     	this.id = id;

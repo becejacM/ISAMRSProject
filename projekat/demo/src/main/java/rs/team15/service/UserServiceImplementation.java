@@ -43,4 +43,24 @@ public class UserServiceImplementation implements UserService{
 		return userRepository.findByEmail(email);
 	}
 
+	@Override
+	public User findByEmailAndPassword(String email, String password) {
+		// TODO Auto-generated method stub
+		return userRepository.findByEmailAndPassword(email, password);
+	}
+
+	@Override
+	public User update(User user) {
+		// TODO Auto-generated method stub
+		User userUpdate = userRepository.findByEmail(user.getEmail());
+
+        if (userUpdate == null)
+            return null;
+
+        userUpdate.setLastName(user.getLastName());
+        userUpdate.setFirstName(user.getFirstName());
+
+        return userRepository.save(userUpdate);
+	}
+
 }

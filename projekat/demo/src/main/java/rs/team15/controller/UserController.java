@@ -20,7 +20,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import rs.team15.model.Guest;
 import rs.team15.model.User;
+import rs.team15.service.GuestService;
 import rs.team15.service.UserService;
 
 @RestController
@@ -30,6 +32,9 @@ public class UserController {
 	 	
 	@Autowired
 	private UserService userService;
+	
+	@Autowired
+	private GuestService guestService;
 
 	
 	@RequestMapping(
@@ -49,16 +54,13 @@ public class UserController {
 	            method   = RequestMethod.GET,
 	            produces = MediaType.APPLICATION_JSON_VALUE
 			)
-	public ResponseEntity<User> userExists(@PathVariable String email) {
+	public ResponseEntity<Boolean> userExists(@PathVariable String email) {
 		logger.info("> get user email:{}", email);
-		User user = userService.findOne(email);
-		if (user == null) {
-			logger.info("nema gaaa vracam null ");
-			return new ResponseEntity<User>(user, HttpStatus.NOT_FOUND);
-		}
+		Boolean user = userService.alreadyExists(email);
+		
 		logger.info("< get user email:{}", email);
 		//boolean exists = userService.alreadyExists(email);
-		return new ResponseEntity<User>(user, HttpStatus.OK);
+		return new ResponseEntity<Boolean>(user, HttpStatus.OK);
 	}
 	
 
@@ -68,17 +70,26 @@ public class UserController {
 	            consumes = MediaType.APPLICATION_JSON_VALUE,
 	            produces = MediaType.APPLICATION_JSON_VALUE
 			)
-	public ResponseEntity<User> register(@RequestBody User guest) {
-		
+	public ResponseEntity<User> register(@RequestBody Guest guest) {
+		guest.setLogin("no");
 		guest.setRole("guest");
 		guest.setVerified("no");
-		User created = userService.create(guest);
+		User created = guestService.create(guest);
 		logger.info("< create user");
 		return new ResponseEntity<User>(created, HttpStatus.CREATED);
 	}
 	    
 	    
-	    
+	@RequestMapping(
+            value    = "api/user/update",
+            method   = RequestMethod.PUT,
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    public ResponseEntity<User> update(@RequestBody User user) {
+        User updated = userService.update(user);
+        return new ResponseEntity<User>(updated, HttpStatus.OK);
+    }
 
 	   
 }
