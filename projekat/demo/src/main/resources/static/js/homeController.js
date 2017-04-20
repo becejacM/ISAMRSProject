@@ -13,17 +13,17 @@
         vm.allUsers = [];
         vm.deleteUser = deleteUser;
 
-        initController();
-
-        function initController() {
+        (function initController() {
             loadCurrentUser();
             loadAllUsers();
-        }
+        })();
 
         function loadCurrentUser() {
+        	alert($rootScope.globals.currentUser.email+"dfgdhs");
             UserService.GetByUsername($rootScope.globals.currentUser.email)
-                .then(function (user) {
-                    vm.user = user;
+                .then(function (response) {
+                	alert(response.data.email);
+                    vm.user = response.data;
                 });
         }
 

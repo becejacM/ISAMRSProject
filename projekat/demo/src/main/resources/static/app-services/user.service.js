@@ -27,7 +27,11 @@
         }
 
         function GetByUsername(email) {
-            return $http.get('/api/users/' + email).then(handleSuccess, handleError('Error getting user by email'));
+            //return $http.get('/api/users/' + email).then(handleSuccess, handleError('Error getting user by email'));
+            return $http.get('/api/users/' + email)
+            .then(function(response) {
+                return response;
+            }); 
         }
 
         function Create(user) {

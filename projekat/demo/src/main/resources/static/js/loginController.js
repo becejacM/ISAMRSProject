@@ -24,13 +24,14 @@
             .then (function (response) {
             	//alert(response.data.email);
                 if (response.data.email) {
+                	
                 	AuthenticationService.SetCredentials(vm.email, vm.password);
                     $location.path('/home');
                     showOptions();
                 } else {
                 	FlashService.Error('password or email do not exist',true);
                     vm.dataLoading = false;
-                    //$location.path('/login');
+                    $location.path('/login');
                 }
             });
             
