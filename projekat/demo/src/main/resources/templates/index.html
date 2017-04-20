@@ -23,6 +23,23 @@
         function hideInfo()
         {
             $("p#infoCreator").hide();
+            $("div#guestProfil").hide();
+            $("div#guestProfil2").hide();
+            $("div#guestProfil3").hide();
+            $("div#guestProfil4").hide();
+            $("div#guestProfil5").hide();
+        }
+
+    </script>
+    
+    <script type="text/javascript">
+        function showOptions()
+        {
+            $("div#guestProfil").show();
+            $("div#guestProfil2").show();
+            $("div#guestProfil3").show();
+            $("div#guestProfil4").show();
+            $("div#guestProfil5").show();
         }
 
     </script>
@@ -35,6 +52,21 @@
 		<div class="container">
 			<div class="navbar-header">
 				<a class="navbar-brand" href="">Restaurants</a>
+			</div>
+			<div id="guestProfil" class="navbar-header">
+				<a class="navbar-brand" href="#!/home">About us</a>
+			</div>
+			<div id="guestProfil2" class="navbar-header">
+				<a class="navbar-brand" href="#!/guestProfil">My profil</a>
+			</div>
+			<div id="guestProfil3" class="navbar-header">
+				<a class="navbar-brand" href="#!/reserveRestaurant">Restaurants</a>
+			</div>
+			<div id="guestProfil4" class="navbar-header">
+				<a class="navbar-brand" href="#!/myFriends">Friends</a>
+			</div>
+			<div id="guestProfil5" class="navbar-header">
+				<a class="navbar-brand" href="#!/login">Logout</a>
 			</div>
 				
 		</div>
@@ -66,7 +98,7 @@
     
 	<script src="js/match.js"></script>
     <div class="row">
-        <div class="col-sm-6 col-md-6 col-lg-6">
+        <div class="col-sm-8 col-sm-offset-2">
             <h2>Restaurants</h2>
             <p >
                 info o sajtu
@@ -75,7 +107,7 @@
 
         </div>
 
-        <div class="col-sm-6 col-md-6 col-lg-6">
+        <div class="col-sm-8 col-sm-offset-2">
             <h2>About us</h2>
             <p>Restaurants galery Creators</p>
             <p>

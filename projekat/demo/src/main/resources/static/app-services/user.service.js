@@ -31,9 +31,10 @@
         }
 
         function Create(user) {
-        	
-               return $http.post('/api/users/register',user).then(handleSuccess, handleError('Error creating user'));
-        	
+               return $http.post('/api/users/register', user)
+               .then(function(response) {
+                   return response;
+               });               
 
         }
 
@@ -48,8 +49,12 @@
 
         // private functions
 
-        function handleSuccess(res) {
+        function handleSuccessTrue(res) {
             return res.data;
+        }
+
+        function handleSuccess(res) {
+            return { success: true, message: error };
         }
 
         function handleError(error) {

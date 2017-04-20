@@ -2,14 +2,14 @@
     'use strict';
 
     angular
-        .module('app', ['ngRoute', 'ngCookies'])
+        .module('app', ['ngRoute', 'ngCookies',])
         .config(config)
         .run(run);
 
     config.$inject = ['$routeProvider', '$locationProvider'];
     function config($routeProvider, $locationProvider) {
         $routeProvider
-            .when('/', {
+            .when('/home', {
                 controller: 'HomeController',
                 templateUrl: 'views/home.html',
                 controllerAs: 'vm'
@@ -27,6 +27,23 @@
                 controllerAs: 'vm'
             })
 
+            .when('/guestProfil', {
+                controller: 'GuestProfilController',
+                templateUrl: 'views/guestProfil.html',
+                controllerAs: 'vm'
+            })
+
+            .when('/reserveRestaurant', {
+                controller: 'GuestReserveController',
+                templateUrl: 'views/reserveRestaurant.html',
+                controllerAs: 'vm'
+            })
+            
+            .when('/myFriends', {
+                controller: 'GuestFriendsController',
+                templateUrl: 'views/myFriends.html',
+                controllerAs: 'vm'
+            })
 
 
             .otherwise({ redirectTo: '/login.html' });
@@ -47,6 +64,7 @@
             if (restrictedPage && !loggedIn) {
                 $location.path('/login');
             }
+            
         });
     }
 

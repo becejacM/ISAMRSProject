@@ -15,11 +15,9 @@
 
         return service;
 
-        function Login(email, password, callback) {
+        function Login(email, password) {
 
-            /* Dummy authentication for testing, uses $timeout to simulate api call
-             ----------------------------------------------*/
-            $timeout(function () {
+            /*$timeout(function () {
                 var response;
                 UserService.GetByUsername(email)
                     .then(function (user) {
@@ -30,15 +28,19 @@
                         }
                         callback(response);
                     });
-            }, 1000);
+            }, 1000);*/
 
             /* Use this for real authentication
              ----------------------------------------------*/
-            //$http.post('/api/authenticate', { username: username, password: password })
-            //    .success(function (response) {
-            //        callback(response);
-            //    });
-
+            /*$http.post('api/authenticate?email=' + email + '&password=' + password)
+                .success(function (response) {
+                    callback(response);
+                });*/
+           // return $http.post('api/authenticate?email=' + email + '&password=' + password).then(handleSuccess, handleError('Error log user'));
+            return $http.post('api/authenticate?email=' + email + '&password=' + password)
+            .then(function(data) {
+                return data;
+            });
         }
 
         function SetCredentials(email, password) {

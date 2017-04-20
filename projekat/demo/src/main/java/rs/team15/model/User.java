@@ -51,7 +51,16 @@ public class User implements Serializable{
     @Column(name = "login")
     protected String login;
 
-    public User(Long id, String email, String firstName, String lastName, String password){
+    private String message;
+    
+    
+    public String getMessage() {
+		return message;
+	}
+	public void setMessage(String message) {
+		this.message = message;
+	}
+	public User(Long id, String email, String firstName, String lastName, String password){
     	this.id = id;
 		this.email = email;
 		this.fname = firstName;
