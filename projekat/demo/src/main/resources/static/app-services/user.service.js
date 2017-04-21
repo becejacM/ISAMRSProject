@@ -15,6 +15,7 @@
         service.Create = Create;
         service.Update = Update;
         service.Delete = Delete;
+        service.Upload = Upload;
 
         return service;
 
@@ -51,6 +52,14 @@
         	
         }
 
+        function Upload(user) {
+    		return $http.put('/api/user/upload' , user).then(handleSuccess, handleError('Error updating user'));
+    		/*return $http.put('/api/user/update', user)
+            .then(function(response) {
+                return response;
+            }); */
+    	
+    }
         function Delete(id) {
             return $http.delete('/api/users/' + id).then(handleSuccess, handleError('Error deleting user'));
         }

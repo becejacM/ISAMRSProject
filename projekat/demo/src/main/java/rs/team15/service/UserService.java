@@ -18,4 +18,8 @@ public interface UserService {
     User findByEmailAndPassword(String email, String password);
 
     User update(User user);
+    
+    void uploadUserImage(User user, String path);
+    
+    void createImageFromBase64String(String base64, String path);
 }

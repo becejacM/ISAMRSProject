@@ -126,6 +126,22 @@ public class UserController {
         logger.info("< update user");
         return new ResponseEntity<User>(updated, HttpStatus.OK);
     }
+	
+	@RequestMapping(
+            value    = "api/user/upload",
+            method   = RequestMethod.PUT,
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    public ResponseEntity<User> upload(@RequestBody User u) {
+		logger.info("> upload image"+u.getImage());
+		userService.uploadUserImage(u,"");
+		u.setImage("pictures/"+u.getFirstName()+".png");
+        logger.info("< upload image"+u.getImage());
+        
+        User updated = userService.update(u);
+        return new ResponseEntity<User>(updated, HttpStatus.OK);
+    }
 
 	   
 }

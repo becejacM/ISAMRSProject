@@ -2,7 +2,17 @@
 <div class="profilPic">
 <img src={{vm.user.image}}></div>
 
-				
+<form ng-submit="vm.previewFile()" role="form">
+	<div class="form-group">
+								Picture:<img id="avatar"
+                src={{vm.user.image}}
+                style="max-height: 30%;max-width: 30%; min-height: 10%; min-width: 10%; cursor: pointer; "
+                class="img-responsive img-circle center-block" alt="Ovo je avatar">
+					<input type="file" id="avatarFile"/>
+									</div>
+									<div class="form-actions"> <button class="btn btn-success"
+								type="submit" value="Change" /></div></form>
+				<button class="btn btn-primary" aria-label="Edit profile" ng-click="vm.upload()">Change</button>
 
 	<div class="korisnik" id="kor">
 		<div class="profilK" id="pkor">

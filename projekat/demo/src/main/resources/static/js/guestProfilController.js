@@ -19,6 +19,8 @@
         vm.cancel = cancel;
         vm.save = save;
         
+        vm.basePic=null;
+        vm.previewFile = previewFile;
         vm.upload = upload;
         (function initController() {
             loadCurrentUser();
@@ -33,7 +35,7 @@
                 });
         }
         
-        /*function previewFile(){
+        function previewFile(){
         	   //var preview = document.querySelector('img'); //selects the query named img
         	   //var file    = document.querySelector('input[type=file]').files[0]; //sames as here
         		alert("usao u pic");
@@ -43,8 +45,11 @@
         	   var reader  = new FileReader();
 
         	   reader.onloadend = function (fileLoadedEvent) {
-        	       basePic = fileLoadedEvent.target.result;
+        	       vm.basePic = fileLoadedEvent.target.result;
         	       preview.src = reader.result;
+        	       vm.user.image=fileLoadedEvent.target.result;
+            	   alert(vm.user.image);
+            	   alert("Fds");
         	   }
 
         	   if (file) {
@@ -52,18 +57,18 @@
         	   } else {
         	       preview.src = "";
         	   }
-        	}*/
+        	   
+        	   
+        	}
         
         //za upload .... ne radi
         function upload(){
-            $flow.opts.target = 'api/upload/users/' + vm.user.id ;
-            $flow.upload();
-            vm.user.image = 'pictures/users_' + vm.user.id + '.png';
-            UserService.Update(vm.user)
-                .then(function(response) {
-                    vm.user = response.data;
-                    alert('Fotografija uspešno promenjena.');
-                })
+        	alert("usap");
+        	UserService.Upload(vm.user)
+            .then(function (response) {
+          		  vm.user = response.data;
+          	  
+            });
         }
         function editProfile() {
             vm.editMode = true;
