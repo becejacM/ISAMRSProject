@@ -1,4 +1,48 @@
 <div>
-<h1>Hi !</h1>
-<p>You're logged in blaaaaaaaa profiiiil!!</p>
-</div>
+<div class="profilPic">
+<img src={{vm.user.image}}></div>
+
+				
+
+	<div class="korisnik" id="kor">
+		<div class="profilK" id="pkor">
+		<table class="trkorisnik">
+		<tr><th>First name</th><td>&nbsp&nbsp{{vm.user.firstName}}</td></tr>
+		<tr><th>Last name</th><td>&nbsp&nbsp{{vm.user.lastName}}</td></tr>
+		<tr><th>Email</th><td>&nbsp&nbsp{{vm.user.email}}</td></tr>
+		<tr><th>Number of visits</th><td>&nbsp&nbsp</td></tr>
+		</table>
+		</div>
+		<button ng-hide="vm.editMode" class="btn btn-primary" aria-label="Edit profile" ng-click="vm.editProfile()">
+          <md-icon aria-label="Edit profile" class="material-icons">EDIT</md-icon>
+        </button>
+	</div>
+	
+	
+	<md-input-container class="md-block" flex-gt-sm>
+	<form name="form" ng-show="vm.editMode" ng-submit="vm.save()" role="form">
+              <div class="form-group" ng-class="{ 'has-error': form.firstName.$dirty && form.firstName.$error.required && form.firstName.$error.maxlength && form.firstName.$error.minlength }">
+            <label for="firstName">First name</label>
+            <input type="text" name="firstName" id="firstName" class="form-control" ng-minlength="3" ng-maxlength="10" ng-model="vm.user.firstName" required />
+            <span ng-show="form.firstName.$dirty && form.firstName.$error.required" class="help-block">First name is required</span>
+            <span class="error" ng-show="form.firstName.$error.minlength">First name must be min 3 characters!</span>
+      <span class="error" ng-show="form.firstName.$error.maxlength">First name must be max 10 characters!</span>
+        </div>
+        <div class="form-group" ng-class="{ 'has-error': form.lastName.$dirty && form.lastName.$error.required && form.lastName.$error.maxlength && form.lastName.$error.minlength }">
+            <label for="lastName">Last name</label>
+            <input type="text" name="lastName" id="lastName" class="form-control" ng-minlength="3" ng-maxlength="20" ng-model="vm.user.lastName" required />
+            <span ng-show="form.lastName.$dirty && form.lastName.$error.required" class="help-block">Last name is required</span>
+            <span class="error" ng-show="form.lastName.$error.minlength">Last name must be min 3 characters!</span>
+      <span class="error" ng-show="form.lastName.$error.maxlength">Last name must be max 20 characters!</span>
+        </div>
+                
+        <div class="form-actions">
+            <button type="submit" ng-disabled="form.$invalid || vm.dataLoading" class="btn btn-primary">Save</button>
+        </div>
+        
+              
+            
+   </form>
+    </md-input-container>
+          
+    </div>

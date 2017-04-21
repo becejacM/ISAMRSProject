@@ -78,11 +78,19 @@ public class UserController {
 		guest.setLogin("no");
 		guest.setRole("guest");
 		guest.setVerified("no");
+		guest.setImage("pictures/user.png");
 		User u = userService.findOne(guest.getEmail());
 		if(u!=null){
 			u.setMessage("User with that email allready exists");
 			return new ResponseEntity<User>(u, HttpStatus.OK);
 		}
+		if(guest.getFirstName().length()<3 || guest.getFirstName().length()>10 
+				|| guest.getLastName().length()<3 || guest.getLastName().length()>20){
+			User u1 = new User();
+			u1.setMessage("Size of first name or last name is incompatible");
+			return new ResponseEntity<User>(u1, HttpStatus.OK);
+		}
+		
 		User created = guestService.create(guest);
 		logger.info("< create user");
 		return new ResponseEntity<User>(created, HttpStatus.CREATED);
@@ -113,7 +121,9 @@ public class UserController {
             produces = MediaType.APPLICATION_JSON_VALUE
     )
     public ResponseEntity<User> update(@RequestBody User user) {
+		logger.info("> update user");
         User updated = userService.update(user);
+        logger.info("< update user");
         return new ResponseEntity<User>(updated, HttpStatus.OK);
     }
 

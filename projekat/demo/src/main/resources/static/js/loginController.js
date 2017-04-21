@@ -17,6 +17,7 @@
             AuthenticationService.ClearCredentials();
         })();
 
+        
         function login() {
             vm.dataLoading = true;
             
@@ -26,10 +27,13 @@
                 if (response.data.email) {
                 	
                 	AuthenticationService.SetCredentials(vm.email, vm.password);
-                    $location.path('/home');
-                    showOptions();
+                	if(angular.equals(response.data.role, "guest")){
+                		$location.path('/home');
+                        showOptions();
+                	}
+                    
                 } else {
-                	FlashService.Error('password or email do not exist',true);
+                	FlashService.Error('password or email do not exist',false);
                     vm.dataLoading = false;
                     $location.path('/login');
                 }

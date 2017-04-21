@@ -12,21 +12,20 @@
         vm.user = null;
         vm.allUsers = [];
         vm.deleteUser = deleteUser;
-
+        vm.loadCurrentUser = loadCurrentUser;
+        
         (function initController() {
-            loadCurrentUser();
             loadAllUsers();
+            loadCurrentUser();
+            showOptions();
         })();
 
         function loadCurrentUser() {
-        	alert($rootScope.globals.currentUser.email+"dfgdhs");
             UserService.GetByUsername($rootScope.globals.currentUser.email)
                 .then(function (response) {
-                	alert(response.data.email);
                     vm.user = response.data;
                 });
         }
-
         function loadAllUsers() {
             UserService.GetAll()
                 .then(function (users) {
@@ -34,12 +33,6 @@
                 });
         }
 
-        function deleteUser(id) {
-            UserService.Delete(id)
-            .then(function () {
-                loadAllUsers();
-            });
-        }
     }
 
 })();

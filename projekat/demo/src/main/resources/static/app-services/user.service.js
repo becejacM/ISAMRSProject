@@ -43,7 +43,11 @@
         }
 
         function Update(user) {
-        		return $http.put('/api/users/' + user.id, user).then(handleSuccess, handleError('Error updating user'));
+        		return $http.put('/api/user/update' , user).then(handleSuccess, handleError('Error updating user'));
+        		/*return $http.put('/api/user/update', user)
+                .then(function(response) {
+                    return response;
+                }); */
         	
         }
 
@@ -54,7 +58,7 @@
         // private functions
 
         function handleSuccessTrue(res) {
-            return res.data;
+            return res;
         }
 
         function handleSuccess(res) {
