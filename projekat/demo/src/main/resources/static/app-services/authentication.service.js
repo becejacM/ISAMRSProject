@@ -43,13 +43,13 @@
             });
         }
 
-        function SetCredentials(email, password) {
+        function SetCredentials(email, password, path) {
             var authdata = Base64.encode(email + ':' + password);
-
             $rootScope.globals = {
                 currentUser: {
                     email: email,
-                    authdata: authdata
+                    authdata: authdata,
+                    path : path
                 }
             };
 
@@ -58,7 +58,7 @@
 
             // store user details in globals cookie that keeps user logged in for 1 week (or until they logout)
             var cookieExp = new Date();
-            cookieExp.setDate(cookieExp.getDate() + 7);
+            cookieExp.setDate(cookieExp.getDate()+7);
             $cookies.putObject('globals', $rootScope.globals, { expires: cookieExp });
         }
 

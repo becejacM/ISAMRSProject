@@ -3,10 +3,10 @@
 
     angular
         .module('app')
-        .controller('HomeController', HomeController);
+        .controller('GuestFriendsController', GuestFriendsController);
 
-    HomeController.$inject = ['$location','UserService', 'AuthenticationService', '$rootScope', 'FlashService'];
-    function HomeController($location,UserService,AuthenticationService, $rootScope, FlashService) {
+    GuestFriendsController.$inject = ['$location','UserService', 'AuthenticationService', '$rootScope', 'FlashService'];
+    function GuestFriendsController($location,UserService,AuthenticationService, $rootScope, FlashService) {
         var vm = this;
 
         vm.user = null;
@@ -18,10 +18,11 @@
         vm.logout = logout;
         vm.profil = profil;
         vm.restaurants = restaurants;
-        vm.friends = friends;
+        vm.home = home;
         
         (function initController() {
-        	loadCurrentUser();
+        	
+            loadCurrentUser();
             loadAllUsers();
             showOptions();
             
@@ -33,14 +34,16 @@
         	$location.path('/guestProfil');
         }
         
+        function home(){
+        	AuthenticationService.SetCredentials(vm.user.email, vm.user.password, "home");
+
+        	$location.path('/home');
+        }
+
         function restaurants(){
         	AuthenticationService.SetCredentials(vm.user.email, vm.user.password, "reserveRestaurant");
 
         	$location.path('/reserveRestaurant');
-        }
-        function friends(){
-        	AuthenticationService.SetCredentials(vm.user.email, vm.user.password, "myFriends");
-        	$location.path('/myFriends');
         }
         function logout(){
             AuthenticationService.ClearCredentials();

@@ -14,7 +14,6 @@
         (function initController() {
             // reset login status
         	hideInfo();
-            AuthenticationService.ClearCredentials();
         })();
 
         
@@ -26,7 +25,7 @@
             	//alert(response.data.email);
                 if (response.data.email) {
                 	
-                	AuthenticationService.SetCredentials(vm.email, vm.password);
+                	AuthenticationService.SetCredentials(vm.email, vm.password, "home");
                 	if(angular.equals(response.data.role, "guest")){
                 		$location.path('/home');
                         showOptions();

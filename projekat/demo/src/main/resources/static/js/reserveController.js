@@ -3,10 +3,10 @@
 
     angular
         .module('app')
-        .controller('HomeController', HomeController);
+        .controller('GuestReserveController', GuestReserveController);
 
-    HomeController.$inject = ['$location','UserService', 'AuthenticationService', '$rootScope', 'FlashService'];
-    function HomeController($location,UserService,AuthenticationService, $rootScope, FlashService) {
+    GuestReserveController.$inject = ['$location','UserService', 'AuthenticationService', '$rootScope', 'FlashService'];
+    function GuestReserveController($location,UserService,AuthenticationService, $rootScope, FlashService) {
         var vm = this;
 
         vm.user = null;
@@ -17,13 +17,13 @@
         
         vm.logout = logout;
         vm.profil = profil;
-        vm.restaurants = restaurants;
+        vm.home = home;
         vm.friends = friends;
         
         (function initController() {
-        	loadCurrentUser();
+        	
+            loadCurrentUser();
             loadAllUsers();
-            showOptions();
             
         })();
 
@@ -33,10 +33,10 @@
         	$location.path('/guestProfil');
         }
         
-        function restaurants(){
-        	AuthenticationService.SetCredentials(vm.user.email, vm.user.password, "reserveRestaurant");
+        function home(){
+        	AuthenticationService.SetCredentials(vm.user.email, vm.user.password, "home");
 
-        	$location.path('/reserveRestaurant');
+        	$location.path('/home');
         }
         function friends(){
         	AuthenticationService.SetCredentials(vm.user.email, vm.user.password, "myFriends");

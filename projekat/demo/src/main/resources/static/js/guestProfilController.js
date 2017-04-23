@@ -5,8 +5,8 @@
         .module('app')
         .controller('GuestProfilController', GuestProfilController);
 
-    GuestProfilController.$inject = ['UserService', '$rootScope', 'FlashService'];
-    function GuestProfilController(UserService, $rootScope, FlashService) {
+    GuestProfilController.$inject = ['$location','UserService', 'AuthenticationService', '$rootScope', 'FlashService'];
+    function GuestProfilController($location,UserService,AuthenticationService, $rootScope, FlashService) {
         var vm = this;
 
         vm.user = null;
@@ -16,18 +16,42 @@
 
         vm.editMode = false;
         vm.editProfile = editProfile;
+        vm.changePicMode = false;
+        vm.editPicture = editPicture;
         vm.cancel = cancel;
         vm.save = save;
         
         vm.basePic=null;
         vm.previewFile = previewFile;
         vm.upload = upload;
+        vm.logout = logout;
+        vm.home = home;
+        vm.restaurants = restaurants;
+        vm.friends = friends;
         (function initController() {
             loadCurrentUser();
             loadAllUsers();
             showOptions();
         })();
 
+        function home(){
+        	AuthenticationService.SetCredentials(vm.user.email, vm.user.password, "home");
+        	$location.path('/home');
+        	
+        }
+        
+        function restaurants(){
+        	AuthenticationService.SetCredentials(vm.user.email, vm.user.password, "reserveRestaurant");
+        	$location.path('/reserveRestaurant');
+        }
+        function friends(){
+        	AuthenticationService.SetCredentials(vm.user.email, vm.user.password, "myFriends");
+        	$location.path('/myFriends');
+        }
+        function logout(){
+            AuthenticationService.ClearCredentials();
+            $location.path('/login');
+        }
         function loadCurrentUser() {
             UserService.GetByUsername($rootScope.globals.currentUser.email)
                 .then(function (response) {
@@ -63,18 +87,22 @@
         
         //za upload .... ne radi
         function upload(){
-        	alert("usap");
+        	vm.changePicMode = false;
         	UserService.Upload(vm.user)
             .then(function (response) {
           		  vm.user = response.data;
           	  
             });
+        	
         }
         function editProfile() {
             vm.editMode = true;
             vm.realUser = vm.user;
         }
-        
+        function editPicture() {
+            vm.changePicMode = true;
+            vm.realUser = vm.user;
+        }
         function cancel(){
         	vm.editMode = false;
         }
