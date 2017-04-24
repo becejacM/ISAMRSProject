@@ -13,6 +13,7 @@
         service.GetById = GetById;
         service.GetByUsername = GetByUsername;
         service.Create = Create;
+        service.CreateM = CreateM;
         service.Update = Update;
         service.Delete = Delete;
         service.Upload = Upload;
@@ -42,6 +43,14 @@
                });               
 
         }
+        
+        function CreateM(user) {
+            return $http.post('/api/users/registerManager', user)
+            .then(function(response) {
+                return response;
+            });               
+
+     }
 
         function Update(user) {
         		return $http.put('/api/user/update' , user).then(handleSuccess, handleError('Error updating user'));
