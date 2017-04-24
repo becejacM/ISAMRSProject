@@ -25,10 +25,24 @@
             	//alert(response.data.email);
                 if (response.data.email) {
                 	
-                	AuthenticationService.SetCredentials(vm.email, vm.password, "home");
+                	//AuthenticationService.SetCredentials(vm.email, vm.password, "home");
                 	if(angular.equals(response.data.role, "guest")){
+                		AuthenticationService.SetCredentials(vm.email, vm.password, "home");
                 		$location.path('/home');
                         showOptions();
+                	}
+                	else if(angular.equals(response.data.role, "waiter")){
+                		if(angular.equals(response.data.firstTime, "yes")){
+                			alert(response.data.firstTime);
+                			AuthenticationService.SetCredentials(vm.email, vm.password, "waiterChangePassword");
+                    		$location.path('/waiterChangePassword');
+                		}
+                		else {
+                			alert(response.data.firstTime);
+                			AuthenticationService.SetCredentials(vm.email, vm.password, "waiterHome");
+                    		$location.path('/waiterHome');
+                		}
+                		
                 	}
                     
                 } else {

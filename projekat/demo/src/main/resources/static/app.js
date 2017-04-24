@@ -46,6 +46,43 @@
                 templateUrl: 'views/myFriends.html',
                 controllerAs: 'vm'
             })
+            .when('/waiterHome', {
+                controller: 'WaiterHomeController',
+                templateUrl: 'views/waiterHome.html',
+                controllerAs: 'vm'
+            })
+            
+            .when('/waiterProfile', {
+                controller: 'WaiterProfileController',
+                templateUrl: 'views/waiterProfile.html',
+                controllerAs: 'vm'
+            })
+            
+            .when('/waiterSchedule', {
+                controller: 'WaiterScheduleController',
+                templateUrl: 'views/waiterSchedule.html',
+                controllerAs: 'vm'
+            })
+            
+            .when('/waiterTables', {
+                controller: 'WaiterTablesController',
+                templateUrl: 'views/waiterTables.html',
+                controllerAs: 'vm'
+            })
+            
+            .when('/waiterOrders', {
+                controller: 'WaiterOrdersController',
+                templateUrl: 'views/waiterOrders.html',
+                controllerAs: 'vm'
+            })
+            
+            .when('/waiterChangePassword', {
+                controller: 'WaiterChangePasswordController',
+                templateUrl: 'views/waiterChangePassword.html',
+                controllerAs: 'vm'
+            })
+            
+            
 
 
             .otherwise({redirectTo: '/login.html' });

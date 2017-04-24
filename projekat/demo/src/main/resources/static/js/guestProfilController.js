@@ -112,7 +112,6 @@
             UserService.Update(vm.user)
               .then(function (response) {
             		  vm.user = response.data;
-            	  
               });
             
         }
