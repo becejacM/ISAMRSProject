@@ -46,6 +46,31 @@
                 templateUrl: 'views/myFriends.html',
                 controllerAs: 'vm'
             })
+            
+            .when('/registerManager',{
+            	controller: 'registerManagerController',
+            	templateUrl: 'views/registerManager.html',
+            	controllerAs: 'vm'
+        	})
+        	
+        	.when('/SysManagerHome',{
+            	controller: 'SysManagerHomeController',
+            	templateUrl: 'views/SysManagerHome.html',
+            	controllerAs: 'vm'
+        	})
+        	
+        	.when('/registerRestaurant',{
+            	controller: 'registerRestaurantController',
+            	templateUrl: 'views/registerRestaurant.html',
+            	controllerAs: 'vm'
+        	})
+        	
+        	.when('/SysManagerProfil',{
+            	controller: 'SysManagerProfilController',
+            	templateUrl: 'views/SysManagerProfil.html',
+            	controllerAs: 'vm'
+        	})
+
 
 
             .otherwise({redirectTo: '/login.html' });

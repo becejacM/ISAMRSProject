@@ -25,8 +25,10 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 
 import ch.qos.logback.core.Context;
 import rs.team15.model.Guest;
+import rs.team15.model.RestaurantManager;
 import rs.team15.model.User;
 import rs.team15.service.GuestService;
+import rs.team15.service.RestaurantManagerService;
 import rs.team15.service.UserService;
 
 @RestController
@@ -40,6 +42,9 @@ public class UserController {
 	
 	@Autowired
 	private GuestService guestService;
+	
+	@Autowired
+	private RestaurantManagerService restaurantManagerService;
 
 	
 	@RequestMapping(
@@ -92,6 +97,35 @@ public class UserController {
 		}
 		
 		User created = guestService.create(guest);
+		logger.info("< create user");
+		return new ResponseEntity<User>(created, HttpStatus.CREATED);
+	}
+	
+	@RequestMapping(
+            value    = "api/users/registerManager",
+            method   = RequestMethod.POST,
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE
+		)
+	
+	public ResponseEntity<User> registerManager(@RequestBody RestaurantManager manager) {
+		manager.setLogin("no");
+		manager.setRole("manager");
+		manager.setVerified("no");
+		manager.setImage("pictures/user.png");
+		User u = userService.findOne(manager.getEmail());
+		if(u!=null){
+			u.setMessage("User with that email allready exists");
+			return new ResponseEntity<User>(u, HttpStatus.OK);
+		}
+		if(manager.getFirstName().length()<3 || manager.getFirstName().length()>10 
+				|| manager.getLastName().length()<3 || manager.getLastName().length()>20){
+			User u1 = new User();
+			u1.setMessage("Size of first name or last name is incompatible");
+			return new ResponseEntity<User>(u1, HttpStatus.OK);
+		}
+		
+		User created = restaurantManagerService.create(manager);
 		logger.info("< create user");
 		return new ResponseEntity<User>(created, HttpStatus.CREATED);
 	}
