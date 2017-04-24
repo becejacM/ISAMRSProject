@@ -13,13 +13,12 @@
     
     (function initController() {
             // reset login status
-    		alert("alo");
     		loadCurrentUser();
         })();
     
     function registerManagerController(UserService,AuthenticationService, $location, $rootScope, FlashService) {
         var vm = this;
-
+        
         vm.registerManager = registerManager;
         vm.loadCurrentUser = loadCurrentUser;
         
