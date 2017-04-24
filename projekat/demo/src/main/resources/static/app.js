@@ -107,6 +107,18 @@
             	templateUrl: 'views/SysManagerProfil.html',
             	controllerAs: 'vm'
         	})
+        	
+        	.when('/ResManagerProfil',{
+            	controller: 'ResManagerProfilController',
+            	templateUrl: 'views/ResManagerProfil.html',
+            	controllerAs: 'vm'
+        	})
+        	
+        	.when('/ResManagerHome',{
+            	controller: 'ResManagerHomeController',
+            	templateUrl: 'views/ResManagerHome.html',
+            	controllerAs: 'vm'
+        	})
 
 
 

@@ -3,10 +3,10 @@
 
     angular
         .module('app')
-        .controller('SysManagerHomeController', SysManagerHomeController);
+        .controller('registerRestaurantController', registerRestaurantController);
 
-    SysManagerHomeController.$inject = ['$location','UserService', 'AuthenticationService', '$rootScope', 'FlashService'];
-    function SysManagerHomeController($location,UserService,AuthenticationService, $rootScope, FlashService) {
+    registerRestaurantController.$inject = ['$location','UserService', 'AuthenticationService', '$rootScope', 'FlashService'];
+    function registerRestaurantController($location,UserService,AuthenticationService, $rootScope, FlashService) {
         var vm = this;
 
         vm.user = null;
@@ -16,28 +16,34 @@
 
         
         vm.logout = logout;
-        vm.managerProfil = managerProfil;
-        vm.registerManager = registerManager;
-        vm.registerRestaurant = registerRestaurant;
+        vm.manage = manage;
+        vm.registerWorker = registerWorker;
+        vm.registerSuplier = registerSuplier;
+        vm.resManagerProfil = resManagerProfil;
         
         (function initController() {
         	loadCurrentUser();
             loadAllUsers();
+            alert("eeeee");
         })();
 
-        function managerProfil(){
+        function resManagerProfil(){
         	
-        	AuthenticationService.SetCredentials(vm.user.email, vm.user.password, "SysManagerProfil");
-        	$location.path('/SysManagerProfil');
+        	AuthenticationService.SetCredentials(vm.user.email, vm.user.password, "ResManagerProfil");
+        	$location.path('/ResManagerProfil');
         }
         
-        function registerManager(){
+        function registerWorker(){
         	AuthenticationService.SetCredentials(vm.user.email, vm.user.password, "registerManager");
-        	$location.path('/registerManager');
+        	$location.path('/registerWorker');
         }
-        function registerRestaurant(){
-        	AuthenticationService.SetCredentials(vm.user.email, vm.user.password, "registerRestaurant");
-        	$location.path('/registerRestaurant');
+        function manage(){
+        	AuthenticationService.SetCredentials(vm.user.email, vm.user.password, "manage");
+        	$location.path('/manage');
+        }
+        function registerSuplier(){
+        	AuthenticationService.SetCredentials(vm.user.email, vm.user.password, "registerSuplier");
+        	$location.path('/registerSuplier');
         }
         function logout(){
             AuthenticationService.ClearCredentials();
