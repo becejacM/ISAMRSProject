@@ -13,6 +13,7 @@
 
         (function initController() {
             // reset login status
+        	alert("sranje");
         	hideInfo();
         })();
 
@@ -30,6 +31,12 @@
                 		AuthenticationService.SetCredentials(vm.email, vm.password, "home");
                 		$location.path('/home');
                         showOptions();
+                	}else if(angular.equals(response.data.role,"system_manager")){
+                		AuthenticationService.SetCredentials(vm.email, vm.password, "SysManagerHome");
+                		$location.path('/SysManagerHome');
+                	}else if(angular.equals(response.data.role,"manager")){
+                		AuthenticationService.SetCredentials(vm.email, vm.password, "SysManagerHome");
+                		$location.path('/SysManagerHome');
                 	}
                 	else if(angular.equals(response.data.role, "waiter")){
                 		if(angular.equals(response.data.firstTime, "yes")){
