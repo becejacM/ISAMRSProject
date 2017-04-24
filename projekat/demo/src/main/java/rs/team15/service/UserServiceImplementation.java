@@ -13,7 +13,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import rs.team15.model.Employee;
 import rs.team15.model.User;
+import rs.team15.model.Waiter;
 import rs.team15.repository.UserRepository;
 import sun.misc.BASE64Decoder;
 
@@ -67,6 +69,16 @@ public class UserServiceImplementation implements UserService{
         userUpdate.setLastName(user.getLastName());
         userUpdate.setFirstName(user.getFirstName());
         userUpdate.setImage(user.getImage());
+        userUpdate.setPassword(user.getPassword());
+        try{
+        	Employee e = (Employee)userUpdate;
+        	e.setFirstTime("no");
+        	Waiter w = (Waiter)userUpdate;
+        	w.setFirstTime("no");
+        }
+        finally {	
+        }
+        
         return userRepository.save(userUpdate);
 	}
 
@@ -102,4 +114,6 @@ public class UserServiceImplementation implements UserService{
 		
 		
 	}
+
+	
 }

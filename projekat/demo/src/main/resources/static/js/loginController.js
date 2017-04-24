@@ -38,6 +38,19 @@
                 		AuthenticationService.SetCredentials(vm.email, vm.password, "SysManagerHome");
                 		$location.path('/SysManagerHome');
                 	}
+                	else if(angular.equals(response.data.role, "waiter")){
+                		if(angular.equals(response.data.firstTime, "yes")){
+                			alert(response.data.firstTime);
+                			AuthenticationService.SetCredentials(vm.email, vm.password, "waiterChangePassword");
+                    		$location.path('/waiterChangePassword');
+                		}
+                		else {
+                			alert(response.data.firstTime);
+                			AuthenticationService.SetCredentials(vm.email, vm.password, "waiterHome");
+                    		$location.path('/waiterHome');
+                		}
+                		
+                	}
                     
                 } else {
                 	FlashService.Error('password or email do not exist',false);

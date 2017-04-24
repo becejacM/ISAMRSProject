@@ -22,4 +22,6 @@ public interface UserService {
     void uploadUserImage(User user, String path);
     
     void createImageFromBase64String(String base64, String path);
+    
+    
 }

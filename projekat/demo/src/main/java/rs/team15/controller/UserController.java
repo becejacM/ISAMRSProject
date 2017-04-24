@@ -158,6 +158,7 @@ public class UserController {
 		logger.info("> update user");
         User updated = userService.update(user);
         logger.info("< update user");
+        logger.info("hello" + updated.getEmail() + " " + updated.getPassword());
         return new ResponseEntity<User>(updated, HttpStatus.OK);
     }
 	
