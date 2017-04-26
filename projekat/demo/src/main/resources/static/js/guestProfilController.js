@@ -62,7 +62,7 @@
         function previewFile(){
         	   //var preview = document.querySelector('img'); //selects the query named img
         	   //var file    = document.querySelector('input[type=file]').files[0]; //sames as here
-        		alert("usao u pic");
+        		//alert("usao u pic");
         	   var preview = document.getElementById('avatar');
         	   var file = document.getElementById("avatarFile").files[0];
 
@@ -72,8 +72,8 @@
         	       vm.basePic = fileLoadedEvent.target.result;
         	       preview.src = reader.result;
         	       vm.user.image=fileLoadedEvent.target.result;
-            	   alert(vm.user.image);
-            	   alert("Fds");
+            	   //alert(vm.user.image);
+            	   //alert("Fds");
         	   }
 
         	   if (file) {

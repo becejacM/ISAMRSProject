@@ -2,6 +2,8 @@ package rs.team15.service;
 
 import java.util.Collection;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -31,4 +33,16 @@ public class GuestServiceImplementation implements GuestService{
 		return guestRepository.save(guest);
 	}
 
+	
+	@Override
+	public Collection<Guest> findAll() {
+		// TODO Auto-generated method stub
+		return guestRepository.findAll();
+	}
+
+	@Override
+	public Collection<Guest> getGuestByFirstName(String fname) {
+		// TODO Auto-generated method stub
+		return userRepository.findByFirstName(fname);
+	}
 }

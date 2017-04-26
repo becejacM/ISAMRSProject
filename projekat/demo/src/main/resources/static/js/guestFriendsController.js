@@ -10,11 +10,20 @@
         var vm = this;
 
         vm.user = null;
+        vm.parametar = null;
         vm.realUser = {};
         vm.allUsers = [];
         vm.deleteUser = deleteUser;
 
+        vm.allFriendsMode = false;
+        vm.myFriendsMode = false;
+        vm.reqMode = false;
         
+        vm.showAll = showAll;
+        vm.showFriends = showFriends;
+        vm.showReq = showReq;
+        
+        vm.find = find;
         vm.logout = logout;
         vm.profil = profil;
         vm.restaurants = restaurants;
@@ -27,6 +36,39 @@
             showOptions();
             
         })();
+        
+        function loadAllUsers() {
+            UserService.GetAllGuests()
+                .then(function (response) {
+                    vm.allUsers = response.data;
+                });
+        }
+        
+        function find() {
+        	
+        	UserService.find(vm.parametar.par)
+            .then(function (response) {
+            	vm.allUsers = response.data;
+            });
+        }
+        function showAll() {
+        	loadAllUsers();
+            vm.allFriendsMode = true;
+            vm.myFriendsMode = false;
+            vm.reqMode = false;
+        }
+        function showFriends() {
+        	vm.allFriendsMode = false;
+            vm.myFriendsMode = true;
+            vm.reqMode = false;
+        }
+        
+        function showReq() {
+        	vm.allFriendsMode = false;
+            vm.myFriendsMode = false;
+            vm.reqMode = true;
+        }
+
 
         function profil(){
         	
@@ -59,12 +101,7 @@
         
         
         
-        function loadAllUsers() {
-            UserService.GetAll()
-                .then(function (users) {
-                    vm.allUsers = users;
-                });
-        }
+        
 
         function deleteUser(id) {
             UserService.Delete(id)

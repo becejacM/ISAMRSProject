@@ -9,6 +9,10 @@ import rs.team15.model.User;
 public interface GuestService {
 
 	Guest getGuest(Long id);
+	
+	Collection<Guest> getGuestByFirstName(String fname);
 
     User create(Guest guest);
+    
+    Collection<Guest> findAll();
 }

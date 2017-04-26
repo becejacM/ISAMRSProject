@@ -17,12 +17,33 @@
         service.Update = Update;
         service.Delete = Delete;
         service.Upload = Upload;
-        
+        service.GetAllGuests = GetAllGuests;
+        service.find = find;
 
         return service;
 
         function GetAll() {
-            return $http.get('/api/users').then(handleSuccess, handleError('Error getting all users'));
+            //return $http.get('/api/users').then(handleSuccess, handleError('Error getting all users'));
+        	return $http.get('/api/users')
+            .then(function(response) {
+                return response;
+            }); 
+        }
+        
+        function find(parametar) {
+            //return $http.get('/api/users').then(handleSuccess, handleError('Error getting all users'));
+        	return $http.get('/api/guests/'+ parametar)
+            .then(function(response) {
+                return response;
+            }); 
+        }
+        
+        function GetAllGuests() {
+            //return $http.get('/api/users').then(handleSuccess, handleError('Error getting all users'));
+        	return $http.get('/api/guests')
+            .then(function(response) {
+                return response;
+            }); 
         }
 
         function GetById(id) {

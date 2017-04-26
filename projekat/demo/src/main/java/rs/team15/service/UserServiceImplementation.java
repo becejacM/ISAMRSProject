@@ -70,14 +70,13 @@ public class UserServiceImplementation implements UserService{
         userUpdate.setFirstName(user.getFirstName());
         userUpdate.setImage(user.getImage());
         userUpdate.setPassword(user.getPassword());
-        try{
+        if(userUpdate.getRole().equals("waiter")){
         	Employee e = (Employee)userUpdate;
         	e.setFirstTime("no");
         	Waiter w = (Waiter)userUpdate;
         	w.setFirstTime("no");
         }
-        finally {	
-        }
+        
         
         return userRepository.save(userUpdate);
 	}
