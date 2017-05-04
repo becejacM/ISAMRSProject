@@ -19,6 +19,13 @@
         service.Upload = Upload;
         service.GetAllGuests = GetAllGuests;
         service.find = find;
+        service.add = add;
+        service.loadFriendsIAccept = loadFriendsIAccept;
+        service.loadFriendsIAdd = loadFriendsIAdd;
+        service.loadReq = loadReq;
+        service.accept = accept;
+        service.deleteF = deleteF;
+        service.reject = reject;
 
         return service;
 
@@ -38,9 +45,68 @@
             }); 
         }
         
+        function add(ids,idr) {
+        	
+            //return $http.get('/api/users').then(handleSuccess, handleError('Error getting all users'));
+        	return $http.post('/api/guest/addf/'+ ids+'/'+idr)
+            .then(function(response) {
+                return response;
+            }); 
+        }
+        
+        function accept(ids,idr) {
+        	
+            //return $http.get('/api/users').then(handleSuccess, handleError('Error getting all users'));
+        	return $http.post('/api/guest/accept/'+ ids+'/'+idr)
+            .then(function(response) {
+                return response;
+            }); 
+        }
+        
+        function reject(ids,idr) {
+        	
+            //return $http.get('/api/users').then(handleSuccess, handleError('Error getting all users'));
+        	return $http.post('/api/guest/reject/'+ ids+'/'+idr)
+            .then(function(response) {
+                return response;
+            }); 
+        }
+        
+        function deleteF(ids,idr) {
+        	
+            //return $http.get('/api/users').then(handleSuccess, handleError('Error getting all users'));
+        	return $http.post('/api/guest/deleteF/'+ ids+'/'+idr)
+            .then(function(response) {
+                return response;
+            }); 
+        }
         function GetAllGuests() {
             //return $http.get('/api/users').then(handleSuccess, handleError('Error getting all users'));
         	return $http.get('/api/guests')
+            .then(function(response) {
+                return response;
+            }); 
+        }
+        
+        function loadFriendsIAccept(id) {
+            //return $http.get('/api/users').then(handleSuccess, handleError('Error getting all users'));
+        	return $http.get('/api/guests/loadFriendsIAccept/'+id)
+            .then(function(response) {
+                return response;
+            }); 
+        }
+        
+        function loadFriendsIAdd(id) {
+            //return $http.get('/api/users').then(handleSuccess, handleError('Error getting all users'));
+        	return $http.get('/api/guests/loadFriendsIAdd/'+id)
+            .then(function(response) {
+                return response;
+            }); 
+        }
+        function loadReq(id) {
+        	alert("fsdfs");
+            //return $http.get('/api/users').then(handleSuccess, handleError('Error getting all users'));
+        	return $http.get('/api/guests/loadReq/'+id)
             .then(function(response) {
                 return response;
             }); 
