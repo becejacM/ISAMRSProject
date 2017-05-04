@@ -13,6 +13,9 @@
         vm.parametar = null;
         vm.realUser = {};
         vm.allUsers = [];
+        vm.allFriendsIAccept = [];
+        vm.allFriendsIAdd = [];
+        vm.allReq = [];
         vm.deleteUser = deleteUser;
 
         vm.allFriendsMode = false;
@@ -22,6 +25,10 @@
         vm.showAll = showAll;
         vm.showFriends = showFriends;
         vm.showReq = showReq;
+        vm.add = add;
+        vm.accept = accept;
+        vm.reject = reject;
+        vm.deleteF = deleteF;
         
         vm.find = find;
         vm.logout = logout;
@@ -30,13 +37,52 @@
         vm.home = home;
         
         (function initController() {
-        	
             loadCurrentUser();
             loadAllUsers();
-            showOptions();
             
         })();
         
+        function add(id){
+        	UserService.add(vm.user.id,id)
+            .then(function (response) {
+            	if(angular.equals(response.data.status, "exists")){
+            		FlashService.Error('Friend already added', false);
+            		
+            	}
+            	else if(angular.equals(response.data.status, "you")){
+            		FlashService.Error('It is you', false);
+            	}
+            	else{
+            		FlashService.Success('Friend added', false);
+            		
+            	}
+        		
+            });
+        }
+        
+        function accept(id){
+        	UserService.accept(id,vm.user.id)
+            .then(function (response) {
+            	loadReq();
+            });
+        	
+        }
+        
+        function reject(id){
+        	UserService.reject(id,vm.user.id)
+            .then(function (response) {
+            	loadReq();
+            });
+        	
+        }
+        
+        function deleteF(id){
+        	UserService.deleteF(id,vm.user.id)
+            .then(function (response) {
+            	loadFriends();
+            });
+        	
+        }
         function loadAllUsers() {
             UserService.GetAllGuests()
                 .then(function (response) {
@@ -44,6 +90,24 @@
                 });
         }
         
+        function loadFriends(){
+           	UserService.loadFriendsIAccept(vm.user.id)
+            .then(function (response) {
+                vm.allFriendsIAccept = response.data;
+            });
+        	
+        	UserService.loadFriendsIAdd(vm.user.id)
+            .then(function (response) {
+                vm.allFriendsIAdd = response.data;
+            });
+        }
+        
+        function loadReq(){
+          	UserService.loadReq(vm.user.id)
+            .then(function (response) {
+                vm.allReq = response.data;
+            });
+        }
         function find() {
         	
         	UserService.find(vm.parametar.par)
@@ -53,20 +117,31 @@
         }
         function showAll() {
         	loadAllUsers();
+        	FlashService.clearFlashMessageP();
             vm.allFriendsMode = true;
             vm.myFriendsMode = false;
             vm.reqMode = false;
         }
         function showFriends() {
+
+        	loadFriends();
+        	FlashService.clearFlashMessageP();
+
+        	vm.myFriendsMode = true;
         	vm.allFriendsMode = false;
-            vm.myFriendsMode = true;
             vm.reqMode = false;
+            
         }
         
         function showReq() {
+
+        	loadReq();
+        	FlashService.clearFlashMessageP();
+
+        	vm.reqMode = true;
         	vm.allFriendsMode = false;
             vm.myFriendsMode = false;
-            vm.reqMode = true;
+            
         }
 
 
@@ -95,9 +170,11 @@
             UserService.GetByUsername($rootScope.globals.currentUser.email)
                 .then(function (response) {
                     vm.user = response.data;
+                    
                 });
+            
+            
         }
-        
         
         
         

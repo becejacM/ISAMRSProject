@@ -136,13 +136,16 @@ public class UserController {
             method   = RequestMethod.POST,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public ResponseEntity<User> authenticate(@RequestParam(value="email") String email, @RequestParam(value="password") String password) {
+    public ResponseEntity<User> authenticate(@RequestParam(value="email") String email, @RequestParam(value="password") String password, final HttpServletRequest request) {
 		logger.info("> log user");
 		User u = userService.findByEmailAndPassword(email, password);
         if(u==null){
         	return new ResponseEntity<User>(u, HttpStatus.NO_CONTENT);
         }
-        
+        request.setAttribute("loggeduser", u);
+
+        User user = (User) request.getAttribute("loggeduser");
+        logger.info("req "+user.getEmail());
 		logger.info("< log user "+u.getFirstName());
 
         return new ResponseEntity<User>(u, HttpStatus.OK);

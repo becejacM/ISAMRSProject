@@ -11,7 +11,8 @@
 
         service.Success = Success;
         service.Error = Error;
-
+        service.clearFlashMessageP = clearFlashMessageP;
+        
         initService();
 
         return service;
@@ -30,6 +31,19 @@
                         // only keep for a single location change
                         flash.keepAfterLocationChange = false;
                     }
+                }
+            }
+        }
+        
+        function clearFlashMessageP() {
+        	alert("cistimmmm");
+            var flash = $rootScope.flash;
+            if (flash) {
+                if (!flash.keepAfterLocationChange) {
+                    delete $rootScope.flash;
+                } else {
+                    // only keep for a single location change
+                    flash.keepAfterLocationChange = false;
                 }
             }
         }

@@ -21,7 +21,6 @@
             UserService.Create(vm.user)
                 .then(function (response) {
                 	if(response.data.message){
-                		alert("miki");
                 		FlashService.Error(response.data.message, true);
                 		$location.path('/register');
                 	}

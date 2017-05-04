@@ -25,21 +25,47 @@
 		</div>
 	</nav>
 	
-	<button ng-hide="vm.allFriendsMode" class="btn btn-primary" aria-label="All friends" ng-click="vm.showAll()">
+	<button  class="btn btn-primary" aria-label="All friends" ng-click="vm.showAll()">
           <md-icon aria-label="All friends" class="material-icons">SEARCH GUESTS</md-icon>
         </button>
-        <button ng-hide="vm.myFriendsMode" class="btn btn-primary" aria-label="My friends" ng-click="vm.showFriends()">
+        <button  class="btn btn-primary" aria-label="My friends" ng-click="vm.showFriends()">
           <md-icon aria-label="My friends" class="material-icons">MY FRIENDS</md-icon>
         </button>
-        <button ng-hide="vm.reqMode" class="btn btn-primary" aria-label="Friends requests" ng-click="vm.showReq()">
+        <button  class="btn btn-primary" aria-label="Friends requests" ng-click="vm.showReq()">
           <md-icon aria-label="Friend requests" class="material-icons">Friend requests</md-icon>
         </button>
+     
+<div ng-show="vm.reqMode">
+	<h1>This is list of your friends requestsssss</h1>
+	<ul>
+    <li ng-repeat="user in vm.allReq">
+        <img id="thumbnail" src={{user.image}}>{{user.firstName}} {{user.lastName}}
+        <button class="btn btn-primary" ng-click="vm.accept(user.id)">ACCEPT</button>
+        <button class="btn btn-primary" ng-click="vm.reject(user.id)">REJECT</button>
+    </li>
+</ul>
+</div>   
+<div ng-show="vm.myFriendsMode">
+<h1>This is list of your friends!</h1>
+<ul>
+    <li ng-repeat="user in vm.allFriendsIAccept">
+        <img id="thumbnail" src={{user.image}}>{{user.firstName}} {{user.lastName}}
+        <button class="btn btn-primary" ng-click="vm.deleteF(user.id)">DELETE</button>
+    </li>
+    
+    <li ng-repeat="user in vm.allFriendsIAdd">
+        <img id="thumbnail" src={{user.image}}>{{user.firstName}} {{user.lastName}}
+       	<button class="btn btn-primary" ng-click="vm.deleteF(user.id)">DELETE</button>
         
+    </li>
+</ul>
+</div>
 <div ng-show="vm.allFriendsMode">
-	<h3>All registered users:</h3>
+	<h3>All registered users: {{vm.user.firstName}}</h3>
 <ul>
     <li ng-repeat="user in vm.allUsers">
         <img id="thumbnail" src={{user.image}}>{{user.firstName}} {{user.lastName}}
+       <button class="btn btn-primary" ng-click="vm.add(user.id)">ADD</button>
         
     </li>
 </ul>
@@ -56,11 +82,5 @@
         </div>
 </form>
 </div>
-<div ng-show="vm.myFriendsMode">
-<h1>This is list of your friends!</h1>
-</div>
 
-<div ng-show="vm.reqMode">
-	<h1>This is list of your friends requests</h1>
-	
-</div>
+
