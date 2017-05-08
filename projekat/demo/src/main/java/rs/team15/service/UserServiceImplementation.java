@@ -13,6 +13,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import rs.team15.model.Bartender;
+import rs.team15.model.Cook;
 import rs.team15.model.Employee;
 import rs.team15.model.User;
 import rs.team15.model.Waiter;
@@ -75,6 +77,18 @@ public class UserServiceImplementation implements UserService{
         	e.setFirstTime("no");
         	Waiter w = (Waiter)userUpdate;
         	w.setFirstTime("no");
+        }
+        else if(userUpdate.getRole().equals("cook")){
+        	Employee e = (Employee)userUpdate;
+        	e.setFirstTime("no");
+        	Cook c = (Cook)userUpdate;
+        	c.setFirstTime("no");
+        }
+        else if(userUpdate.getRole().equals("bartender")){
+        	Employee e = (Employee)userUpdate;
+        	e.setFirstTime("no");
+        	Bartender b = (Bartender)userUpdate;
+        	b.setFirstTime("no");
         }
         
         

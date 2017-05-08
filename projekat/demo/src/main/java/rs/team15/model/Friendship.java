@@ -14,7 +14,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "frienships")
+@Table(name = "friendships")
 public class Friendship implements Serializable{
 	@Id
     @GeneratedValue(strategy = GenerationType.AUTO)

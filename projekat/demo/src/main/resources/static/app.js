@@ -82,6 +82,77 @@
                 controllerAs: 'vm'
             })
             
+            .when('/cookHome', {
+                controller: 'CookHomeController',
+                templateUrl: 'views/cookHome.html',
+                controllerAs: 'vm'
+            })
+            
+            .when('/cookProfile', {
+                controller: 'CookProfileController',
+                templateUrl: 'views/cookProfile.html',
+                controllerAs: 'vm'
+            })
+            
+            .when('/cookSchedule', {
+                controller: 'CookScheduleController',
+                templateUrl: 'views/cookSchedule.html',
+                controllerAs: 'vm'
+            })
+            
+            .when('/cookTables', {
+                controller: 'CookTablesController',
+                templateUrl: 'views/cookTables.html',
+                controllerAs: 'vm'
+            })
+            
+            .when('/cookOrders', {
+                controller: 'CookOrdersController',
+                templateUrl: 'views/cookOrders.html',
+                controllerAs: 'vm'
+            })
+            
+            .when('/cookChangePassword', {
+                controller: 'CookChangePasswordController',
+                templateUrl: 'views/cookChangePassword.html',
+                controllerAs: 'vm'
+            })
+            
+            .when('/bartenderHome', {
+                controller: 'BartenderHomeController',
+                templateUrl: 'views/bartenderHome.html',
+                controllerAs: 'vm'
+            })
+            
+            .when('/bartenderProfile', {
+                controller: 'BartenderProfileController',
+                templateUrl: 'views/bartenderProfile.html',
+                controllerAs: 'vm'
+            })
+            
+            .when('/bartenderSchedule', {
+                controller: 'BartenderScheduleController',
+                templateUrl: 'views/bartenderSchedule.html',
+                controllerAs: 'vm'
+            })
+            
+            .when('/bartenderTables', {
+                controller: 'BartenderTablesController',
+                templateUrl: 'views/bartenderTables.html',
+                controllerAs: 'vm'
+            })
+            
+            .when('/bartenderOrders', {
+                controller: 'BartenderOrdersController',
+                templateUrl: 'views/bartenderOrders.html',
+                controllerAs: 'vm'
+            })
+            
+            .when('/bartenderChangePassword', {
+                controller: 'BartenderChangePasswordController',
+                templateUrl: 'views/bartenderChangePassword.html',
+                controllerAs: 'vm'
+            })
             
             
             .when('/registerManager',{
