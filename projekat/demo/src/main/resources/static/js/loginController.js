@@ -50,6 +50,32 @@
                 		}
                 		
                 	}
+                	else if(angular.equals(response.data.role, "cook")){
+                		if(angular.equals(response.data.firstTime, "yes")){
+                			alert(response.data.firstTime);
+                			AuthenticationService.SetCredentials(vm.email, vm.password, "cookChangePassword");
+                    		$location.path('/cookChangePassword');
+                		}
+                		else {
+                			alert(response.data.firstTime);
+                			AuthenticationService.SetCredentials(vm.email, vm.password, "cookHome");
+                    		$location.path('/cookHome');
+                		}
+                		
+                	}
+                	else if(angular.equals(response.data.role, "bartender")){
+                		if(angular.equals(response.data.firstTime, "yes")){
+                			alert(response.data.firstTime);
+                			AuthenticationService.SetCredentials(vm.email, vm.password, "bartenderChangePassword");
+                    		$location.path('/bartenderChangePassword');
+                		}
+                		else {
+                			alert(response.data.firstTime);
+                			AuthenticationService.SetCredentials(vm.email, vm.password, "bartenderHome");
+                    		$location.path('/bartenderHome');
+                		}
+                		
+                	}
                     
                 } else {
                 	FlashService.Error('password or email do not exist',false);
