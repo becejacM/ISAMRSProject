@@ -78,7 +78,7 @@
                 	}
                     
                 } else {
-                	FlashService.Error('password or email do not exist',false);
+                	FlashService.Error('Password or email do not exist. Please check if you are registered and verified your email',false);
                     vm.dataLoading = false;
                     $location.path('/login');
                 }
