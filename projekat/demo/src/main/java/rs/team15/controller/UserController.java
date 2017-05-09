@@ -13,6 +13,8 @@ import org.springframework.http.HttpMessage;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.mail.MailSender;
+import org.springframework.mail.SimpleMailMessage;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -27,6 +29,7 @@ import ch.qos.logback.core.Context;
 import rs.team15.model.Guest;
 import rs.team15.model.RestaurantManager;
 import rs.team15.model.User;
+import rs.team15.repository.UserRepository;
 import rs.team15.service.GuestService;
 import rs.team15.service.RestaurantManagerService;
 import rs.team15.service.UserService;
@@ -46,7 +49,8 @@ public class UserController {
 	@Autowired
 	private RestaurantManagerService restaurantManagerService;
 
-	
+	@Autowired
+    MailSender mailSender;
 	@RequestMapping(
 	            value    = "/api/users",
 	            method   = RequestMethod.GET,
@@ -72,7 +76,19 @@ public class UserController {
 		return new ResponseEntity<User>(user, HttpStatus.OK);
 	}
 	
-
+	@RequestMapping(
+            value    = "/api/user/confirm/{email:.+}",
+            method   = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE
+		)
+	public ResponseEntity<User> verify(@PathVariable String email) {
+		logger.info("> get user verify email:{}", email);
+		User user = userService.findOne(email);
+		user.setVerified("yes");
+		userService.update(user);
+		logger.info("< get user verify email:{}", email);
+		return new ResponseEntity<User>(user, HttpStatus.OK);
+	}
 	@RequestMapping(
 	            value    = "api/users/register",
 	            method   = RequestMethod.POST,
@@ -95,7 +111,13 @@ public class UserController {
 			u1.setMessage("Size of first name or last name is incompatible");
 			return new ResponseEntity<User>(u1, HttpStatus.OK);
 		}
-		
+		SimpleMailMessage message = new SimpleMailMessage();
+        message.setText("http://localhost:8081/api/user/confirm/"+guest.getEmail());
+        message.setTo(guest.getEmail());
+        message.setFrom("ricardmiki@gmail.com");
+        
+        mailSender.send(message);
+           
 		User created = guestService.create(guest);
 		logger.info("< create user");
 		return new ResponseEntity<User>(created, HttpStatus.CREATED);
@@ -140,6 +162,9 @@ public class UserController {
 		logger.info("> log user");
 		User u = userService.findByEmailAndPassword(email, password);
         if(u==null){
+        	return new ResponseEntity<User>(u, HttpStatus.NO_CONTENT);
+        }
+        if(u.getRole().equals("guest") && u.isVerified().equals("no")){
         	return new ResponseEntity<User>(u, HttpStatus.NO_CONTENT);
         }
         request.setAttribute("loggeduser", u);
