@@ -9,12 +9,14 @@ import org.apache.shiro.web.session.HttpServletSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.http.HttpMessage;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.MailSender;
 import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -51,6 +53,15 @@ public class UserController {
 
 	@Autowired
     MailSender mailSender;
+	
+	@Autowired
+	private JavaMailSender javaMailSender;
+
+	/*
+	 * Koriscenje klase za ocitavanje vrednosti iz application.properties fajla
+	 */
+	@Autowired
+	private Environment env;
 	@RequestMapping(
 	            value    = "/api/users",
 	            method   = RequestMethod.GET,
@@ -95,7 +106,7 @@ public class UserController {
 	            consumes = MediaType.APPLICATION_JSON_VALUE,
 	            produces = MediaType.APPLICATION_JSON_VALUE
 			)
-	public ResponseEntity<User> register(@RequestBody Guest guest) {
+	public ResponseEntity<User> register(@RequestBody Guest guest) throws InterruptedException {
 		guest.setLogin("no");
 		guest.setRole("guest");
 		guest.setVerified("no");
@@ -111,12 +122,16 @@ public class UserController {
 			u1.setMessage("Size of first name or last name is incompatible");
 			return new ResponseEntity<User>(u1, HttpStatus.OK);
 		}
-		SimpleMailMessage message = new SimpleMailMessage();
-        message.setText("http://localhost:8081/api/user/confirm/"+guest.getEmail());
-        message.setTo(guest.getEmail());
-        message.setFrom("ricardmiki@gmail.com");
+        Thread.sleep(10000);
+		System.out.println("Slanje emaila...");
+
+		SimpleMailMessage mail = new SimpleMailMessage();
+		mail.setTo(guest.getEmail());
+		mail.setFrom(env.getProperty("spring.mail.username"));
+		mail.setSubject("Registration confirm ");
+		mail.setText("Hello " + guest.getFirstName() + "\n Click and verify your email : http://localhost:8080/api/user/confirm/"+guest.getEmail());
+		javaMailSender.send(mail);
         
-        mailSender.send(message);
            
 		User created = guestService.create(guest);
 		logger.info("< create user");
