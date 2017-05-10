@@ -10,7 +10,7 @@ import javax.persistence.Table;
 @PrimaryKeyJoinColumn(name = "sm_id")
 public class SystemManager extends User{
 	
-	@Column(name = "sm_id", insertable = false, updatable = false)
+	@Column(name = "smid", insertable = false, updatable = false)
     private Long smid;
 	
 	public SystemManager(){
