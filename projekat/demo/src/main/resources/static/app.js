@@ -161,6 +161,12 @@
             	controllerAs: 'vm'
         	})
         	
+        	.when('/registerSysManager',{
+            	controller: 'registerSysManagerController',
+            	templateUrl: 'views/registerSysManager.html',
+            	controllerAs: 'vm'
+        	})
+        	
         	.when('/SysManagerHome',{
             	controller: 'SysManagerHomeController',
             	templateUrl: 'views/SysManagerHome.html',

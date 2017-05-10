@@ -30,10 +30,12 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import ch.qos.logback.core.Context;
 import rs.team15.model.Guest;
 import rs.team15.model.RestaurantManager;
+import rs.team15.model.SystemManager;
 import rs.team15.model.User;
 import rs.team15.repository.UserRepository;
 import rs.team15.service.GuestService;
 import rs.team15.service.RestaurantManagerService;
+import rs.team15.service.SystemManagerService;
 import rs.team15.service.UserService;
 
 @RestController
@@ -50,6 +52,9 @@ public class UserController {
 	
 	@Autowired
 	private RestaurantManagerService restaurantManagerService;
+	
+	@Autowired
+	private SystemManagerService systemManagerService;
 
 	@Autowired
     MailSender mailSender;
@@ -163,6 +168,35 @@ public class UserController {
 		}
 		
 		User created = restaurantManagerService.create(manager);
+		logger.info("< create user");
+		return new ResponseEntity<User>(created, HttpStatus.CREATED);
+	}
+	
+	@RequestMapping(
+            value    = "api/users/registerSysManager",
+            method   = RequestMethod.POST,
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE
+		)
+	
+	public ResponseEntity<User> registerSysManager(@RequestBody SystemManager manager) {
+		manager.setLogin("no");
+		manager.setRole("system_manager");
+		manager.setVerified("no");
+		manager.setImage("pictures/user.png");
+		User u = userService.findOne(manager.getEmail());
+		if(u!=null){
+			u.setMessage("User with that email allready exists");
+			return new ResponseEntity<User>(u, HttpStatus.OK);
+		}
+		if(manager.getFirstName().length()<3 || manager.getFirstName().length()>10 
+				|| manager.getLastName().length()<3 || manager.getLastName().length()>20){
+			User u1 = new User();
+			u1.setMessage("Size of first name or last name is incompatible");
+			return new ResponseEntity<User>(u1, HttpStatus.OK);
+		}
+		
+		User created = systemManagerService.create(manager);
 		logger.info("< create user");
 		return new ResponseEntity<User>(created, HttpStatus.CREATED);
 	}

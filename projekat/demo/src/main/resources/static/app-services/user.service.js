@@ -14,6 +14,7 @@
         service.GetByUsername = GetByUsername;
         service.Create = Create;
         service.CreateM = CreateM;
+        service.CreateSysM = CreateSysM;
         service.Update = Update;
         service.Delete = Delete;
         service.Upload = Upload;
@@ -139,6 +140,15 @@
             });               
 
      }
+        
+        function CreateSysM(user) {
+            return $http.post('/api/users/registerSysManager', user)
+            .then(function(response) {
+                return response;
+            });     
+        }
+
+     
 
         function Update(user) {
         		return $http.put('/api/user/update' , user).then(handleSuccess, handleError('Error updating user'));
