@@ -28,6 +28,7 @@
         vm.managerProfil = managerProfil;
         vm.registerManager = registerManager;
         vm.registerRestaurant = registerRestaurant;
+        vm.registerSysManager = registerSysManager;
         
         (function initController() {
         	loadCurrentUser();
@@ -50,7 +51,10 @@
         	AuthenticationService.SetCredentials(vm.user.email, vm.user.password, "registerRestaurant");
         	$location.path('/registerRestaurant');
         }
-        
+        function registerSysManager(){
+        	AuthenticationService.SetCredentials(vm.user.email, vm.user.password, "registerSysManager");
+        	$location.path('/registerSysManager');
+        }
         function logout(){
             AuthenticationService.ClearCredentials();
             $location.path('/login');
