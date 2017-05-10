@@ -49,8 +49,24 @@ public class TableR {
 
     public TableR() {
     }
+    
+    
 
-    public boolean isDeleted() {
+    public TableR(Integer tableId, Double datax, Double datay, Double width, Double height, Integer tableInRestaurantNo,
+			Region region) {
+		super();
+		this.tableId = tableId;
+		this.datax = datax;
+		this.datay = datay;
+		this.width = width;
+		this.height = height;
+		this.tableInRestaurantNo = tableInRestaurantNo;
+		this.region = region;
+	}
+
+
+
+	public boolean isDeleted() {
         return deleted;
     }
 

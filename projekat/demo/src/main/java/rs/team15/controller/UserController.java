@@ -62,6 +62,7 @@ public class UserController {
 	 */
 	@Autowired
 	private Environment env;
+	
 	@RequestMapping(
 	            value    = "/api/users",
 	            method   = RequestMethod.GET,

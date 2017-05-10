@@ -52,7 +52,22 @@ public class ClientOrder implements Serializable{
     public ClientOrder(){
     }
 
-    public Integer getOrderId() {
+    
+    public ClientOrder(Integer orderId, Date date, Date deadline, Reservation reservation, Integer clientId,
+			TableR table, Set<OrderItem> items, String status) {
+		super();
+		this.orderId = orderId;
+		this.date = date;
+		this.deadline = deadline;
+		this.reservation = reservation;
+		this.clientId = clientId;
+		this.table = table;
+		this.items = items;
+		this.status = status;
+	}
+
+
+	public Integer getOrderId() {
         return orderId;
     }
 

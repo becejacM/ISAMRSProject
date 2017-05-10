@@ -8,7 +8,9 @@ import rs.team15.model.Restaurant;
 
 public interface RestaurantRepository extends JpaRepository <Restaurant, Integer> {
 
-    Restaurant findRestaurantByName(String name);
+    Restaurant findByName(String name);
+    
+    Restaurant findByRestaurantId(int id);
 
     Collection<Restaurant> findRestaurantByNameContainsOrTypeStartsWithAllIgnoreCase(String name, String type);
 }

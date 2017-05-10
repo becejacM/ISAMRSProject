@@ -5,14 +5,15 @@
         .module('app')
         .controller('GuestReserveController', GuestReserveController);
 
-    GuestReserveController.$inject = ['$location','UserService', 'AuthenticationService', '$rootScope', 'FlashService'];
-    function GuestReserveController($location,UserService,AuthenticationService, $rootScope, FlashService) {
+    GuestReserveController.$inject = ['$location','UserService','RestaurantService', 'AuthenticationService', '$rootScope', 'FlashService'];
+    function GuestReserveController($location,UserService,RestaurantService,AuthenticationService, $rootScope, FlashService) {
         var vm = this;
 
         vm.user = null;
+        vm.rest = null;
         vm.realUser = {};
         vm.allUsers = [];
-        vm.deleteUser = deleteUser;
+        vm.allRests = [];
 
         
         vm.logout = logout;
@@ -21,13 +22,46 @@
         vm.friends = friends;
         vm.show = show;
         
+        vm.allRestsMode = false;
+        vm.showRests = showRests;
+        
+        vm.restMode = false;
+        vm.showRest = showRest;
+        
+        
         (function initController() {
+        	loadAllRests();
             loadCurrentUser();
-            loadAllUsers();
             
+           
         })();
         
-        function show() {
+        function showRests(){
+        	vm.allRestsMode = true;
+        	vm.restMode = false;
+        }
+        
+        function showRest(){
+        	vm.allRestsMode = false;
+        	vm.restMode = true;
+        }
+        vm.v = null;
+        function loadAllRests() {
+        	RestaurantService.GetAllRests()
+                .then(function (rests) {
+                	
+                    vm.allRests = rests.data;
+                    
+                });
+        }
+        
+        function show(id) {
+        	RestaurantService.GetById(id)
+            .then(function (response) {
+            	alert("fdfs");
+                vm.rest = response.data;
+            });
+        	showRest();
       	  var canvas = new fabric.Canvas('c');
       	  canvas.setDimensions({width:800, height:500});
       	  canvas.border = 2;
@@ -102,19 +136,9 @@
         
         
         
-        function loadAllUsers() {
-            UserService.GetAll()
-                .then(function (users) {
-                    vm.allUsers = users;
-                });
-        }
+        
 
-        function deleteUser(id) {
-            UserService.Delete(id)
-            .then(function () {
-                loadAllUsers();
-            });
-        }
+        
     }
 
 })();
