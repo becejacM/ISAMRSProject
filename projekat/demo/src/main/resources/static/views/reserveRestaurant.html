@@ -25,9 +25,19 @@
 		</div>
 	</nav>
 <div>
-<h1>Here you can make a reservation in your favourite restaurant!: {{vm.user.firstName}}</h1>
-<button class="btn btn-default navbar-btn" background-color= "Transparent"  ng-click="vm.show()">SHOW</button>
+<button  class="btn btn-primary" aria-label="All friends" ng-click="vm.showRests()">
+          <md-icon aria-label="All rests" class="material-icons">SEARCH Restautants</md-icon>
+        </button>
+<div ng-show="vm.allRestsMode">
+<ul>
+    <li ng-repeat="r in vm.allRests">
+        <img id="thumbnail" src={{r.image}}>{{r.name}}
+       <button class="btn btn-primary" ng-click="vm.show(r.name)">Reserve</button>
+        
+    </li>
+</ul></div>
 </div>
 <div>
-<canvas id="c"></canvas>
+<div ng-show="vm.restMode"><br/>Restaurant name: {{vm.rest.name}}<br/><canvas id="c"></canvas></div>
+
 </div>

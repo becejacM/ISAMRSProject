@@ -30,7 +30,18 @@ public class Region {
     @Column(name = "rr_region_no")
     private Integer regionNo;
 
-    @JsonIgnore
+    public Region(Integer regionId, String name, String color, Restaurant restaurant, Integer regionNo,
+			Set<TableR> tables) {
+		super();
+		this.regionId = regionId;
+		this.name = name;
+		this.color = color;
+		this.restaurant = restaurant;
+		this.regionNo = regionNo;
+		this.tables = tables;
+	}
+
+	@JsonIgnore
     @OneToMany(mappedBy = "region", fetch = FetchType.LAZY)
     private Set<TableR> tables = new HashSet <TableR>(0);
 
