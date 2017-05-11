@@ -49,20 +49,20 @@ public class GuestServiceImplementation implements GuestService{
 	public Collection<User> findFriendsIAccept(Long id) {
 		// TODO Auto-generated method stub
 		
-		return friendshipRepository.findFriendsSenders("accept", id);
+		return friendshipRepository.findSenders("accept", id);
 	}
 	
 	@Override
 	public Collection<User> findFriendsIAdd(Long id) {
 		// TODO Auto-generated method stub
 		
-		return friendshipRepository.findFriendsReceivers("accept", id);
+		return friendshipRepository.findReceivers("accept", id);
 	}
 
 	@Override
 	public Collection<User> findReq(Long id) {
 		// TODO Auto-generated method stub
-		return friendshipRepository.findFriendshipRequests("pending", id);
+		return friendshipRepository.findRequests("pending", id);
 	}
 	
 	@Override

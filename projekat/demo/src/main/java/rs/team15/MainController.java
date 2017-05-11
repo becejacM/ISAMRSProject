@@ -18,18 +18,6 @@ public class MainController {
 
 	@RequestMapping(value="/", method=RequestMethod.GET)
 	public String index() throws ClassNotFoundException, SQLException, UnsupportedEncodingException, IOException{
-		/*System.out.println("Kreiram demo bazu...");
-	    Class.forName("org.h2.Driver");
-	    Connection conn = DriverManager.getConnection(
-	        "jdbc:h2:mem:myDb:DB_CLOSE_DELAY=-1;MV_STORE=FALSE;MVCC=FALSE;DB_CLOSE_ON_EXIT=FALSE", "sa","");
-	    BufferedReader init = new BufferedReader(new InputStreamReader(
-	        MainController.class.getResource("projectMRSISA/src/main/java/rs.team15/shema.sql").openStream(), "UTF-8"));
-	    ScriptRunner sr = new ScriptRunner(conn, true, true);
-	    sr.setDelimiter(";", false);
-	    sr.runScript(init);
-	    sr.setDelimiter("//", false);
-	    conn.close();
-	    init.close();*/
 		return "index";
 	}
 }

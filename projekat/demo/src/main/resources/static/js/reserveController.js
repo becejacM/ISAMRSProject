@@ -56,9 +56,10 @@
         }
         
         function show(id) {
+        	alert(id);
         	RestaurantService.GetById(id)
             .then(function (response) {
-            	alert("fdfs");
+            	
                 vm.rest = response.data;
             });
         	showRest();

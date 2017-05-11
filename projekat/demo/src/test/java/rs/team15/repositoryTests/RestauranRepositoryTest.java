@@ -40,11 +40,11 @@ public class RestauranRepositoryTest {
 		Set<MenuItem> menuItems = new HashSet<MenuItem>();
 		Set<Region> regions = new HashSet<Region>();
 		Set<TableR> tables = new HashSet<TableR>();
-		Restaurant u = new Restaurant(Integer.parseInt("1"),"milana",Integer.parseInt("1"),Integer.parseInt("1"), menuItems, regions);
+		Restaurant u = new Restaurant(Long.parseLong("1"),"milana",Integer.parseInt("1"),Integer.parseInt("1"), menuItems, regions);
 		rRepository.save(u);
-		Region r = new Region(Integer.parseInt("1"),"region1","blue",u,Integer.parseInt("1"),tables);
+		Region r = new Region(Long.parseLong("1"),"region1","blue",u,Integer.parseInt("1"),tables);
 		regRepository.save(r);
-		TableR t = new TableR(Integer.parseInt("1"),Double.parseDouble("1"),Double.parseDouble("1"),Double.parseDouble("1"),Double.parseDouble("1"),Integer.parseInt("1"),r);
+		TableR t = new TableR(Long.parseLong("1"),Double.parseDouble("1"),Double.parseDouble("1"),Double.parseDouble("1"),Double.parseDouble("1"),r);
 		tRepository.save(t);
 		Collection<Restaurant> res = rRepository.findAll();
 		System.out.println(res.size());

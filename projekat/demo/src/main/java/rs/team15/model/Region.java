@@ -14,8 +14,8 @@ import java.util.Set;
 public class Region {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "rid")
-    private Integer regionId;
+    @Column(name = "regid")
+    private Long regId;
 
     @Column(name = "name")
     private String name;
@@ -24,16 +24,16 @@ public class Region {
     private String color;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "rr_restaurant_id")
+    @JoinColumn(name = "rid")
     private Restaurant restaurant;
 
-    @Column(name = "rr_region_no")
+    @Column(name = "regionNo")
     private Integer regionNo;
 
-    public Region(Integer regionId, String name, String color, Restaurant restaurant, Integer regionNo,
+    public Region(Long regionId, String name, String color, Restaurant restaurant, Integer regionNo,
 			Set<TableR> tables) {
 		super();
-		this.regionId = regionId;
+		this.regId = regionId;
 		this.name = name;
 		this.color = color;
 		this.restaurant = restaurant;
@@ -48,12 +48,12 @@ public class Region {
     public Region() {
     }
 
-    public Integer getRegionId() {
-        return regionId;
+    public Long getRegionId() {
+        return regId;
     }
 
-    public void setRegionId(Integer regionId) {
-        this.regionId = regionId;
+    public void setRegionId(Long regionId) {
+        this.regId = regionId;
     }
 
     public String getName() {

@@ -14,33 +14,33 @@ public class TableR {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "rt_id")
-    private Integer tableId;
+    @Column(name = "tid")
+    private Long tid;
 
-    @Column(name = "rt_datax")
-    private Double datax;
+    @Column(name = "x")
+    private Double x;
 
-    @Column(name = "rt_datay")
-    private Double datay;
+    @Column(name = "y")
+    private Double y;
 
-    @Column(name = "rt_width")
+    @Column(name = "width")
     private Double width;
 
-    @Column(name = "rt_height")
+    @Column(name = "height")
     private Double height;
 
-    @Column(name = "rt_positions")
+    @Column(name = "positions")
     private Integer positions;
 
     @Column(name = "rt_table_in_restaurant_no")
     private Integer tableInRestaurantNo;
 
-    @Column(name = "rt_deleted")
+    @Column(name = "deleted")
     private boolean deleted;
 
     @JsonIgnore
     @ManyToOne
-    @JoinColumn(name = "rt_region_id")
+    @JoinColumn(name = "regid")
     private Region region;
 
     @JsonIgnore
@@ -49,24 +49,8 @@ public class TableR {
 
     public TableR() {
     }
-    
-    
 
-    public TableR(Integer tableId, Double datax, Double datay, Double width, Double height, Integer tableInRestaurantNo,
-			Region region) {
-		super();
-		this.tableId = tableId;
-		this.datax = datax;
-		this.datay = datay;
-		this.width = width;
-		this.height = height;
-		this.tableInRestaurantNo = tableInRestaurantNo;
-		this.region = region;
-	}
-
-
-
-	public boolean isDeleted() {
+    public boolean isDeleted() {
         return deleted;
     }
 
@@ -74,28 +58,28 @@ public class TableR {
         this.deleted = deleted;
     }
 
-    public Integer getTableId() {
-        return tableId;
+    public Long getTableId() {
+        return tid;
     }
 
-    public void setTableId(Integer tableId) {
-        this.tableId = tableId;
+    public void setTableId(Long tableId) {
+        this.tid = tableId;
     }
 
     public Double getDatax() {
-        return datax;
+        return x;
     }
 
     public void setDatax(Double datax) {
-        this.datax = datax;
+        this.x = datax;
     }
 
     public Double getDatay() {
-        return datay;
+        return y;
     }
 
     public void setDatay(Double datay) {
-        this.datay = datay;
+        this.y = datay;
     }
 
     public Double getWidth() {
@@ -147,4 +131,16 @@ public class TableR {
     public void setOrders(Set<ClientOrder> orders) {
         this.orders = orders;
     }
+    
+    public TableR(Long tableId, Double datax, Double datay, Double width, Double height,
+			Region region) {
+		super();
+		this.tid = tableId;
+		this.x = datax;
+		this.y = datay;
+		this.width = width;
+		this.height = height;
+		this.region = region;
+	}
+
 }

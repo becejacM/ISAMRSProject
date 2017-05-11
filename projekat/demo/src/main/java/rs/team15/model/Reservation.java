@@ -8,34 +8,34 @@ import java.util.Date;
 
 @Entity
 @Table(name = "reservations")
-@PrimaryKeyJoinColumn(name = "rs_id")
+@PrimaryKeyJoinColumn(name = "rsid")
 public class Reservation {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "rs_id")
-    private Integer reservationId;
+    @Column(name = "rsid")
+    private Long rsid;
 
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REFRESH)
-    @JoinColumn(name = "rs_restaurant_id")
+    @JoinColumn(name = "rid")
     private Restaurant restaurant;
 
-    @Column(name = "rs_duration")
+    @Column(name = "duration")
     private Date reservationDateTime;
 
-    @Column(name = "rs_length")
+    @Column(name = "length")
     private Integer length;
 
     public Reservation() {
         super();
     }
 
-    public Integer getReservationId() {
-        return reservationId;
+    public Long getReservationId() {
+        return rsid;
     }
 
-    public void setReservationId(Integer reservationId) {
-        this.reservationId = reservationId;
+    public void setReservationId(Long reservationId) {
+        this.rsid = reservationId;
     }
 
     @JsonIgnore
@@ -67,7 +67,7 @@ public class Reservation {
     @Override
     public String toString() {
         return "Reservation{" +
-                "reservationId=" + reservationId +
+                "reservationId=" + rsid +
                 ", restaurant=" + restaurant +
                 ", reservationDateTime=" + reservationDateTime +
                 ", length=" + length +
