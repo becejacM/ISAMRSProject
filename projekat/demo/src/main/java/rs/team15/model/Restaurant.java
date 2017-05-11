@@ -15,32 +15,32 @@ import java.util.Set;
 public class Restaurant implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "r_id")
-    private Integer restaurantId;
+    @Column(name = "rid")
+    private Long rid;
 
-    @Column(name = "r_name")
+    @Column(name = "name")
     private String name;
 
-    @Column(name = "r_info")
+    @Column(name = "info")
     private String info;
 
-    @Column(name = "r_type")
+    @Column(name = "type")
     private String type;
 
-    @Column(name = "r_time_start")
+    @Column(name = "startTime")
     private Integer startTime;
 
-    @Column(name = "r_time_end")
+    @Column(name = "endTime")
     private Integer endTime;
 
-    @Column(name = "r_address")
+    @Column(name = "address")
     private String address;
 
-    @Column(name = "r_image")
+    @Column(name = "image")
     private String image;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "r_sm_id")
+    @JoinColumn(name = "smid")
     private SystemManager systemManager;
 
     @OneToMany(mappedBy = "restaurant", fetch = FetchType.LAZY)
@@ -53,12 +53,12 @@ public class Restaurant implements Serializable {
     public Restaurant() {
     }
 
-    public Integer getRestaurantId() {
-        return restaurantId;
+    public Long getRestaurantId() {
+        return rid;
     }
 
-    public void setRestaurantId(Integer restaurantId) {
-        this.restaurantId = restaurantId;
+    public void setRestaurantId(Long restaurantId) {
+        this.rid = restaurantId;
     }
 
     public String getName() {
@@ -132,10 +132,10 @@ public class Restaurant implements Serializable {
         return regions;
     }
 
-    public Restaurant(Integer restaurantId, String name, Integer startTime, Integer endTime, Set<MenuItem> menuItemMenu,
+    public Restaurant(Long restaurantId, String name, Integer startTime, Integer endTime, Set<MenuItem> menuItemMenu,
 			Set<Region> regions) {
 		super();
-		this.restaurantId = restaurantId;
+		this.rid = restaurantId;
 		this.name = name;
 		this.startTime = startTime;
 		this.endTime = endTime;

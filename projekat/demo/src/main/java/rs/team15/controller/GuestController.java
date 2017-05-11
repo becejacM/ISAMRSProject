@@ -71,7 +71,6 @@ public class GuestController {
     	logger.info("ovde sam "+idr.toString()+ids.toString());
         
         if(ids==idr){
-        	logger.info("tiiii");
         	Friendship ff2 = new Friendship();
         	ff2.setStatus("you");
         	return new ResponseEntity<Friendship>(ff2, HttpStatus.OK);

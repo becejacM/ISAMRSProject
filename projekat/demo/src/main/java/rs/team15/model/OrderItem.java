@@ -14,45 +14,45 @@ public class OrderItem implements Serializable{
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "oi_id")
-    private Integer itemId;
+    @Column(name = "oiid")
+    private Long oiid;
 
-    @Column(name = "oi_state")
+    @Column(name = "state")
     private String state;
 
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "oi_order_id")
+    @JoinColumn(name = "order_id")
     private ClientOrder order;
 
     @ManyToOne()
-    @JoinColumn(name = "oi_menu_item_id")
+    @JoinColumn(name = "menu_item_id")
     private MenuItem menuItem;
 
-    @Column(name = "oi_amount")
+    @Column(name = "amount")
     private Integer amount;
 
     @Version
-    @Column(name = "oi_version")
+    @Column(name = "version")
     private Integer version = 0;
 
-    @Column(name = "oi_restaurant_id")
+    @Column(name = "restaurant_id")
     private Integer restaurantId;
 
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "oi_employee")
+    @JoinColumn(name = "employee")
     private Employee employee;
 
     @Column(name = "oi_table_id")
     private Integer tableId;
 
-    public Integer getItemId() {
-        return itemId;
+    public Long getItemId() {
+        return oiid;
     }
 
-    public void setItemId(Integer itemId) {
-        this.itemId = itemId;
+    public void setItemId(Long itemId) {
+        this.oiid = itemId;
     }
 
     public String getState() {

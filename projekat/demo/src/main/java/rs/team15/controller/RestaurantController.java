@@ -47,11 +47,11 @@ public class RestaurantController {
             method   = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE
 		)
-public ResponseEntity<Restaurant> userExists(@PathVariable String id) {
-	logger.info("> get r id:{}", id);
-	Restaurant r = restaurantService.findById(id);
+	public ResponseEntity<Restaurant> getRestById(@PathVariable String id) {
+		logger.info("> get r id:{}", id);
+		Restaurant r = restaurantService.findById(id);
 	
-	logger.info("< get r email:{}", id);
-	return new ResponseEntity<Restaurant>(r, HttpStatus.OK);
-}
+		logger.info("< get r email:{}", id);
+		return new ResponseEntity<Restaurant>(r, HttpStatus.OK);
+	}
 }

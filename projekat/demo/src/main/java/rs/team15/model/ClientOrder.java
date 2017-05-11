@@ -16,26 +16,26 @@ public class ClientOrder implements Serializable{
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "co_id")
-    private Integer orderId;
+    @Column(name = "oid")
+    private Long oid;
 
-    @Column(name = "co_date")
+    @Column(name = "date")
     private Date date;
 
-    @Column(name = "co_deadline")
+    @Column(name = "deadline")
     private Date deadline;
 
     @JsonIgnore
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "co_reservation_id")
+    @JoinColumn(name = "rsid")
     private Reservation reservation;
 
-    @Column(name = "co_client_id")
+    @Column(name = "clientId")
     private Integer clientId;
 
     @JsonIgnore
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "co_table_id")
+    @JoinColumn(name = "tableId")
     private TableR table;
 
     @OneToMany(mappedBy = "order", fetch = FetchType.LAZY, cascade = {CascadeType.MERGE , CascadeType.REMOVE})
@@ -43,20 +43,20 @@ public class ClientOrder implements Serializable{
 
 
     @JsonIgnore
-    @Column(name = "co_waiter_id")
+    @Column(name = "waiterId")
     private Integer waiterId;
 
-    @Column(name = "co_status")
+    @Column(name = "status")
     private String status;
 
     public ClientOrder(){
     }
 
     
-    public ClientOrder(Integer orderId, Date date, Date deadline, Reservation reservation, Integer clientId,
+    public ClientOrder(Long orderId, Date date, Date deadline, Reservation reservation, Integer clientId,
 			TableR table, Set<OrderItem> items, String status) {
 		super();
-		this.orderId = orderId;
+		this.oid = orderId;
 		this.date = date;
 		this.deadline = deadline;
 		this.reservation = reservation;
@@ -67,12 +67,12 @@ public class ClientOrder implements Serializable{
 	}
 
 
-	public Integer getOrderId() {
-        return orderId;
+	public Long getOrderId() {
+        return oid;
     }
 
-    public void setOrderId(Integer orderId) {
-        this.orderId = orderId;
+    public void setOrderId(Long orderId) {
+        this.oid = orderId;
     }
 
     public Date getDate() {
@@ -128,7 +128,7 @@ public class ClientOrder implements Serializable{
     @Override
     public String toString() {
         return "ClientOrder{" +
-                "orderId=" + orderId +
+                "orderId=" + oid +
                 ", date=" + date +
                 ", deadline=" + deadline +
                 ", table=" + table +

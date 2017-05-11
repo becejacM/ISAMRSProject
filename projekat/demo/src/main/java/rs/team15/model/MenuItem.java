@@ -12,7 +12,7 @@ public class MenuItem {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "miid")
-    private Integer mid;
+    private Long mid;
 
     @Column(name = "info")
     private String info;
@@ -30,7 +30,7 @@ public class MenuItem {
     private String image;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "mi_restaurant_id")
+    @JoinColumn(name = "rid")
     private Restaurant restaurant;
 
     @Column(name = "spec_type")
@@ -43,11 +43,11 @@ public class MenuItem {
     public MenuItem() {
     }
 
-    public Integer getMenuItemId() {
+    public Long getMenuItemId() {
         return mid;
     }
 
-    public void setMenuItemId(Integer menuItemId) {
+    public void setMenuItemId(Long menuItemId) {
         this.mid = menuItemId;
     }
 
