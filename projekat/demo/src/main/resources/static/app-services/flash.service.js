@@ -36,7 +36,6 @@
         }
         
         function clearFlashMessageP() {
-        	//alert("cistimmmm");
             var flash = $rootScope.flash;
             if (flash) {
                 if (!flash.keepAfterLocationChange) {

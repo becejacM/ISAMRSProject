@@ -20,13 +20,41 @@ public class Reservation {
     @JoinColumn(name = "rid")
     private Restaurant restaurant;
 
-    @Column(name = "duration")
-    private Date reservationDateTime;
+    @Column(name = "date")
+    private String date;
 
+    @Column(name = "time")
+    private String time;
+    
     @Column(name = "length")
-    private Integer length;
+    private String length;
+    
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "tid")
+    private TableR tableRes;
+    
+    
 
-    public Reservation() {
+    
+    public TableR getTid() {
+		return tableRes;
+	}
+
+	public void setTid(TableR tid) {
+		this.tableRes = tid;
+	}
+
+	public Reservation(Long rsid, Restaurant restaurant, String date, String time, String length, TableR tid) {
+		super();
+		this.rsid = rsid;
+		this.restaurant = restaurant;
+		this.date = date;
+		this.time = time;
+		this.length = length;
+		this.tableRes = tid;
+	}
+
+	public Reservation() {
         super();
     }
 
@@ -48,19 +76,27 @@ public class Reservation {
         this.restaurant = restaurant;
     }
 
-    public Date getReservationDateTime() {
-        return reservationDateTime;
+    public String getReservationDateTime() {
+        return date;
     }
 
-    public void setReservationDateTime(Date reservationDateTime) {
-        this.reservationDateTime = reservationDateTime;
+    public String getTime() {
+		return time;
+	}
+
+	public void setTime(String time) {
+		this.time = time;
+	}
+
+	public void setReservationDateTime(String reservationDateTime) {
+        this.date = reservationDateTime;
     }
 
-    public Integer getLength() {
+    public String getLength() {
         return length;
     }
 
-    public void setLength(Integer length) {
+    public void setLength(String length) {
         this.length = length;
     }
 
@@ -69,7 +105,7 @@ public class Reservation {
         return "Reservation{" +
                 "reservationId=" + rsid +
                 ", restaurant=" + restaurant +
-                ", reservationDateTime=" + reservationDateTime +
+                ", reservationDateTime=" + date +
                 ", length=" + length +
                 '}';
     }
