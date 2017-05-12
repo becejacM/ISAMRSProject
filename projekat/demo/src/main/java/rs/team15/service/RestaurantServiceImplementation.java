@@ -32,4 +32,10 @@ public class RestaurantServiceImplementation implements RestaurantService{
 		return restaurantRepository.findByName(id);
 	}
 
+	@Override
+	public Collection<Restaurant> findByNameOrType(String name, String type) {
+		// TODO Auto-generated method stub
+		return restaurantRepository.findRestaurantByNameContainsOrTypeStartsWithAllIgnoreCase(name,type);
+	}
+
 }

@@ -5,29 +5,41 @@
         .module('app')
         .controller('GuestReserveController', GuestReserveController);
 
-    GuestReserveController.$inject = ['$location','UserService','RestaurantService', 'AuthenticationService', '$rootScope', 'FlashService'];
-    function GuestReserveController($location,UserService,RestaurantService,AuthenticationService, $rootScope, FlashService) {
+    GuestReserveController.$inject = ['$location','UserService','RestaurantService', 'AuthenticationService', '$rootScope', 'FlashService','$scope'];
+    function GuestReserveController($location,UserService,RestaurantService,AuthenticationService, $rootScope, FlashService,$scope) {
         var vm = this;
 
         vm.user = null;
         vm.rest = null;
+        vm.step1par = null;
         vm.realUser = {};
         vm.allUsers = [];
         vm.allRests = [];
+        vm.regions = [];
+        vm.tables = [];
 
         
         vm.logout = logout;
         vm.profil = profil;
         vm.home = home;
         vm.friends = friends;
+        
         vm.show = show;
         
         vm.allRestsMode = false;
         vm.showRests = showRests;
         
-        vm.restMode = false;
-        vm.showRest = showRest;
+        vm.restModeStep1 = false;
+        vm.showRestStep1 = showRestStep1;
         
+        vm.restModeStep2 = false;
+        vm.showRestStep2 = showRestStep2;
+        
+        vm.step1 = step1;
+        vm.step2 = step2;
+        
+        vm.find = find
+        vm.parametar = null;
         
         (function initController() {
         	loadAllRests();
@@ -36,14 +48,24 @@
            
         })();
         
+        
         function showRests(){
+        	loadAllRests();
         	vm.allRestsMode = true;
-        	vm.restMode = false;
+        	vm.restModeStep1 = false;
+        	vm.restModeStep2 = false;
         }
         
-        function showRest(){
+        function showRestStep1(){
         	vm.allRestsMode = false;
-        	vm.restMode = true;
+        	vm.restModeStep1 = true;
+        	vm.restModeStep2 = false;
+        }
+        
+        function showRestStep2(){
+        	vm.allRestsMode = false;
+        	vm.restModeStep1 = false;
+        	vm.restModeStep2 = true;
         }
         vm.v = null;
         function loadAllRests() {
@@ -55,57 +77,54 @@
                 });
         }
         
-        function show(id) {
-        	alert(id);
+        function step1(id){
         	RestaurantService.GetById(id)
             .then(function (response) {
-            	
                 vm.rest = response.data;
+                $scope.time = ["00:00","01:00","02:00","03:00","04:00","05:00","06:00","07:00","08:00","09:00",
+           "10:00","11:00","12:00","13:00","14:00","15:00","16:00","17:00","18:00","19:00","20:00","21:00","22:00","23:00"];
+                $scope.duration = ["00:00","01:00","02:00","03:00","04:00","05:00","06:00","07:00","08:00","09:00",
+                    "10:00","11:00","12:00","13:00","14:00","15:00","16:00","17:00","18:00","19:00","20:00","21:00","22:00","23:00"];
             });
-        	showRest();
-      	  var canvas = new fabric.Canvas('c');
-      	  canvas.setDimensions({width:800, height:500});
-      	  canvas.border = 2;
-      	  fabric.Object.prototype.transparentCorners = false;
-
-      	  var rect1 = new fabric.Rect({
-      	    width: 100, height: 50, left: 50, top: 50, angle: 30,
-      	    fill: 'rgba(255,0,0,0.5)'
-      	  });
-
-      	  var rect2 = new fabric.Rect({
-      	    width: 100, height: 100, left: 30, top: 250, angle: -10,
-      	    fill: 'rgba(0,200,0,0.5)'
-      	  });
-
-      	  var rect3 = new fabric.Rect({
-      	    width: 50, height: 100, left: 275, top: 350, angle: 45,
-      	    stroke: '#eee', strokeWidth: 10,
-      	    fill: 'rgba(0,0,200,0.5)'
-      	  });
-
-      	  var circle = new fabric.Circle({
-      	    radius: 50, left: 275, top: 75, fill: '#aac'
-      	  });
-
-      	  var triangle = new fabric.Triangle({
-      	    width: 100, height: 100, left: 50, top: 300, fill: '#cca'
-      	  });
-
-      	  canvas.add(rect1, rect2, rect3, circle, triangle);
-      	  canvas.on({
-      	    'object:moving': onChange,
-      	    'object:scaling': onChange,
-      	    'object:rotating': onChange,
-      	  });
-
-      	  function onChange(options) {
-      	    options.target.setCoords();
-      	    canvas.forEachObject(function(obj) {
-      	      if (obj === options.target) return;
-      	      obj.setOpacity(options.target.intersectsWithObject(obj) ? 0.5 : 1);
-      	    });
-      	  }
+        	RestaurantService.GetAllTables(id)
+            .then(function (response) {
+                vm.regions = response.data;
+                show();
+            });
+        	
+        	showRestStep1();
+        	
+        }
+        
+        function show(){
+        	var canvas = new fabric.Canvas('c');
+        	canvas.setDimensions({width:800, height:500});
+        	canvas.border = 2;
+        	for (var j=0; j < vm.regions.length; j++) {
+        			canvas.add(new fabric.Rect({
+        				width: vm.regions[j].width, height: vm.regions[j].height, left: vm.regions[j].datax, top: vm.regions[j].datay, angle: 0,fill: '#'+vm.regions[j].region.color}));
+        		}
+        }
+        
+        function showA(){
+        	var canvas = new fabric.Canvas('c1');
+        	canvas.setDimensions({width:800, height:500});
+        	canvas.border = 2;
+        	for (var j=0; j < vm.regions.length; j++) {
+        			canvas.add(new fabric.Rect({
+        				width: vm.regions[j].width, height: vm.regions[j].height, left: vm.regions[j].datax, top: vm.regions[j].datay, angle: 0,fill: '#'+vm.regions[j].region.color}));
+        		}
+        }
+        function step2() {
+        	RestaurantService.GetAllAvailableTables(vm.step1par.datum,vm.step1par.vreme,vm.step1par.trajanje, vm.rest.name)
+            .then(function (response) {
+                vm.regions = response.data;
+                showA();
+            });
+        	showRestStep2();
+        	
+      	  
+      	 
       	}
 
         function profil(){
@@ -134,6 +153,13 @@
                 });
         }
         
+        
+        function find() {
+        	RestaurantService.find(vm.parametar.par, vm.parametar.par2)
+            .then(function (response) {
+            	vm.allRests = response.data;
+            });
+        }
         
         
         

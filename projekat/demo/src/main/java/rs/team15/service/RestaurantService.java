@@ -11,4 +11,6 @@ public interface RestaurantService {
 	
     Restaurant findById(String id);
 
+    Collection<Restaurant> findByNameOrType(String name, String type);
+    
 }
