@@ -59,6 +59,12 @@ public class UserServiceImplementation implements UserService{
 		// TODO Auto-generated method stub
 		return userRepository.findByEmailAndPassword(email, password);
 	}
+	
+	@Override
+	public User findByEmail(String email) {
+		// TODO Auto-generated method stub
+		return userRepository.findByEmail(email);
+	}
 
 	@Override
 	public User update(User user) {

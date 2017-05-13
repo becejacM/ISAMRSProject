@@ -11,6 +11,7 @@
 
         service.GetAllRests = GetAllRests;
         service.GetById = GetById;
+        service.CreateRestaurant = CreateRestaurant;
         return service;
 
         
@@ -29,6 +30,29 @@
             .then(function(response) {
                 return response;
             }); 
+        }
+        
+        function CreateRestaurant(restaurant, email) {
+        	console.log("create");
+            return $http.post('/api/restaurants/' + email,restaurant)
+            .then(function (response) {
+            	alert("opet milana");
+                return response;
+            });               
+
+        }
+        function handleSuccessTrue(res) {
+            return res;
+        }
+
+        function handleSuccess(res) {
+            return { success: true, message: error };
+        }
+
+        function handleError(error) {
+            return function () {
+                return { success: false, message: error };
+            };
         }
     }
 

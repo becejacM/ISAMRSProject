@@ -40,7 +40,7 @@ public class Restaurant implements Serializable {
     private String image;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "smid")
+    @JoinColumn(name = "sm_id")
     private SystemManager systemManager;
 
     @OneToMany(mappedBy = "restaurant", fetch = FetchType.LAZY)
@@ -155,4 +155,7 @@ public class Restaurant implements Serializable {
     public void setImage(String image) {
         this.image = image;
     }
+
+    
+    
 }

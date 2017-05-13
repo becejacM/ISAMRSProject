@@ -9,13 +9,17 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import rs.team15.model.Restaurant;
+import rs.team15.model.RestaurantManager;
+import rs.team15.model.SystemManager;
 import rs.team15.model.User;
 import rs.team15.service.RestaurantService;
+import rs.team15.service.SystemManagerService;
 import rs.team15.service.UserService;
 
 @RestController
@@ -25,6 +29,12 @@ public class RestaurantController {
  	
 	@Autowired
 	private RestaurantService restaurantService;
+	
+	@Autowired
+	private UserService userService;
+	
+	@Autowired
+	private SystemManagerService systemManagerService; 
 	
 	@RequestMapping(
             value    = "/api/restaurants",
@@ -53,5 +63,21 @@ public class RestaurantController {
 	
 		logger.info("< get r email:{}", id);
 		return new ResponseEntity<Restaurant>(r, HttpStatus.OK);
+	}
+	
+	@RequestMapping(value = "/api/restaurants/{email}",
+            method = RequestMethod.POST,
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity <Restaurant> CreateRestaurant(@RequestBody Restaurant restaurant,@PathVariable("email") String email) {
+        SystemManager manager = (SystemManager)userService.findByEmail(email);
+        restaurant.setSystemManager(manager);
+		restaurant.setImage("pictures/user.png");
+        restaurant.setMenuItemMenu(null);
+        restaurant.setRegions(null);
+        Restaurant created = restaurantService.create(restaurant);
+		logger.info("< create user");
+		return new ResponseEntity<Restaurant>(created, HttpStatus.OK);
+		
 	}
 }
