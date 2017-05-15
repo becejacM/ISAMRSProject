@@ -29,7 +29,15 @@ public class TableR {
     @Column(name = "height")
     private Double height;
 
-    @Column(name = "positions")
+    public Set<Reservation> getReservations() {
+		return reservations;
+	}
+
+	public void setReservations(Set<Reservation> reservations) {
+		this.reservations = reservations;
+	}
+
+	@Column(name = "positions")
     private Integer positions;
 
     @Column(name = "rt_table_in_restaurant_no")
@@ -43,6 +51,10 @@ public class TableR {
     @JoinColumn(name = "regid")
     private Region region;
 
+    @JsonIgnore
+    @OneToMany(mappedBy = "tableRes", fetch = FetchType.LAZY)
+    private Set <Reservation> reservations = new HashSet <Reservation>(0);
+    
     @JsonIgnore
     @OneToMany(mappedBy = "table", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<ClientOrder> orders = new HashSet<ClientOrder>(0);

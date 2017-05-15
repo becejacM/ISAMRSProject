@@ -13,4 +13,6 @@ public interface RestaurantService {
     
     Restaurant create(Restaurant restaurant);
 
+    Collection<Restaurant> findByNameOrType(String name, String type);
+    
 }
