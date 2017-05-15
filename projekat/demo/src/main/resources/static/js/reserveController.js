@@ -40,7 +40,9 @@
         
         vm.find = find
         vm.parametar = null;
-        
+        vm.c = "";
+        vm.time=[];
+        vm.time2=[];
         (function initController() {
         	loadAllRests();
             loadCurrentUser();
@@ -48,8 +50,8 @@
            
         })();
         
-        
         function showRests(){
+        	FlashService.clearFlashMessageP();
         	loadAllRests();
         	vm.allRestsMode = true;
         	vm.restModeStep1 = false;
@@ -78,13 +80,21 @@
         }
         
         function step1(id){
+        	FlashService.clearFlashMessageP();
         	RestaurantService.GetById(id)
             .then(function (response) {
                 vm.rest = response.data;
-                $scope.time = ["00:00","01:00","02:00","03:00","04:00","05:00","06:00","07:00","08:00","09:00",
+                RestaurantService.GetHours(id)
+                .then(function (response) {
+                	vm.time = response.data;
+                	$scope.time = vm.time;
+                	$scope.duration = vm.time;
+                });
+                
+                /*$scope.time = ["00:00","01:00","02:00","03:00","04:00","05:00","06:00","07:00","08:00","09:00",
            "10:00","11:00","12:00","13:00","14:00","15:00","16:00","17:00","18:00","19:00","20:00","21:00","22:00","23:00"];
                 $scope.duration = ["00:00","01:00","02:00","03:00","04:00","05:00","06:00","07:00","08:00","09:00",
-                    "10:00","11:00","12:00","13:00","14:00","15:00","16:00","17:00","18:00","19:00","20:00","21:00","22:00","23:00"];
+                    "10:00","11:00","12:00","13:00","14:00","15:00","16:00","17:00","18:00","19:00","20:00","21:00","22:00","23:00"];*/
             });
         	RestaurantService.GetAllTables(id)
             .then(function (response) {
@@ -97,31 +107,88 @@
         }
         
         function show(){
+        	FlashService.clearFlashMessageP();
         	var canvas = new fabric.Canvas('c');
         	canvas.setDimensions({width:800, height:500});
         	canvas.border = 2;
         	for (var j=0; j < vm.regions.length; j++) {
-        			canvas.add(new fabric.Rect({
-        				width: vm.regions[j].width, height: vm.regions[j].height, left: vm.regions[j].datax, top: vm.regions[j].datay, angle: 0,fill: '#'+vm.regions[j].region.color}));
+        			var t = "#"+vm.regions[j].tableInRestaurantNo;
+        			var text = new fabric.Text(t, {
+        			  fontSize: 15,
+        			  originX: 'center',
+        			  originY: 'center'
+        			});
+        			var rect = new fabric.Rect({
+        				width: vm.regions[j].width, 
+        				height: vm.regions[j].height, 
+        				originX: 'center',
+        				originY: 'center',
+        				angle: 0,
+        				fill: '#'+vm.regions[j].region.color});
+        			var group = new fabric.Group([ rect, text ], {
+        				
+        				left: vm.regions[j].datax, 
+        				top: vm.regions[j].datay, 
+        				angle: 0
+        			});
+        			canvas.add(group);
         		}
         }
         
         function showA(){
+        	FlashService.clearFlashMessageP();
         	var canvas = new fabric.Canvas('c1');
         	canvas.setDimensions({width:800, height:500});
         	canvas.border = 2;
         	for (var j=0; j < vm.regions.length; j++) {
-        			canvas.add(new fabric.Rect({
-        				width: vm.regions[j].width, height: vm.regions[j].height, left: vm.regions[j].datax, top: vm.regions[j].datay, angle: 0,fill: '#'+vm.regions[j].region.color}));
+        		var t = "#"+vm.regions[j].tableInRestaurantNo;
+    			var text = new fabric.Text(t, {
+    			  fontSize: 15,
+    			  originX: 'center',
+    			  originY: 'center'
+    			});
+    			var rect = new fabric.Rect({
+    				width: vm.regions[j].width, 
+    				height: vm.regions[j].height, 
+    				originX: 'center',
+    				originY: 'center',
+    				angle: 0,
+    				fill: '#'+vm.regions[j].region.color});
+    			var group = new fabric.Group([ rect, text ], {
+    				
+    				left: vm.regions[j].datax, 
+    				top: vm.regions[j].datay, 
+    				angle: 0
+    			});
+    			group.on('selected', function() {
+    				  alert(text.text);
+    				});
+    			canvas.add(group);
         		}
         }
         function step2() {
-        	RestaurantService.GetAllAvailableTables(vm.step1par.datum,vm.step1par.vreme,vm.step1par.trajanje, vm.rest.name)
+        	var d=new Date(document.getElementById("dt").value);
+        	var dt=d.getDate();
+        	var mn=d.getMonth();
+        	mn++;
+        	var yy=d.getFullYear();
+        	vm.c =dt+"."+mn+"."+yy;
+        	RestaurantService.GetAllAvailableTables(vm.c,vm.step1par.vreme,vm.step1par.trajanje, vm.rest.name)
             .then(function (response) {
+            	
                 vm.regions = response.data;
-                showA();
+            	if(vm.regions.length===0){
+                	FlashService.Error('This restaurant have no table for this date.',false);
+
+            	}
+            	else{
+            		
+                    showA();
+                    showRestStep2();
+            	}
+                
             });
-        	showRestStep2();
+        	
         	
       	  
       	 

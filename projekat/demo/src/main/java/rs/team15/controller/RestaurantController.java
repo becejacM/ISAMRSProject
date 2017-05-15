@@ -78,12 +78,29 @@ public class RestaurantController {
 		logger.info("< get r email:{}", id);
 		return new ResponseEntity<Restaurant>(r, HttpStatus.OK);
 	}
+	@RequestMapping(
+            value    = "/api/restaurants/hours/{id:.+}",
+            method   = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE
+		)
+	public ResponseEntity<Collection<String>> getHours(@PathVariable String id) {
+		logger.info("> get r id:{}", id);
+		Restaurant r = restaurantService.findById(id);
 	
+		Collection<String> ret = new ArrayList<String>();
+		for (int i = r.getStartTime(); i<=r.getEndTime();i++) {
+			ret.add(i+":00");
+			
+		}
+		logger.info("< get r email:{}", id);
+		return new ResponseEntity<Collection<String>>(ret, HttpStatus.OK);
+	}
 	@RequestMapping(value = "/api/restaurants/{email}",
             method = RequestMethod.POST,
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity <Restaurant> CreateRestaurant(@RequestBody Restaurant restaurant,@PathVariable("email") String email) {
+		logger.info("< create userrrrrrrrrrrrrrrrrrrrr "+restaurant.getName()+"   "+email);
         SystemManager manager = (SystemManager)userService.findByEmail(email);
         restaurant.setSystemManager(manager);
 		restaurant.setImage("pictures/user.png");
@@ -92,7 +109,7 @@ public class RestaurantController {
         Restaurant created = restaurantService.create(restaurant);
 		logger.info("< create user");
 		return new ResponseEntity<Restaurant>(created, HttpStatus.OK);
-		
+	}
 
 	@RequestMapping(
             value    = "/api/restaurants/getAllATables/{datum:.+}/{vreme:.+}/{trajanje:.+}/{id:.+}",
@@ -100,9 +117,13 @@ public class RestaurantController {
             produces = MediaType.APPLICATION_JSON_VALUE
 		)
 	public ResponseEntity<Collection<TableR>> getAllATables(@PathVariable String datum,@PathVariable String vreme,@PathVariable String trajanje,@PathVariable String id) throws ParseException {
-		logger.info("> get rrrrrrrrrrrrrrrrr id:{}", id);
+		logger.info("> get rrrrrrrrrrrrrrrrr id:{}", vreme);
+		if(vreme.equals("undefined") || vreme.equals("trajanje") || datum.equals("undefined")){
+			logger.info("nemaaa");
+			Collection<TableR> ret = new ArrayList<TableR>();
+			return new ResponseEntity<Collection<TableR>>(ret, HttpStatus.OK);
+		}
 		Restaurant r = restaurantService.findById(id);
-	
 		DateFormat format = new SimpleDateFormat("MM.dd.yyyy HH:mm", Locale.ENGLISH);
 		DateFormat dateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy", Locale.US);
 		java.util.Date date = format.parse(datum+" "+vreme);
@@ -119,7 +140,6 @@ public class RestaurantController {
 					java.util.Date dateOd = format.parse(reservation.getReservationDateTime()+" "+reservation.getTime());
 					java.util.Date dateDo = format.parse(reservation.getReservationDateTime()+" "+reservation.getLength());
 				    if((date.after(dateOd) && date.before(dateDo))||(date2.after(dateOd) && date2.before(dateDo)) ){
-				    	System.out.println("milanaaaaa");
 				    	available = false;
 					}
 			    }
@@ -127,6 +147,11 @@ public class RestaurantController {
 				    ret.add(t);
 			    }
 			}
+		}
+		if(ret.size()==0){
+			logger.info("nemaaa");
+			Collection<TableR> rt = new ArrayList<TableR>();
+			return new ResponseEntity<Collection<TableR>>(rt, HttpStatus.OK);
 		}
 		logger.info("< get r email:{}", r.getName());
 		return new ResponseEntity<Collection<TableR>>(ret, HttpStatus.OK);

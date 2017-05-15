@@ -17,7 +17,7 @@
         service.GetAllTables = GetAllTables;
         service.GetAllAvailableTables = GetAllAvailableTables;
         service.find = find;
-
+        service.GetHours = GetHours;
         return service;
 
         
@@ -36,16 +36,23 @@
                 return response;
             }); 
         }
+        
+        function GetHours(id) {
+            //return $http.get('/api/users/' + email).then(handleSuccess, handleError('Error getting user by email'));
+            return $http.get('/api/restaurants/hours/' + id)
+            .then(function(response) {
+                return response;
+            }); 
+        }
         function CreateRestaurant(restaurant, email) {
         	console.log("create");
             return $http.post('/api/restaurants/' + email,restaurant)
             .then(function (response) {
-            	alert("opet milana");
                 return response;
             });               
 
         }
-        function handleSuccessTrue(res) {
+        /*function handleSuccessTrue(res) {
             return res;
         }
 
@@ -56,7 +63,7 @@
         function handleError(error) {
             return function () {
                 return { success: false, message: error };
-            };
+            };*/
 
         function GetAllTables(id) {
             //return $http.get('/api/users/' + email).then(handleSuccess, handleError('Error getting user by email'));
@@ -67,9 +74,7 @@
         }
         
         function GetAllAvailableTables(datum, vreme, trajanje, nameRest) {
-        	alert(vreme);
-        	alert(trajanje);
-        	alert(nameRest);
+        	
             //return $http.get('/api/users/' + email).then(handleSuccess, handleError('Error getting user by email'));
             return $http.get('api/restaurants/getAllATables/' + datum+'/'+vreme+'/'+trajanje+'/'+nameRest)
             .then(function(response) {
