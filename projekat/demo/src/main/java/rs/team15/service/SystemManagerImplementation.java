@@ -32,4 +32,9 @@ public class SystemManagerImplementation implements SystemManagerService{
 		// TODO Auto-generated method stub
 		return systemManagerRepository.save(sManager);
 	}
+	
+	@Override
+    public User findByEmail(String email) {
+        return userRepository.findByEmail(email);
+    }
 }

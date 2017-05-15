@@ -11,9 +11,13 @@
 
         service.GetAllRests = GetAllRests;
         service.GetById = GetById;
+
+        service.CreateRestaurant = CreateRestaurant;
+
         service.GetAllTables = GetAllTables;
         service.GetAllAvailableTables = GetAllAvailableTables;
         service.find = find;
+
         return service;
 
         
@@ -32,7 +36,28 @@
                 return response;
             }); 
         }
-        
+        function CreateRestaurant(restaurant, email) {
+        	console.log("create");
+            return $http.post('/api/restaurants/' + email,restaurant)
+            .then(function (response) {
+            	alert("opet milana");
+                return response;
+            });               
+
+        }
+        function handleSuccessTrue(res) {
+            return res;
+        }
+
+        function handleSuccess(res) {
+            return { success: true, message: error };
+        }
+
+        function handleError(error) {
+            return function () {
+                return { success: false, message: error };
+            };
+
         function GetAllTables(id) {
             //return $http.get('/api/users/' + email).then(handleSuccess, handleError('Error getting user by email'));
             return $http.get('/api/restaurants/getAllTables/' + id)
@@ -58,6 +83,7 @@
             .then(function(response) {
                 return response;
             }); 
+
         }
     }
     

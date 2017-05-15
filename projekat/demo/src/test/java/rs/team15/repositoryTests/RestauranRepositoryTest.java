@@ -17,6 +17,7 @@ import rs.team15.model.MenuItem;
 import rs.team15.model.Region;
 import rs.team15.model.Reservation;
 import rs.team15.model.Restaurant;
+import rs.team15.model.RestaurantManager;
 import rs.team15.model.TableR;
 import rs.team15.model.User;
 import rs.team15.repository.RegionRepository;
