@@ -27,7 +27,7 @@ public class GuestRepositoryTest {
 	
 	@Test
 	public void createGuestRepository(){
-		Guest g = guestRepository.save(new Guest(Long.parseLong("3"),"marko.stajic@gmail.com","Marko","Stajic","pass"));
+		Guest g = guestRepository.save(new Guest(Long.parseLong("3"),"m@gmail.com","kkk","kkk","pass"));
 		assertNotNull(g);
 	}
 }

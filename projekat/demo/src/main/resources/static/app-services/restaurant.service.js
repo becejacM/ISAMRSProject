@@ -18,6 +18,7 @@
         service.GetAllAvailableTables = GetAllAvailableTables;
         service.find = find;
         service.GetHours = GetHours;
+        service.Reserve = Reserve;
         return service;
 
         
@@ -77,6 +78,15 @@
         	
             //return $http.get('/api/users/' + email).then(handleSuccess, handleError('Error getting user by email'));
             return $http.get('api/restaurants/getAllATables/' + datum+'/'+vreme+'/'+trajanje+'/'+nameRest)
+            .then(function(response) {
+                return response;
+            }); 
+        }
+        
+        function Reserve(datum, vreme, trajanje, nameRest,idstola) {
+        	
+            //return $http.get('/api/users/' + email).then(handleSuccess, handleError('Error getting user by email'));
+            return $http.get('api/reservations/reserve/' + datum+'/'+vreme+'/'+trajanje+'/'+nameRest+'/'+idstola)
             .then(function(response) {
                 return response;
             }); 

@@ -30,6 +30,7 @@ import rs.team15.model.SystemManager;
 
 import rs.team15.model.TableR;
 import rs.team15.model.User;
+import rs.team15.repository.RestaurantRepository;
 import rs.team15.service.RestaurantService;
 import rs.team15.service.SystemManagerService;
 import rs.team15.service.UserService;
@@ -118,16 +119,18 @@ public class RestaurantController {
 		)
 	public ResponseEntity<Collection<TableR>> getAllATables(@PathVariable String datum,@PathVariable String vreme,@PathVariable String trajanje,@PathVariable String id) throws ParseException {
 		logger.info("> get rrrrrrrrrrrrrrrrr id:{}", vreme);
-		if(vreme.equals("undefined") || vreme.equals("trajanje") || datum.equals("undefined")){
+		if(vreme.equals("undefined") || trajanje.equals("undefined") || datum.equals("undefined")){
 			logger.info("nemaaa");
 			Collection<TableR> ret = new ArrayList<TableR>();
 			return new ResponseEntity<Collection<TableR>>(ret, HttpStatus.OK);
 		}
 		Restaurant r = restaurantService.findById(id);
-		DateFormat format = new SimpleDateFormat("MM.dd.yyyy HH:mm", Locale.ENGLISH);
+		DateFormat format = new SimpleDateFormat("dd.MM.yyyy HH:mm", Locale.ENGLISH);
 		DateFormat dateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy", Locale.US);
 		java.util.Date date = format.parse(datum+" "+vreme);
 		java.util.Date date2 = format.parse(datum+" "+trajanje);
+		logger.info(date.toString());
+		logger.info(date2.toString());
 		Collection<TableR> ret = new ArrayList<TableR>();
 		Boolean available ;
 		for (Iterator<Region> region = r.getRegions().iterator(); region.hasNext();) {
@@ -139,6 +142,10 @@ public class RestaurantController {
 				    Reservation reservation = res.next();
 					java.util.Date dateOd = format.parse(reservation.getReservationDateTime()+" "+reservation.getTime());
 					java.util.Date dateDo = format.parse(reservation.getReservationDateTime()+" "+reservation.getLength());
+					dateOd.setMinutes(dateOd.getMinutes()-1);
+					dateDo.setMinutes(dateDo.getMinutes()+1);
+					logger.info(dateOd.toString());
+					logger.info(dateDo.toString());
 				    if((date.after(dateOd) && date.before(dateDo))||(date2.after(dateOd) && date2.before(dateDo)) ){
 				    	available = false;
 					}
@@ -191,4 +198,6 @@ public class RestaurantController {
 		return new ResponseEntity<Collection<Restaurant>>(r, HttpStatus.OK);
 
 	}
+	
+	
 }

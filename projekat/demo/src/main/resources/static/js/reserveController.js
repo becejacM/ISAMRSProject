@@ -43,6 +43,8 @@
         vm.c = "";
         vm.time=[];
         vm.time2=[];
+        
+        vm.tid = "";
         (function initController() {
         	loadAllRests();
             loadCurrentUser();
@@ -141,7 +143,7 @@
         	canvas.setDimensions({width:800, height:500});
         	canvas.border = 2;
         	for (var j=0; j < vm.regions.length; j++) {
-        		var t = "#"+vm.regions[j].tableInRestaurantNo;
+        		var t = ""+vm.regions[j].tableInRestaurantNo;
     			var text = new fabric.Text(t, {
     			  fontSize: 15,
     			  originX: 'center',
@@ -161,8 +163,19 @@
     				angle: 0
     			});
     			group.on('selected', function() {
-    				  alert(text.text);
-    				});
+    				
+    				//alert(t);
+    				RestaurantService.Reserve(vm.c,vm.step1par.vreme,vm.step1par.trajanje, vm.rest.name, t)
+    	            .then(function (response) {
+    	            	
+    	                FlashService.Success('Reservation successfuly created.',false);
+
+    	                loadAllRests();
+    	            	vm.allRestsMode = false;
+    	            	vm.restModeStep1 = false;
+    	            	vm.restModeStep2 = false;
+    	            });
+    			});
     			canvas.add(group);
         		}
         }
