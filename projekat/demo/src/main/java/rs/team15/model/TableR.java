@@ -159,8 +159,11 @@ public class TableR {
     
     public TableR(Long tableId, Double datax, Double datay, Double width, Double height,
 			Region region, Integer numOfChairs) {
+
+    /*public TableR(Double datax, Double datay, Double width, Double height,
+			Region region) {*/
+
 		super();
-		this.tid = tableId;
 		this.x = datax;
 		this.y = datay;
 		this.width = width;

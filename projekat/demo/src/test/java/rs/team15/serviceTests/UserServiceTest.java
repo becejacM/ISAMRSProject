@@ -23,7 +23,6 @@ public class UserServiceTest {
 		userService.create(u);
 		User find = userService.findOne("milana.becejac@gmail.com");
 		assertEquals(find.getFirstName(), "Milana");
-		//assertEquals(find.getFirstName(), "Marko");
 	}
 	@Test
 	public void updateUserPass(){
@@ -33,7 +32,6 @@ public class UserServiceTest {
 		userService.update(u2);
 		User find = userService.findOne("nik.becejac@gmail.com");
 		assertEquals(find.getFirstName(), "Milanka");
-		//assertEquals(find.getFirstName(), "Marko");
 	}
 	@Test
 	public void updateUserFail(){
@@ -43,6 +41,5 @@ public class UserServiceTest {
 		userService.update(u2);
 		User find = userService.findOne("mik.becejac@gmail.com");
 		assertEquals(find.getFirstName(), "Milana");
-		//assertEquals(find.getFirstName(), "Marko");
 	}
 }

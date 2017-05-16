@@ -15,6 +15,9 @@ public interface RestaurantService {
     
     //Region findRegion(String id);
 
+    Restaurant create(Restaurant restaurant);
+
+
     Collection<Restaurant> findByNameOrType(String name, String type);
     
     TableR create(TableR table);

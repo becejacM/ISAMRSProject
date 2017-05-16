@@ -38,7 +38,7 @@
         
         (function initController() {
             loadCurrentUser();
-            loadAllUsers();
+            //loadAllUsers();
             
         })();
         
@@ -116,7 +116,8 @@
             });
         }
         function showAll() {
-        	loadAllUsers();
+        	//loadAllUsers();
+        	vm.allUsers=[];
         	FlashService.clearFlashMessageP();
             vm.allFriendsMode = true;
             vm.myFriendsMode = false;

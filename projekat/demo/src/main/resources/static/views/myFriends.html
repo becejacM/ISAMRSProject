@@ -36,7 +36,7 @@
         </button>
      
 <div ng-show="vm.reqMode">
-	<h1>This is list of your friends requestsssss</h1>
+	<h1>This is list of your friends requests</h1>
 	<ul>
     <li ng-repeat="user in vm.allReq">
         <img id="thumbnail" src={{user.image}}>{{user.firstName}} {{user.lastName}}
@@ -61,14 +61,11 @@
 </ul>
 </div>
 <div ng-show="vm.allFriendsMode">
-	<h3>All registered users: {{vm.user.firstName}}</h3>
-<ul>
-    <li ng-repeat="user in vm.allUsers">
-        <img id="thumbnail" src={{user.image}}>{{user.firstName}} {{user.lastName}}
-       <button class="btn btn-primary" ng-click="vm.add(user.id)">ADD</button>
-        
-    </li>
-</ul>
+<table ng-repeat="user in vm.allUsers">
+
+        <tr><td><img id="thumbnail" src={{user.image}}></td><td>{{user.firstName}}</td><td> &nbsp;&nbsp;{{user.lastName}}</td>
+       <td><button class="btn btn-primary" ng-click="vm.add(user.id)">ADD</button></td></tr>
+     </table>
 <form ng-submit="vm.find()" role="form">
 <div class="form-group" ng-class="{ 'has-error': form.parametar.$dirty && form.parametar.$error.required && form.parametar.$error.maxlength && form.parametar.$error.minlength }">
             <label for="parametar">First name</label>

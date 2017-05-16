@@ -1,7 +1,10 @@
 package rs.team15.model;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 
@@ -11,6 +14,9 @@ import javax.persistence.Table;
 public class RestaurantManager extends User{
 	@Column(name = "m_id", insertable = false, updatable = false)
     private Long mid;
+	
+	/*@JoinColumn(name = "rid")
+    @ManyToOne(cascade = CascadeType.ALL)*/
 	private String restaurantName;
 	
 	public RestaurantManager(){
