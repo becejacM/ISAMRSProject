@@ -54,6 +54,7 @@ CREATE TABLE IF NOT EXISTS `mrsisa_project`.`employees` (
   `dress_size` VARCHAR(50) NOT NULL,
   `shoe_size` VARCHAR(50) NOT NULL,
   `first_time` VARCHAR(50) NOT NULL,
+  `restaurant` VARCHAR(50) NOT NULL,
   PRIMARY KEY (`e_id`),
   CONSTRAINT `e_fid`
     FOREIGN KEY (`e_id`)
@@ -195,9 +196,9 @@ INSERT INTO `mrsisa_project`.`managers` (`m_id`, `restaurant_name`) VALUES('3', 
 
 -- ADDING EMPLOYEES
 
-INSERT INTO `mrsisa_project`.`employees` (`e_id`, `birthday`, `dress_size`, `shoe_size`, `first_time`) VALUES ('4', '1990-04-10', 'S', '37', 'yes');
-INSERT INTO `mrsisa_project`.`employees` (`e_id`, `birthday`, `dress_size`, `shoe_size`, `first_time`) VALUES ('5', '1992-03-15', 'L', '43', 'yes');
-INSERT INTO `mrsisa_project`.`employees` (`e_id`, `birthday`, `dress_size`, `shoe_size`, `first_time`) VALUES ('6', '1988-09-21', 'M', '39', 'yes');
+INSERT INTO `mrsisa_project`.`employees` (`e_id`, `birthday`, `dress_size`, `shoe_size`, `first_time`, `restaurant`) VALUES ('4', '1990-04-10', 'S', '37', 'yes', 'restaurant1');
+INSERT INTO `mrsisa_project`.`employees` (`e_id`, `birthday`, `dress_size`, `shoe_size`, `first_time`, `restaurant`) VALUES ('5', '1992-03-15', 'L', '43', 'yes', 'restaurant1');
+INSERT INTO `mrsisa_project`.`employees` (`e_id`, `birthday`, `dress_size`, `shoe_size`, `first_time`, `restaurant`) VALUES ('6', '1988-09-21', 'M', '39', 'yes', 'restaurant2');
 
 -- ADDING WAITER
 

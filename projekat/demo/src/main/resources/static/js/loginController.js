@@ -13,6 +13,7 @@
 
         (function initController() {
             // reset login status
+
         	hideInfo();
         })();
 

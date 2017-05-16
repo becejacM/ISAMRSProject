@@ -50,7 +50,11 @@ public class RestauranRepositoryTest {
 		rRepository.save(u);
 		Region r = new Region("region1","FC1501",u,Integer.parseInt("2"),tables);
 		regRepository.save(r);
-		TableR t = new TableR(Double.parseDouble("100"),Double.parseDouble("100"),Double.parseDouble("200"),Double.parseDouble("50"),r);
+
+		TableR t = new TableR(Long.parseLong("2"),Double.parseDouble("100"),Double.parseDouble("100"),Double.parseDouble("200"),Double.parseDouble("50"),r, Integer.parseInt("4"));
+
+		//TableR t = new TableR(Double.parseDouble("100"),Double.parseDouble("100"),Double.parseDouble("200"),Double.parseDouble("50"),r);
+
 		tRepository.save(t);
 		Reservation rest = new Reservation(u,"03.02.2017","20:00","22:00",t);
 		resRepository.save(rest);

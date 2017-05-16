@@ -1,0 +1,62 @@
+<nav id="myNavbar"
+		class="navbar navbar-default navbar-inverse navbar-fixed-top"
+		role="navigation">
+		<div class="container">
+		<div class="navbar-header">
+				<a class="navbar-brand" href="">Restaurants</a>
+			</div>
+			
+			<div id="guestProfil" class="navbar-header">
+				<button class="btn btn-default navbar-btn" background-color= "Transparent" ng-click="vm.home()">ABOUT US</button>
+			</div>
+			<div id="guestProfil2" class="navbar-header">
+				<button class="btn btn-default navbar-btn" background-color= "Transparent"  ng-click="vm.resManagerProfil()">MY PROFIL</button>
+			</div>
+			<div id="guestProfil3" class="navbar-header">
+				<button class="btn btn-default navbar-btn" background-color= "Transparent"  ng-click="">MANAGE</button>
+			</div>
+			<div id="guestProfil4" class="navbar-header">
+				<button class="btn btn-default navbar-btn" background-color= "Transparent"  ng-click="vm.registerWorker()">REGISTER WORKER</button>
+			</div>
+			<div id="guestProfil5" class="navbar-header">
+				<button class="btn btn-default navbar-btn" background-color= "Transparent"  ng-click="vm.registerSuplier()">REGISTER SUPLIER</button>
+			</div>
+			<div id="guestProfil6" class="navbar-header">
+				<button class="btn btn-default navbar-btn" background-color= "Transparent"ng-click="vm.logout()">LOGOUT</button>
+			</div>
+				
+		</div>
+	</nav>
+<div >
+Manage restaurant
+<button class="btn btn-default navbar-btn" background-color= "Transparent"  ng-click="vm.show()">SHOW</button>
+<button class="btn btn-default navbar-btn" background-color= "Transparent"  ng-click="">ADD REGION</button>
+<button class="btn btn-default navbar-btn" background-color= "Transparent"  ng-click="vm.addTable()">ADD TABLE</button>
+</div>
+
+<button ng-hide="vm.editMode" class="btn btn-primary" aria-label="Edit table" ng-click="vm.editTable()">
+          <md-icon aria-label="Edit table" class="material-icons">EDIT TABLE</md-icon>
+        </button>
+        
+<md-input-container class="md-block" flex-gt-sm>
+	<form name="form" ng-show="vm.editMode" ng-submit="vm.save()" role="form">
+              <div class="form-group" >
+            <label for="region">Choose region: </label>
+            <input type="region" name="region" id="region" class="form-control" />
+        </div>   
+        <div class="form-group" >
+            <label for="chairs">Enter number of chairs: </label>
+            <input type="chairs" name="chairs" id="chairs" class="form-control"  />
+        </div>      
+        <div class="form-actions">
+            <button type="submit" ng-disabled="form.$invalid || vm.dataLoading" class="btn btn-primary">Save</button>
+        </div>
+        
+        
+      
+   </form>
+    </md-input-container>
+
+<div>
+<canvas id="c"></canvas>
+</div>

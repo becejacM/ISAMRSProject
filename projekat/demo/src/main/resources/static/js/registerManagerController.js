@@ -30,6 +30,7 @@
         (function initController() {
             // reset login status
     		loadCurrentUser();
+
     		//alert(vm.cuser.email);
         })();
         function r(){

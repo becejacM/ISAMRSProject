@@ -18,6 +18,7 @@
         
         vm.registerSysManager = registerSysManager;
         vm.loadCurrentUser = loadCurrentUser;
+
         (function initController() {
             // reset login status
     	//alert("Usao sys");

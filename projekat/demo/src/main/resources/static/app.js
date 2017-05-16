@@ -196,6 +196,12 @@
             	templateUrl: 'views/ResManagerHome.html',
             	controllerAs: 'vm'
         	})
+        	
+        	.when('/manage',{
+            	controller: 'ResManagerManageController',
+            	templateUrl: 'views/resManagerManage.html',
+            	controllerAs: 'vm'
+        	})
 
 
 
