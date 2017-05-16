@@ -44,7 +44,10 @@ public class TableR {
     private Integer tableInRestaurantNo;
 
     @Column(name = "deleted")
-    private boolean deleted;
+    private String deleted;
+    
+    @Column(name = "num_of_chairs")
+    private Integer numOfChairs;
 
     @JsonIgnore
     @ManyToOne
@@ -62,11 +65,11 @@ public class TableR {
     public TableR() {
     }
 
-    public boolean isDeleted() {
+    public String isDeleted() {
         return deleted;
     }
 
-    public void setDeleted(boolean deleted) {
+    public void setDeleted(String deleted) {
         this.deleted = deleted;
     }
 
@@ -117,8 +120,18 @@ public class TableR {
     public void setPositions(Integer positions) {
         this.positions = positions;
     }
+    
+    
 
-    @JsonProperty
+    public Integer getNumOfChairs() {
+		return numOfChairs;
+	}
+
+	public void setNumOfChairs(Integer numOfChairs) {
+		this.numOfChairs = numOfChairs;
+	}
+
+	@JsonProperty
     public Region getRegion() {
         return region;
     }
@@ -145,7 +158,7 @@ public class TableR {
     }
     
     public TableR(Long tableId, Double datax, Double datay, Double width, Double height,
-			Region region) {
+			Region region, Integer numOfChairs) {
 		super();
 		this.tid = tableId;
 		this.x = datax;
@@ -153,6 +166,23 @@ public class TableR {
 		this.width = width;
 		this.height = height;
 		this.region = region;
+		this.numOfChairs = numOfChairs;
 	}
+    
+    public TableR(Double datax, Double datay, Double width, Double height, Integer numOfChairs){
+    	super();
+		this.x = datax;
+		this.y = datay;
+		this.width = width;
+		this.height = height;
+		this.numOfChairs = numOfChairs;
+    }
+    
+    public TableR(Double datax, Double datay, Integer tableInRestaurantNo){
+    	super();
+		this.x = datax;
+		this.y = datay;
+		this.tableInRestaurantNo = tableInRestaurantNo;
+    }
 
 }

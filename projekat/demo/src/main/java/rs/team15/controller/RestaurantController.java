@@ -15,11 +15,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.mail.SimpleMailMessage;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import rs.team15.model.Guest;
 import rs.team15.model.Region;
 import rs.team15.model.Reservation;
 import rs.team15.model.Restaurant;
@@ -36,6 +39,8 @@ public class RestaurantController {
  	
 	@Autowired
 	private RestaurantService restaurantService;
+	
+	
 	
 	@RequestMapping(
             value    = "/api/restaurants",
@@ -119,7 +124,7 @@ public class RestaurantController {
 			Region sto = region.next();
 			for (Iterator<TableR> item = sto.getTables().iterator(); item.hasNext();) {
 			    TableR t = item.next();
-			    System.out.println(t.getDatax());
+			    System.out.println(t.getTableId());
 			    ret.add(t);
 			}
 		}
@@ -137,5 +142,63 @@ public class RestaurantController {
 	
 		logger.info("< get r name:{}", name);
 		return new ResponseEntity<Collection<Restaurant>>(r, HttpStatus.OK);
+	}
+	
+	@RequestMapping(
+            value    = "/api/restaurants/{name:.+}",
+            method   = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE
+		)
+	public ResponseEntity<Restaurant> getRestByName(@PathVariable String name) {
+		
+		Restaurant r = restaurantService.findById(name);
+		logger.info("< get name:{}", name);
+		return new ResponseEntity<Restaurant>(r, HttpStatus.OK);
+	}
+	
+	/*@RequestMapping(
+            value    = "/api/getregion/{name:.+}",
+            method   = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE
+		)
+	public ResponseEntity<Region> getRegionByName(@PathVariable String name) {
+		
+		Region r = restaurantService.findRegion(name);
+		logger.info("< get name:{}", name);
+		return new ResponseEntity<Region>(r, HttpStatus.OK);
+	}*/
+	
+	@RequestMapping(
+            value    = "api/users/createTable",
+            method   = RequestMethod.POST,
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE
+		)
+	public ResponseEntity<TableR> createTable(@RequestBody TableR table) {
+		/*table.setWidth(50.00);
+		table.setHeight(50.00);
+		table.setDatax(400.00);
+		table.setDatay(400.00);*/
+	       
+		TableR created = restaurantService.create(table);
+		logger.info("< create table");
+		return new ResponseEntity<TableR>(created, HttpStatus.CREATED);
+	}
+	
+	@RequestMapping(
+            value    = "api/users/updateTable",
+            method   = RequestMethod.PUT,
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE
+		)
+	public ResponseEntity<TableR> updateTable(@RequestBody TableR table) {
+		/*table.setWidth(50.00);
+		table.setHeight(50.00);
+		table.setDatax(400.00);
+		table.setDatay(400.00);*/
+	       
+		TableR updated = restaurantService.update(table);
+		logger.info("< create table");
+		return new ResponseEntity<TableR>(updated, HttpStatus.CREATED);
 	}
 }

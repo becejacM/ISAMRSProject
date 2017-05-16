@@ -14,6 +14,11 @@
         service.GetAllTables = GetAllTables;
         service.GetAllAvailableTables = GetAllAvailableTables;
         service.find = find;
+        service.CreateTable = CreateTable;
+        service.UpdateTable = UpdateTable;
+        
+        service.GetByName = GetByName;
+        //service.GetRegion = GetRegion;
         return service;
 
         
@@ -31,6 +36,46 @@
             .then(function(response) {
                 return response;
             }); 
+        }
+        
+        /*function GetRegion(name){
+        	return $http.get('/api/getregion/' + name)
+            .then(function(response) {
+                return response;
+            }); 
+        }*/
+        
+        function GetByName(name) {
+            //return $http.get('/api/users/' + email).then(handleSuccess, handleError('Error getting user by email'));
+            return $http.get('/api/getrestaurant/' + name)
+            .then(function(response) {
+                return response;
+            }); 
+        }
+        
+        function CreateTable(table) {
+            return $http.post('/api/users/createTable', table)
+            .then(function(response) {
+                return response;
+            });               
+
+     }
+        function UpdateTable(table) {
+            return $http.put('/api/users/updateTable', table).then(handleSuccess, handleError('Error updating table'));
+            /*.then(function(response) {
+                return response;
+            }); */              
+
+     }
+        
+        function handleSuccess(res) {
+            return { success: true, message: error };
+        }
+
+        function handleError(error) {
+            return function () {
+                return { success: false, message: error };
+            };
         }
         
         function GetAllTables(id) {

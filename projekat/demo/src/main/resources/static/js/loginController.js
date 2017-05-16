@@ -13,7 +13,7 @@
 
         (function initController() {
             // reset login status
-        	alert("usao");
+        	//alert("usao");
         	hideInfo();
         })();
 

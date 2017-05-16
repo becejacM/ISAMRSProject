@@ -2,8 +2,12 @@ package rs.team15.model;
 
 import java.util.Date;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 
@@ -27,33 +31,45 @@ public class Employee extends User {
 	@Column(name = "firstTime", nullable=false)
 	protected String firstTime;
 	
+	@Column(name = "restaurant", nullable=false)
+	protected String restaurant;
+	
+	@Column(name = "region", nullable=false)
+	protected String region;
+	
 	public Employee(){
 		super();
 	}
 
-	public Employee(Long id, String email, String firstName, String lastName, String password, Date birthday, String dressSize, String shoeSize){
+	public Employee(Long id, String email, String firstName, String lastName, String password, Date birthday, String dressSize, String shoeSize, String restaurant, String region){
     	this.id = id;
     	this.email = email;
 		this.fname = firstName;
 		this.lname = lastName;
 		this.image = "";
 		this.password = password;
+		this.birthday = birthday;
 		this.verified = "no";
 		this.login = "no";
 		this.firstTime = "yes";
+		this.restaurant = restaurant;
+		this.region = region;
     }
 	
-	public Employee(Long id, String email, String firstName, String lastName, String password, Date birthday, String dressSize, String shoeSize, String role){
+	public Employee(Long id, String email, String firstName, String lastName, String password, Date birthday, String dressSize, String shoeSize, String role, String restaurant, String region){
     	this.id = id;
     	this.email = email;
 		this.fname = firstName;
 		this.lname = lastName;
 		this.image = "";
 		this.password = password;
+		this.birthday = birthday;
 		this.verified = "no";
 		this.login = "no";
 		this.role = role;
 		this.firstTime = "yes";
+		this.restaurant = restaurant;
+		this.region = region;
     }
 	
 	public Long getEid() {
@@ -95,6 +111,24 @@ public class Employee extends User {
 	public void setFirstTime(String firstTime) {
 		this.firstTime = firstTime;
 	}
+
+	public String getRestaurant() {
+		return restaurant;
+	}
+
+	public void setRestaurant(String restaurant) {
+		this.restaurant = restaurant;
+	}
+
+	public String getRegion() {
+		return region;
+	}
+
+	public void setRegion(String region) {
+		this.region = region;
+	}
+
+	
 	
 	
 	

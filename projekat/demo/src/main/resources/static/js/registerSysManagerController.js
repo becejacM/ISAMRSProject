@@ -11,17 +11,19 @@
     
     registerSysManagerController.$inject = ['UserService','AuthenticationService', '$location', '$rootScope', 'FlashService'];
     
-    (function initController() {
-            // reset login status
-    	alert("Usao sys");
-    		loadCurrentUser();
-        })();
+    
     
     function registerSysManagerController(UserService,AuthenticationService, $location, $rootScope, FlashService) {
         var vm = this;
         
         vm.registerSysManager = registerSysManager;
         vm.loadCurrentUser = loadCurrentUser;
+        
+        (function initController() {
+            // reset login status
+        	//alert("Usao sys");
+    		loadCurrentUser();
+        })();
         
         function registerSysManager() {
             //vm.dataLoading = true;

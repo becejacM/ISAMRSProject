@@ -11,16 +11,18 @@
     
     registerManagerController.$inject = ['UserService','AuthenticationService', '$location', '$rootScope', 'FlashService'];
     
-    (function initController() {
-            // reset login status
-    		loadCurrentUser();
-        })();
+    
     
     function registerManagerController(UserService,AuthenticationService, $location, $rootScope, FlashService) {
         var vm = this;
         
         vm.registerManager = registerManager;
         vm.loadCurrentUser = loadCurrentUser;
+        
+        (function initController() {
+            // reset login status
+    		loadCurrentUser();
+        })();
         
         function registerManager() {
             //vm.dataLoading = true;
