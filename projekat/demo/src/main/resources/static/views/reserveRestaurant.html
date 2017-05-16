@@ -29,13 +29,12 @@
           <md-icon aria-label="All rests" class="material-icons">SEARCH Restautants</md-icon>
         </button>
 <div ng-show="vm.allRestsMode">
-	<ul>
-    <li ng-repeat="r in vm.allRests">
-        <img id="thumbnail" src={{r.image}}>{{r.name}}
-       <button class="btn btn-primary" ng-click="vm.step1(r.name)">Reserve</button>
+    <table ng-repeat="r in vm.allRests">
+        <tr><td><img id="thumbnail" src={{r.image}}></td><td>{{r.name}}</td>
+       <td><button class="btn btn-primary" ng-click="vm.step1(r.name)">Reserve</button></td></tr>
         
-    </li>
-	</ul>
+    </table>
+	
 	<form ng-submit="vm.find()" role="form">
 <div class="form-group" ">
             <label for="parametar">Restaurant name</label>

@@ -144,10 +144,9 @@ public class TableR {
         this.orders = orders;
     }
     
-    public TableR(Long tableId, Double datax, Double datay, Double width, Double height,
+    public TableR(Double datax, Double datay, Double width, Double height,
 			Region region) {
 		super();
-		this.tid = tableId;
 		this.x = datax;
 		this.y = datay;
 		this.width = width;

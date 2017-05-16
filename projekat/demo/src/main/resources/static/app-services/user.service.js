@@ -105,7 +105,6 @@
             }); 
         }
         function loadReq(id) {
-        	alert("fsdfs");
             //return $http.get('/api/users').then(handleSuccess, handleError('Error getting all users'));
         	return $http.get('/api/guests/loadReq/'+id)
             .then(function(response) {

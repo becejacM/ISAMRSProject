@@ -132,10 +132,9 @@ public class Restaurant implements Serializable {
         return regions;
     }
 
-    public Restaurant(Long restaurantId, String name, Integer startTime, Integer endTime, Set<MenuItem> menuItemMenu,
+    public Restaurant(String name, Integer startTime, Integer endTime, Set<MenuItem> menuItemMenu,
 			Set<Region> regions) {
 		super();
-		this.rid = restaurantId;
 		this.name = name;
 		this.startTime = startTime;
 		this.endTime = endTime;
