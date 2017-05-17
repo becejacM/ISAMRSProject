@@ -44,9 +44,8 @@ public class Reservation {
 		this.tableRes = tid;
 	}
 
-	public Reservation(Long rsid, Restaurant restaurant, String date, String time, String length, TableR tid) {
+	public Reservation(Restaurant restaurant, String date, String time, String length, TableR tid) {
 		super();
-		this.rsid = rsid;
 		this.restaurant = restaurant;
 		this.date = date;
 		this.time = time;

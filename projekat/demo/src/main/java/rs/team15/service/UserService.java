@@ -16,6 +16,8 @@ public interface UserService {
     User findOne(String email);
 
     User findByEmailAndPassword(String email, String password);
+    
+    User findByEmail(String email);
 
     User update(User user);
     

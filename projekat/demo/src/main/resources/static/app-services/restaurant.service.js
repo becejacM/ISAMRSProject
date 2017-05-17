@@ -11,9 +11,13 @@
 
         service.GetAllRests = GetAllRests;
         service.GetById = GetById;
+
+        service.CreateRestaurant = CreateRestaurant;
+
         service.GetAllTables = GetAllTables;
         service.GetAllAvailableTables = GetAllAvailableTables;
         service.find = find;
+
         service.CreateTable = CreateTable;
         service.UpdateTable = UpdateTable;
         service.DeleteTable = DeleteTable;
@@ -22,6 +26,13 @@
         service.GetRestaurant = GetRestaurant;
         service.GetRestaurantE = GetRestaurantE;
         service.GetRestaurantRegions = GetRestaurantRegions;
+
+        service.GetByName = GetByName;
+        //service.GetRegion = GetRegion;
+
+        service.GetHours = GetHours;
+        service.Reserve = Reserve;
+
         return service;
 
         
@@ -43,7 +54,12 @@
         
         /*function GetByName(name) {
             //return $http.get('/api/users/' + email).then(handleSuccess, handleError('Error getting user by email'));
-            return $http.get('/api/getrestaurant/' + name)
+            return $http.get('/api/getrestaurant/get/' + name)
+        }
+        function GetHours(id) {
+            //return $http.get('/api/users/' + email).then(handleSuccess, handleError('Error getting user by email'));
+            return $http.get('/api/restaurants/hours/' + id)
+
             .then(function(response) {
                 return response;
             }); 
@@ -64,6 +80,18 @@
 
      }
         
+        function CreateRestaurant(restaurant, email) {
+        	console.log("create");
+            return $http.post('/api/restaurants/' + email,restaurant)
+            .then(function (response) {
+                return response;
+            });               
+
+        }
+        /*function handleSuccessTrue(res) {
+            return res;
+        }
+
         function handleSuccess(res) {
             return { success: true, message: error };
         }
@@ -71,9 +99,13 @@
         function handleError(error) {
             return function () {
                 return { success: false, message: error };
+
             };
         }
         
+
+            };*/
+
         function GetAllTables(id) {
             //return $http.get('/api/users/' + email).then(handleSuccess, handleError('Error getting user by email'));
             return $http.get('/api/restaurants/getAllTables/' + id)
@@ -83,11 +115,18 @@
         }
         
         function GetAllAvailableTables(datum, vreme, trajanje, nameRest) {
-        	alert(vreme);
-        	alert(trajanje);
-        	alert(nameRest);
+        	
             //return $http.get('/api/users/' + email).then(handleSuccess, handleError('Error getting user by email'));
             return $http.get('api/restaurants/getAllATables/' + datum+'/'+vreme+'/'+trajanje+'/'+nameRest)
+            .then(function(response) {
+                return response;
+            }); 
+        }
+        
+        function Reserve(datum, vreme, trajanje, nameRest,idstola) {
+        	
+            //return $http.get('/api/users/' + email).then(handleSuccess, handleError('Error getting user by email'));
+            return $http.get('api/reservations/reserve/' + datum+'/'+vreme+'/'+trajanje+'/'+nameRest+'/'+idstola)
             .then(function(response) {
                 return response;
             }); 
@@ -99,6 +138,7 @@
             .then(function(response) {
                 return response;
             }); 
+
         }
         
         function GetRestaurant(id){

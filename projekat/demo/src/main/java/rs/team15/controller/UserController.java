@@ -28,15 +28,25 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
 import ch.qos.logback.core.Context;
+import rs.team15.model.Bartender;
+import rs.team15.model.Cook;
 import rs.team15.model.Guest;
+import rs.team15.model.Region;
+import rs.team15.model.Restaurant;
 import rs.team15.model.RestaurantManager;
 import rs.team15.model.SystemManager;
 import rs.team15.model.User;
+import rs.team15.model.Waiter;
 import rs.team15.repository.UserRepository;
+import rs.team15.service.BartenderService;
+import rs.team15.service.CookService;
+import rs.team15.service.EmployeeService;
 import rs.team15.service.GuestService;
 import rs.team15.service.RestaurantManagerService;
+import rs.team15.service.RestaurantService;
 import rs.team15.service.SystemManagerService;
 import rs.team15.service.UserService;
+import rs.team15.service.WaiterService;
 
 @RestController
 @SessionAttributes({"user"})
@@ -55,6 +65,21 @@ public class UserController {
 	
 	@Autowired
 	private SystemManagerService systemManagerService;
+	
+	@Autowired
+	private EmployeeService employeeService;
+	
+	@Autowired
+	private CookService cookService;
+	
+	@Autowired
+	private WaiterService waiterService;
+	
+	@Autowired
+	private BartenderService bartenderService;
+	
+	@Autowired
+	private RestaurantService restaurantService;
 
 	@Autowired
     MailSender mailSender;
@@ -67,6 +92,99 @@ public class UserController {
 	 */
 	@Autowired
 	private Environment env;
+	
+	@RequestMapping(value = "/api/users/createCook",
+            method = RequestMethod.POST,
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+	
+    public ResponseEntity<User> registerCook(@RequestBody Cook employee) {
+		//Restaurant rest = restaurantService.findById("sdf");
+		Restaurant r = new Restaurant();
+		employee.setImage("pictures/user.png");
+		employee.setRestaurant(r);
+		employee.setLogin("no");
+		employee.setVerified("no");
+		employee.setFirstTime("yes");
+		employee.setRegion("region");
+		User u = userService.findOne(employee.getEmail());
+		if(u!=null){
+			u.setMessage("User with that email allready exists");
+			return new ResponseEntity<User>(u, HttpStatus.OK);
+		}
+		if(employee.getFirstName().length()<3 || employee.getFirstName().length()>10 
+				|| employee.getLastName().length()<3 || employee.getLastName().length()>20){
+			User u1 = new User();
+			u1.setMessage("Size of first name or last name is incompatible");
+			return new ResponseEntity<User>(u1, HttpStatus.OK);
+		}
+        User created = cookService.create(employee);
+		logger.info("< create user");
+		return new ResponseEntity<User>(created, HttpStatus.CREATED);
+	}
+	
+	@RequestMapping(value = "/api/users/createWaiter",
+            method = RequestMethod.POST,
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+	
+    public ResponseEntity<User> registerWaiter(@RequestBody Waiter employee) {
+        //Restaurant rest = (Restaurant)restaurantService.findById("sdf");
+        Restaurant r = new Restaurant();
+		employee.setImage("pictures/user.png");
+		employee.setRestaurant(r);
+		employee.setLogin("no");
+		employee.setVerified("no");
+		employee.setFirstTime("yes");
+		employee.setRegion("region");
+		User u = userService.findOne(employee.getEmail());
+		if(u!=null){
+			u.setMessage("User with that email allready exists");
+			return new ResponseEntity<User>(u, HttpStatus.OK);
+		}
+		if(employee.getFirstName().length()<3 || employee.getFirstName().length()>10 
+				|| employee.getLastName().length()<3 || employee.getLastName().length()>20){
+			User u1 = new User();
+			u1.setMessage("Size of first name or last name is incompatible");
+			return new ResponseEntity<User>(u1, HttpStatus.OK);
+		}
+        User created = waiterService.create(employee);
+		logger.info("< create user");
+		return new ResponseEntity<User>(created, HttpStatus.CREATED);
+	}
+	
+	@RequestMapping(value = "/api/users/createBartender",
+            method = RequestMethod.POST,
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+	
+    public ResponseEntity<User> registerBartender(@RequestBody Bartender employee) {
+        //Restaurant rest = (Restaurant)restaurantService.findById("sdf");
+		Restaurant r = new Restaurant();
+		employee.setImage("pictures/user.png");
+		employee.setRestaurant(r);
+		employee.setLogin("no");
+		employee.setVerified("no");
+		employee.setFirstTime("yes");
+		employee.setRegion("region");
+		User u = userService.findOne(employee.getEmail());
+		if(u!=null){
+			u.setMessage("User with that email allready exists");
+			return new ResponseEntity<User>(u, HttpStatus.OK);
+		}
+		if(employee.getFirstName().length()<3 || employee.getFirstName().length()>10 
+				|| employee.getLastName().length()<3 || employee.getLastName().length()>20){
+			User u1 = new User();
+			u1.setMessage("Size of first name or last name is incompatible");
+			return new ResponseEntity<User>(u1, HttpStatus.OK);
+		}
+        User created = bartenderService.create(employee);
+		logger.info("< create user");
+		return new ResponseEntity<User>(created, HttpStatus.CREATED);
+	}
 	
 	@RequestMapping(
 	            value    = "/api/users",

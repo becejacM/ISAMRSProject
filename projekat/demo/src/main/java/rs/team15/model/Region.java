@@ -34,10 +34,9 @@ public class Region {
     @OneToMany(mappedBy = "region", fetch = FetchType.LAZY)
     private Set <Employee> employees = new HashSet <Employee>(0);
 
-    public Region(Long regionId, String name, String color, Restaurant restaurant, Integer regionNo,
+    public Region(String name, String color, Restaurant restaurant, Integer regionNo,
 			Set<TableR> tables) {
 		super();
-		this.regId = regionId;
 		this.name = name;
 		this.color = color;
 		this.restaurant = restaurant;

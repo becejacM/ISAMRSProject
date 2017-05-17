@@ -7,4 +7,6 @@ public interface SystemManagerService {
 	SystemManager getSystemManager(Long id);
 
     User create(SystemManager sysManager);
+    
+    User findByEmail(String email);
 }

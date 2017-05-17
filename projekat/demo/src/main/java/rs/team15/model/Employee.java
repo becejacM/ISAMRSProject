@@ -8,7 +8,9 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+
 import javax.persistence.OneToMany;
+
 import javax.persistence.OneToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
@@ -37,6 +39,7 @@ public class Employee extends User {
 	@Column(name = "firstTime", nullable=false)
 	protected String firstTime;
 	
+
 	@JsonIgnore
     @OneToOne
     @JoinColumn(name = "rid")
@@ -46,6 +49,11 @@ public class Employee extends User {
     @OneToOne
     @JoinColumn(name = "regid")
     private Region region;
+
+	/*@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@JoinColumn(name = "rid")
+	private Restaurant restaurant;*/
+
 	
 	
 	public Employee(){
@@ -53,6 +61,9 @@ public class Employee extends User {
 	}
 
 	public Employee(Long id, String email, String firstName, String lastName, String password, Date birthday, String dressSize, String shoeSize, Restaurant restaurant, Region region){
+
+	//public Employee(Long id, String email, String firstName, String lastName, String password, Date birthday, String dressSize, String shoeSize, Restaurant restaurant, String region){
+
     	this.id = id;
     	this.email = email;
 		this.fname = firstName;
@@ -68,6 +79,9 @@ public class Employee extends User {
     }
 	
 	public Employee(Long id, String email, String firstName, String lastName, String password, Date birthday, String dressSize, String shoeSize, String role, Restaurant restaurant, Region region){
+
+	//public Employee(Long id, String email, String firstName, String lastName, String password, Date birthday, String dressSize, String shoeSize, String role, Restaurant restaurant, String region){
+
     	this.id = id;
     	this.email = email;
 		this.fname = firstName;

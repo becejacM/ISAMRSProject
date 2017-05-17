@@ -15,15 +15,29 @@
     
     function registerManagerController(UserService,AuthenticationService, $location, $rootScope, FlashService) {
         var vm = this;
-        
+        vm.user = null;
+        vm.cuser = null;
         vm.registerManager = registerManager;
         vm.loadCurrentUser = loadCurrentUser;
+        /*vm.registerM = registerM;
+        
+        function registeM(){
+        	AuthenticationService.SetCredentials(vm.user.email, vm.user.password, "SysManagerHome");
+        	$location.path('/SysManagerHome');
+        }*/
+        vm.r = r;
         
         (function initController() {
             // reset login status
     		loadCurrentUser();
+
+    		//alert(vm.cuser.email);
         })();
-        
+        function r(){
+        	AuthenticationService.SetCredentials(vm.cuser.email, vm.cuser.password, "SysManagerHome");
+        	$location.path('/SysManagerHome');
+        }
+
         function registerManager() {
             //vm.dataLoading = true;
             
@@ -45,13 +59,14 @@
                     }
                 });
         }
+        function loadCurrentUser() {
+            UserService.GetByUsername($rootScope.globals.currentUser.email)
+                .then(function (response) {
+                    vm.cuser = response.data;
+                });
+        }
     }
     
-    function loadCurrentUser() {
-        UserService.GetByUsername($rootScope.globals.currentUser.email)
-            .then(function (response) {
-                vm.user = response.data;
-            });
-    }
+    
 
 })();

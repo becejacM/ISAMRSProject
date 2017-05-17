@@ -26,10 +26,19 @@ import rs.team15.model.Guest;
 import rs.team15.model.Region;
 import rs.team15.model.Reservation;
 import rs.team15.model.Restaurant;
+
+import rs.team15.model.RestaurantManager;
+import rs.team15.model.SystemManager;
+
 import rs.team15.model.TableR;
 import rs.team15.model.User;
+
 import rs.team15.repository.TableRepository;
+
+import rs.team15.repository.RestaurantRepository;
+
 import rs.team15.service.RestaurantService;
+import rs.team15.service.SystemManagerService;
 import rs.team15.service.UserService;
 
 @RestController
@@ -41,7 +50,13 @@ public class RestaurantController {
 	@Autowired
 	private RestaurantService restaurantService;
 	
+
+	@Autowired
+	private UserService userService;
 	
+	@Autowired
+	private SystemManagerService systemManagerService; 
+
 	
 	@RequestMapping(
             value    = "/api/restaurants",
@@ -60,7 +75,7 @@ public class RestaurantController {
 	}
 	
 	@RequestMapping(
-            value    = "/api/restaurants/{id:.+}",
+            value    = "/api/restaurants/get/{id:.+}",
             method   = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE
 		)
@@ -72,20 +87,58 @@ public class RestaurantController {
 		logger.info("< get r email:{}", id);
 		return new ResponseEntity<Restaurant>(r, HttpStatus.OK);
 	}
+	@RequestMapping(
+            value    = "/api/restaurants/hours/{id:.+}",
+            method   = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE
+		)
+	public ResponseEntity<Collection<String>> getHours(@PathVariable String id) {
+		logger.info("> get r id:{}", id);
+		Restaurant r = restaurantService.findById(id);
 	
+		Collection<String> ret = new ArrayList<String>();
+		for (int i = r.getStartTime(); i<=r.getEndTime();i++) {
+			ret.add(i+":00");
+			
+		}
+		logger.info("< get r email:{}", id);
+		return new ResponseEntity<Collection<String>>(ret, HttpStatus.OK);
+	}
+	@RequestMapping(value = "/api/restaurants/{email}",
+            method = RequestMethod.POST,
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity <Restaurant> CreateRestaurant(@RequestBody Restaurant restaurant,@PathVariable("email") String email) {
+		logger.info("< create userrrrrrrrrrrrrrrrrrrrr "+restaurant.getName()+"   "+email);
+        SystemManager manager = (SystemManager)userService.findByEmail(email);
+        restaurant.setSystemManager(manager);
+		restaurant.setImage("pictures/user.png");
+        restaurant.setMenuItemMenu(null);
+        restaurant.setRegions(null);
+        Restaurant created = restaurantService.create(restaurant);
+		logger.info("< create user");
+		return new ResponseEntity<Restaurant>(created, HttpStatus.OK);
+	}
+
 	@RequestMapping(
             value    = "/api/restaurants/getAllATables/{datum:.+}/{vreme:.+}/{trajanje:.+}/{id:.+}",
             method   = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE
 		)
 	public ResponseEntity<Collection<TableR>> getAllATables(@PathVariable String datum,@PathVariable String vreme,@PathVariable String trajanje,@PathVariable String id) throws ParseException {
-		logger.info("> get rrrrrrrrrrrrrrrrr id:{}", id);
+		logger.info("> get rrrrrrrrrrrrrrrrr id:{}", vreme);
+		if(vreme.equals("undefined") || trajanje.equals("undefined") || datum.equals("undefined")){
+			logger.info("nemaaa");
+			Collection<TableR> ret = new ArrayList<TableR>();
+			return new ResponseEntity<Collection<TableR>>(ret, HttpStatus.OK);
+		}
 		Restaurant r = restaurantService.findById(id);
-	
-		DateFormat format = new SimpleDateFormat("MM.dd.yyyy HH:mm", Locale.ENGLISH);
+		DateFormat format = new SimpleDateFormat("dd.MM.yyyy HH:mm", Locale.ENGLISH);
 		DateFormat dateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy", Locale.US);
 		java.util.Date date = format.parse(datum+" "+vreme);
 		java.util.Date date2 = format.parse(datum+" "+trajanje);
+		logger.info(date.toString());
+		logger.info(date2.toString());
 		Collection<TableR> ret = new ArrayList<TableR>();
 		Boolean available ;
 		for (Iterator<Region> region = r.getRegions().iterator(); region.hasNext();) {
@@ -97,8 +150,11 @@ public class RestaurantController {
 				    Reservation reservation = res.next();
 					java.util.Date dateOd = format.parse(reservation.getReservationDateTime()+" "+reservation.getTime());
 					java.util.Date dateDo = format.parse(reservation.getReservationDateTime()+" "+reservation.getLength());
+					dateOd.setMinutes(dateOd.getMinutes()-1);
+					dateDo.setMinutes(dateDo.getMinutes()+1);
+					logger.info(dateOd.toString());
+					logger.info(dateDo.toString());
 				    if((date.after(dateOd) && date.before(dateDo))||(date2.after(dateOd) && date2.before(dateDo)) ){
-				    	System.out.println("milanaaaaa");
 				    	available = false;
 					}
 			    }
@@ -106,6 +162,11 @@ public class RestaurantController {
 				    ret.add(t);
 			    }
 			}
+		}
+		if(ret.size()==0){
+			logger.info("nemaaa");
+			Collection<TableR> rt = new ArrayList<TableR>();
+			return new ResponseEntity<Collection<TableR>>(rt, HttpStatus.OK);
 		}
 		logger.info("< get r email:{}", r.getName());
 		return new ResponseEntity<Collection<TableR>>(ret, HttpStatus.OK);
@@ -143,6 +204,7 @@ public class RestaurantController {
 	
 		logger.info("< get r name:{}", name);
 		return new ResponseEntity<Collection<Restaurant>>(r, HttpStatus.OK);
+
 	}
 	
 	/*@RequestMapping(

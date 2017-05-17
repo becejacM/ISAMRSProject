@@ -29,13 +29,12 @@
           <md-icon aria-label="All rests" class="material-icons">SEARCH Restautants</md-icon>
         </button>
 <div ng-show="vm.allRestsMode">
-	<ul>
-    <li ng-repeat="r in vm.allRests">
-        <img id="thumbnail" src={{r.image}}>{{r.name}}
-       <button class="btn btn-primary" ng-click="vm.step1(r.name)">Reserve</button>
+    <table ng-repeat="r in vm.allRests">
+        <tr><td><img id="thumbnail" src={{r.image}}></td><td>{{r.name}}</td>
+       <td><button class="btn btn-primary" ng-click="vm.step1(r.name)">Reserve</button></td></tr>
         
-    </li>
-	</ul>
+    </table>
+	
 	<form ng-submit="vm.find()" role="form">
 <div class="form-group" ">
             <label for="parametar">Restaurant name</label>
@@ -55,11 +54,15 @@
 </div>
 
 <div ng-show="vm.restModeStep1"><br/>Restaurant name: {{vm.rest.name}}<br/>
-<form id="searchDate" ng-submit="vm.step2()" role="form">
-			Datum:&nbsp;<input type=text id="datum" name="datum" ng-model="vm.step1par.datum" /><br/>
-			Vreme:&nbsp;<select ng-model="vm.step1par.vreme" ng-options="x for x in time"></select><br/>
-			Trajanje:&nbsp;<select ng-model="vm.step1par.trajanje" ng-options="x for x in duration"></select><br/>
-			<button class="btn btn-primary"  type="submit">NEXT</button><br/>
+<form id="searchDate" ng-submit="vm.step2()" role="form" >
+        <div class="form-group" ng-class="{ 'has-error': form.dt.$error.required}">
+			Date:&nbsp;<input type="date" id="dt" name="datum" ng-model="vm.step1par.datum" required="required"/><br/></div>
+		<div class="form-group" ng-class="{ 'has-error': form.vreme.$error.required}">
+			From:&nbsp;<select id="vreme" ng-model="vm.step1par.vreme" ng-options="x for x in time" required="required"></select><br/></div>
+		<div class="form-group" ng-class="{ 'has-error': form.trajanje.$error.required}">
+			To:&nbsp;<select id="trajanje" ng-model="vm.step1par.trajanje" ng-options="x for x in duration" required="required"></select><br/></div>
+		<div class="form-actions">
+			<button class="btn btn-primary"  ng-disabled="form.$error.required" type="submit">NEXT</button><br/></div>
 			<canvas id="c"></canvas><br/>
 			
 		</form>
@@ -70,8 +73,8 @@
 
 <div ng-show="vm.restModeStep2">
 <br/>Restaurant name: {{vm.rest.name}}<br/>
-<br/>Start: {{vm.step1par.datum}}  {{vm.step1par.vreme}}<br/>
-<br/>Finish:{{vm.step1par.datum}}  {{vm.step1par.trajanje}}<br/>
+<br/>Start: {{vm.c}}  {{vm.step1par.vreme}}<br/>
+<br/>Finish:{{vm.c}}  {{vm.step1par.trajanje}}<br/>
 <canvas id="c1"></canvas><br/>
 <button class="btn btn-primary"  ng-click="vm.step3()">NEXT</button>
 </div>

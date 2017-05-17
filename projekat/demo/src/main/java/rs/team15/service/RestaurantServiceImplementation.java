@@ -39,6 +39,12 @@ public class RestaurantServiceImplementation implements RestaurantService{
 		// TODO Auto-generated method stub
 		return restaurantRepository.findByName(id);
 	}
+	
+	@Override
+	public Restaurant create(Restaurant restaurant) {
+		// TODO Auto-generated method stub
+		return restaurantRepository.save(restaurant);
+	}
 
 	@Override
 	public Collection<Restaurant> findByNameOrType(String name, String type) {
