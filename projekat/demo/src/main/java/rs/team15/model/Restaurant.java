@@ -18,7 +18,15 @@ public class Restaurant implements Serializable {
     @Column(name = "rid")
     private Long rid;
 
-    @Column(name = "name")
+    public Long getRid() {
+		return rid;
+	}
+
+	public void setRid(Long rid) {
+		this.rid = rid;
+	}
+
+	@Column(name = "name")
     private String name;
 
     @Column(name = "info")
@@ -49,6 +57,10 @@ public class Restaurant implements Serializable {
     @JsonIgnore
     @OneToMany(mappedBy = "restaurant", fetch = FetchType.LAZY)
     private Set <Region> regions = new HashSet <Region>(0);
+    
+    /*@JsonIgnore
+    @OneToMany(mappedBy = "restaurant", fetch = FetchType.LAZY)
+    private Set <Employee> employees = new HashSet <Employee>(0);*/
 
     public Restaurant() {
     }
@@ -131,8 +143,26 @@ public class Restaurant implements Serializable {
     public Set <Region> getRegions() {
         return regions;
     }
+    
+    @JsonIgnore
+    public void setRegions(Set <Region> regions) {
+        this.regions = regions;
+    }
+
+    /*@JsonProperty
+	public Set<Employee> getEmployees() {
+		return employees;
+	}
+
+    @JsonIgnore
+	public void setEmployees(Set<Employee> employees) {
+		this.employees = employees;
+	}*/
+
+	//public Restaurant(Long restaurantId, String name, Integer startTime, Integer endTime, Set<MenuItem> menuItemMenu,
 
     public Restaurant(String name, Integer startTime, Integer endTime, Set<MenuItem> menuItemMenu,
+
 			Set<Region> regions) {
 		super();
 		this.name = name;
@@ -141,11 +171,7 @@ public class Restaurant implements Serializable {
 		this.menuItemMenu = menuItemMenu;
 		this.regions = regions;
 	}
-
-	@JsonIgnore
-    public void setRegions(Set <Region> regions) {
-        this.regions = regions;
-    }
+	
 
     public String getImage() {
         return image;

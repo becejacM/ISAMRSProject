@@ -10,4 +10,6 @@ public interface RestaurantManagerService {
     User create(RestaurantManager rManager);
     
     Restaurant findById(String id);
+    
+    Restaurant getRestaurant(String id);
 }

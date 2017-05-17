@@ -24,4 +24,7 @@ public interface RestaurantService {
     
     TableR update(TableR table);
     
+    TableR delete(TableR table);
+    
+    
 }

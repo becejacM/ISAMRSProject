@@ -32,7 +32,11 @@ import rs.team15.model.SystemManager;
 
 import rs.team15.model.TableR;
 import rs.team15.model.User;
+
+import rs.team15.repository.TableRepository;
+
 import rs.team15.repository.RestaurantRepository;
+
 import rs.team15.service.RestaurantService;
 import rs.team15.service.SystemManagerService;
 import rs.team15.service.UserService;
@@ -203,7 +207,7 @@ public class RestaurantController {
 
 	}
 	
-	@RequestMapping(
+	/*@RequestMapping(
             value    = "/api/restaurants/{name:.+}",
             method   = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE
@@ -213,19 +217,25 @@ public class RestaurantController {
 		Restaurant r = restaurantService.findById(name);
 		logger.info("< get name:{}", name);
 		return new ResponseEntity<Restaurant>(r, HttpStatus.OK);
-	}
+	}*/
 	
-	/*@RequestMapping(
-            value    = "/api/getregion/{name:.+}",
+	@RequestMapping(
+            value    = "/api/getregions/{id:.+}",
             method   = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE
 		)
-	public ResponseEntity<Region> getRegionByName(@PathVariable String name) {
+	public ResponseEntity<Collection<Region>> getRegionsOfRestaurant(@PathVariable String id) {
 		
-		Region r = restaurantService.findRegion(name);
-		logger.info("< get name:{}", name);
-		return new ResponseEntity<Region>(r, HttpStatus.OK);
-	}*/
+		Restaurant r = restaurantService.findById(id);
+		
+		Collection<Region> regs = new ArrayList<Region>();
+		for (Iterator<Region> region = r.getRegions().iterator(); region.hasNext();) {
+			Region reg = region.next();
+			System.out.println(reg.getRegionNo());
+			regs.add(reg);
+		}
+		return new ResponseEntity<Collection<Region>>(regs, HttpStatus.OK);
+	}
 	
 	@RequestMapping(
             value    = "api/users/createTable",
@@ -234,13 +244,11 @@ public class RestaurantController {
             produces = MediaType.APPLICATION_JSON_VALUE
 		)
 	public ResponseEntity<TableR> createTable(@RequestBody TableR table) {
-		/*table.setWidth(50.00);
-		table.setHeight(50.00);
-		table.setDatax(400.00);
-		table.setDatay(400.00);*/
+		table.setDeleted("no");
+		
 	       
 		TableR created = restaurantService.create(table);
-		logger.info("< create table");
+		logger.info("< create table {}", table.getRegion().getRegId());
 		return new ResponseEntity<TableR>(created, HttpStatus.CREATED);
 	}
 	
@@ -258,6 +266,20 @@ public class RestaurantController {
 	       
 		TableR updated = restaurantService.update(table);
 		logger.info("< create table");
-		return new ResponseEntity<TableR>(updated, HttpStatus.CREATED);
+		return new ResponseEntity<TableR>(updated, HttpStatus.OK);
+	}
+	
+	@RequestMapping(
+            value    = "api/users/deleteTable",
+            method   = RequestMethod.PUT,
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE
+		)
+	public ResponseEntity<TableR> deleteTable(@RequestBody TableR table) {
+	       
+		TableR deleted = restaurantService.delete(table);
+		logger.info("< delete table {}", table.getTableInRestaurantNo());
+		
+		return new ResponseEntity<TableR>(deleted, HttpStatus.OK);
 	}
 }

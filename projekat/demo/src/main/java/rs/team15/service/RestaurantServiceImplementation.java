@@ -12,6 +12,7 @@ import rs.team15.model.Region;
 import rs.team15.model.Restaurant;
 import rs.team15.model.TableR;
 import rs.team15.model.User;
+import rs.team15.repository.RegionRepository;
 import rs.team15.repository.RestaurantRepository;
 import rs.team15.repository.TableRepository;
 import rs.team15.repository.UserRepository;
@@ -53,6 +54,13 @@ public class RestaurantServiceImplementation implements RestaurantService{
 
 	@Override
 	public TableR create(TableR table) {
+		TableR t = tableRepository.findOne();
+		
+		int i = t.getTableInRestaurantNo() + 1;
+		logger.info("<< number: {}", i);
+		table.setTableInRestaurantNo(i);
+		
+		
 		return tableRepository.save(table);
 	}
 
@@ -74,6 +82,16 @@ public class RestaurantServiceImplementation implements RestaurantService{
 		updated.setTableInRestaurantNo(max+1);*/
 		
 		return tableRepository.save(updated);
+	}
+
+	@Override
+	public TableR delete(TableR table) {
+		Integer id = table.getTableInRestaurantNo();
+		TableR deleted = tableRepository.findByTableInRestaurantNo(id);
+		if (deleted == null)
+			return null;
+		deleted.setDeleted("yes");
+		return tableRepository.save(deleted);
 	}
 
 	/*@Override

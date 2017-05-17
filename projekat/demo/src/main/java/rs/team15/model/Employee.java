@@ -8,9 +8,16 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+
+import javax.persistence.OneToMany;
+
 import javax.persistence.OneToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Entity
 @Table(name = "employees")
@@ -32,18 +39,31 @@ public class Employee extends User {
 	@Column(name = "firstTime", nullable=false)
 	protected String firstTime;
 	
-	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	@JoinColumn(name = "rid")
+
+	@JsonIgnore
+    @OneToOne
+    @JoinColumn(name = "rid")
 	private Restaurant restaurant;
 	
-	@Column(name = "region", nullable=false)
-	protected String region;
+	@JsonIgnore
+    @OneToOne
+    @JoinColumn(name = "regid")
+    private Region region;
+
+	/*@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@JoinColumn(name = "rid")
+	private Restaurant restaurant;*/
+
+	
 	
 	public Employee(){
 		super();
 	}
 
-	public Employee(Long id, String email, String firstName, String lastName, String password, Date birthday, String dressSize, String shoeSize, Restaurant restaurant, String region){
+	public Employee(Long id, String email, String firstName, String lastName, String password, Date birthday, String dressSize, String shoeSize, Restaurant restaurant, Region region){
+
+	//public Employee(Long id, String email, String firstName, String lastName, String password, Date birthday, String dressSize, String shoeSize, Restaurant restaurant, String region){
+
     	this.id = id;
     	this.email = email;
 		this.fname = firstName;
@@ -58,7 +78,10 @@ public class Employee extends User {
 		this.region = region;
     }
 	
-	public Employee(Long id, String email, String firstName, String lastName, String password, Date birthday, String dressSize, String shoeSize, String role, Restaurant restaurant, String region){
+	public Employee(Long id, String email, String firstName, String lastName, String password, Date birthday, String dressSize, String shoeSize, String role, Restaurant restaurant, Region region){
+
+	//public Employee(Long id, String email, String firstName, String lastName, String password, Date birthday, String dressSize, String shoeSize, String role, Restaurant restaurant, String region){
+
     	this.id = id;
     	this.email = email;
 		this.fname = firstName;
@@ -122,11 +145,11 @@ public class Employee extends User {
 		this.restaurant = restaurant;
 	}
 
-	public String getRegion() {
+	public Region getRegion() {
 		return region;
 	}
 
-	public void setRegion(String region) {
+	public void setRegion(Region region) {
 		this.region = region;
 	}
 

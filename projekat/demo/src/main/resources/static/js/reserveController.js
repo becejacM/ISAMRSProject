@@ -114,6 +114,11 @@
         	canvas.setDimensions({width:800, height:500});
         	canvas.border = 2;
         	for (var j=0; j < vm.regions.length; j++) {
+
+        		if(vm.regions[j].deleted === "no")
+        			canvas.add(new fabric.Rect({
+        				width: vm.regions[j].width, height: vm.regions[j].height, left: vm.regions[j].datax, top: vm.regions[j].datay, angle: 0,fill: '#'+vm.regions[j].region.color}));
+
         			var t = "#"+vm.regions[j].tableInRestaurantNo;
         			var text = new fabric.Text(t, {
         			  fontSize: 15,
@@ -134,6 +139,7 @@
         				angle: 0
         			});
         			canvas.add(group);
+
         		}
         }
         

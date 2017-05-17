@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import rs.team15.model.Employee;
 import rs.team15.model.MenuItem;
 import rs.team15.model.Region;
 import rs.team15.model.Reservation;
