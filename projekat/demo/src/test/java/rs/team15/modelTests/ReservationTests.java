@@ -29,7 +29,7 @@ public class ReservationTests {
 		Restaurant u = new Restaurant("kkk",Integer.parseInt("8"),Integer.parseInt("21"), menuItems, regions);
 		
 		Region r = new Region("region255","FC1501",u,Integer.parseInt("2"),tables);
-		TableR t = new TableR(Double.parseDouble("100"),Double.parseDouble("100"),Double.parseDouble("200"),Double.parseDouble("50"),r);
+		TableR t = new TableR(Double.parseDouble("100"),Double.parseDouble("100"),Double.parseDouble("200"),Double.parseDouble("50"),5);
 
 		Reservation rest = new Reservation(u,"05.05.2017","10:00","12:00",t);
 		assertNotNull(rest);

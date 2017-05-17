@@ -202,6 +202,12 @@
             	templateUrl: 'views/resManagerManage.html',
             	controllerAs: 'vm'
         	})
+        	
+        	.when('/registerWorker',{
+            	controller: 'registerWorkerController',
+            	templateUrl: 'views/registerWorker.html',
+            	controllerAs: 'vm'
+        	})
 
 
 

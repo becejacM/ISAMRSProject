@@ -15,6 +15,9 @@
         service.Create = Create;
         service.CreateM = CreateM;
         service.CreateSysM = CreateSysM;
+        service.CreateCook = CreateCook;
+        service.CreateBartender = CreateBartender;
+        service.CreateWaiter = CreateWaiter;
         service.Update = Update;
         service.Delete = Delete;
         service.Upload = Upload;
@@ -36,6 +39,33 @@
             .then(function(response) {
                 return response;
             }); 
+        }
+        
+        function CreateCook(user) {
+        	console.log("create");
+            return $http.post('/api/users/createCook', user)
+            .then(function (response) {
+                return response;
+            });               
+
+        }
+        
+        function CreateWaiter(user) {
+        	console.log("create");
+            return $http.post('/api/users/createWaiter', user)
+            .then(function (response) {
+                return response;
+            });               
+
+        }
+        
+        function CreateBartender(user) {
+        	console.log("create");
+            return $http.post('/api/users/createWaiter', user)
+            .then(function (response) {
+                return response;
+            });               
+
         }
         
         function find(parametar) {
