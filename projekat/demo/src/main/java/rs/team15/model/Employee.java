@@ -8,6 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 
@@ -31,8 +32,9 @@ public class Employee extends User {
 	@Column(name = "firstTime", nullable=false)
 	protected String firstTime;
 	
-	@Column(name = "restaurant", nullable=false)
-	protected String restaurant;
+	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@JoinColumn(name = "rid")
+	private Restaurant restaurant;
 	
 	@Column(name = "region", nullable=false)
 	protected String region;
@@ -41,7 +43,7 @@ public class Employee extends User {
 		super();
 	}
 
-	public Employee(Long id, String email, String firstName, String lastName, String password, Date birthday, String dressSize, String shoeSize, String restaurant, String region){
+	public Employee(Long id, String email, String firstName, String lastName, String password, Date birthday, String dressSize, String shoeSize, Restaurant restaurant, String region){
     	this.id = id;
     	this.email = email;
 		this.fname = firstName;
@@ -56,7 +58,7 @@ public class Employee extends User {
 		this.region = region;
     }
 	
-	public Employee(Long id, String email, String firstName, String lastName, String password, Date birthday, String dressSize, String shoeSize, String role, String restaurant, String region){
+	public Employee(Long id, String email, String firstName, String lastName, String password, Date birthday, String dressSize, String shoeSize, String role, Restaurant restaurant, String region){
     	this.id = id;
     	this.email = email;
 		this.fname = firstName;
@@ -112,11 +114,11 @@ public class Employee extends User {
 		this.firstTime = firstTime;
 	}
 
-	public String getRestaurant() {
+	public Restaurant getRestaurant() {
 		return restaurant;
 	}
 
-	public void setRestaurant(String restaurant) {
+	public void setRestaurant(Restaurant restaurant) {
 		this.restaurant = restaurant;
 	}
 
