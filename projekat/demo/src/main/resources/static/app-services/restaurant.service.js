@@ -55,8 +55,8 @@
         
         function GetByName(name) {
             //return $http.get('/api/users/' + email).then(handleSuccess, handleError('Error getting user by email'));
-            return $http.get('/api/getrestaurant/' + name)
-
+            return $http.get('/api/getrestaurant/get/' + name)
+        }
         function GetHours(id) {
             //return $http.get('/api/users/' + email).then(handleSuccess, handleError('Error getting user by email'));
             return $http.get('/api/restaurants/hours/' + id)

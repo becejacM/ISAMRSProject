@@ -46,7 +46,7 @@ public class ReservationServiceTest {
 	
 	@Test
 	public void createResService(){
-		Set<MenuItem> menuItems = new HashSet<MenuItem>();
+		/*Set<MenuItem> menuItems = new HashSet<MenuItem>();
 		Set<Region> regions = new HashSet<Region>();
 		Set<TableR> tables = new HashSet<TableR>();
 		Restaurant u = new Restaurant("kkk",Integer.parseInt("8"),Integer.parseInt("21"), menuItems, regions);
@@ -61,7 +61,7 @@ public class ReservationServiceTest {
 		
 
 		resService.create(rest);
-		Reservation res = resService.findByResId(Long.parseLong("2"));
+		Reservation res = resService.findByResId(Long.parseLong("2"));*/
 		//assertEquals(res.get, "Marko");
 	}
 }
