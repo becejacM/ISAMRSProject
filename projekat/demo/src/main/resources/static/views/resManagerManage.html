@@ -30,11 +30,13 @@
 <div >
 Manage restaurant
 <button class="btn btn-default navbar-btn" background-color= "Transparent"  ng-click="vm.show()">SHOW</button>
-<button class="btn btn-default navbar-btn" background-color= "Transparent"  ng-click="">ADD REGION</button>
+<!-- <button class="btn btn-default navbar-btn" background-color= "Transparent"  ng-click="">ADD REGION</button>  -->
 <button class="btn btn-default navbar-btn" background-color= "Transparent"  ng-click="vm.addTable()">ADD TABLE</button>
+<button class="btn btn-default navbar-btn" background-color= "Transparent"  ng-click="vm.deleteTable()">DELETE TABLE</button>
 </div>
 
-<button ng-hide="vm.editMode" class="btn btn-primary" aria-label="Edit table" ng-click="vm.editTable()">
+<!-- 
+<button ng-hide="vm.editMode" ng-disabled="!vm.selectedMode" class="btn btn-primary" aria-label="Edit table" ng-click="vm.editTable()">
           <md-icon aria-label="Edit table" class="material-icons">EDIT TABLE</md-icon>
         </button>
         
@@ -56,7 +58,7 @@ Manage restaurant
       
    </form>
     </md-input-container>
-
+ -->
 <div>
 <canvas id="c"></canvas>
 </div>

@@ -29,14 +29,14 @@ private Logger logger = LoggerFactory.getLogger(this.getClass());
 	private RestaurantService restaurantService;
 	
 	@RequestMapping(
-            value    = "/api/getrestaurant/{name:.+}",
+            value    = "/api/getrestaurant/{id:.+}",
             method   = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE
 		)
-	public ResponseEntity<Restaurant> getRestByName(@PathVariable String name) {
+	public ResponseEntity<Restaurant> getRestaurant(@PathVariable String id) {
 		
-		Restaurant r = restaurantService.findById(name);
-		logger.info("< get name:{}", name);
+		Restaurant r = restaurantManagerService.getRestaurant(id);
+		logger.info("< get name:{}", r.getName());
 		return new ResponseEntity<Restaurant>(r, HttpStatus.OK);
 	}
 

@@ -19,6 +19,7 @@
         vm.rest = null;
         
         vm.show = show;
+        vm.loadRestaurant = loadRestaurant;
         
         vm.logout = logout;
         vm.profile = profile;
@@ -40,9 +41,18 @@
             
         })();
         
+        function loadRestaurant(){
+        	alert("aaaa");
+        	RestaurantService.GetRestaurantE(vm.user.email)
+            .then(function (response) {
+                vm.rest = response.data;
+                
+            });
+        }
+        
         
         function show() {
-        	RestaurantService.GetByName(vm.user.restaurant)
+        	RestaurantService.GetByName(vm.user.restaurant.name)
             .then(function (response) {
                 vm.rest = response.data;
                 //alert(vm.rest.name);

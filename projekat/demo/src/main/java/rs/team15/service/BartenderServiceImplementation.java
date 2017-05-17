@@ -1,11 +1,14 @@
 package rs.team15.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import rs.team15.model.Bartender;
 import rs.team15.model.User;
 import rs.team15.repository.BartenderRepository;
 
 public class BartenderServiceImplementation implements BartenderService {
 
+	@Autowired
 	BartenderRepository bartenderRepository;
 	
 	@Override

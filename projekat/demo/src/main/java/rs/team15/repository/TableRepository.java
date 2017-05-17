@@ -16,6 +16,6 @@ public interface TableRepository extends JpaRepository <TableR, Long> {
 	
 	TableR findByTableInRestaurantNo(Integer id);
 	
-	
-	List<TableR> findAll();
+	@Query ("SELECT t FROM TableR t WHERE tableInRestaurantNo=(SELECT max(tableInRestaurantNo) FROM TableR t)")
+	TableR findOne();
 }

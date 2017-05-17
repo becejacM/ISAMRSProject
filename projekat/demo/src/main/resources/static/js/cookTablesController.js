@@ -42,7 +42,7 @@
         
         
         function show() {
-        	RestaurantService.GetByName(vm.user.restaurant)
+        	RestaurantService.GetByName(vm.user.restaurant.name)
             .then(function (response) {
                 vm.rest = response.data;
                 alert(vm.rest.name);

@@ -7,6 +7,6 @@ import rs.team15.model.RestaurantManager;
 
 public interface RestaurantManagerRepository extends JpaRepository<RestaurantManager, Long>{
 
-	//Restaurant findByName(String name);
+	RestaurantManager findByEmail(String id);
 
 }

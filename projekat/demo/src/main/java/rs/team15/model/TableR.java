@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
@@ -49,7 +50,7 @@ public class TableR {
     @Column(name = "num_of_chairs")
     private Integer numOfChairs;
 
-    @JsonIgnore
+    //@JsonIgnore
     @ManyToOne
     @JoinColumn(name = "regid")
     private Region region;
@@ -63,14 +64,6 @@ public class TableR {
     private Set<ClientOrder> orders = new HashSet<ClientOrder>(0);
 
     public TableR() {
-    }
-
-    public String isDeleted() {
-        return deleted;
-    }
-
-    public void setDeleted(String deleted) {
-        this.deleted = deleted;
     }
 
     public Long getTableId() {
@@ -157,7 +150,15 @@ public class TableR {
         this.orders = orders;
     }
     
-    public TableR(Long tableId, Double datax, Double datay, Double width, Double height,
+    public String getDeleted() {
+		return deleted;
+	}
+    
+    public void setDeleted(String deleted){
+    	this.deleted = deleted;
+    }
+
+	public TableR(Long tableId, Double datax, Double datay, Double width, Double height,
 			Region region, Integer numOfChairs) {
 		super();
 		this.tid = tableId;

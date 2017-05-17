@@ -37,4 +37,9 @@ public class RestaurantManagerImplementation implements RestaurantManagerService
 	public Restaurant findById(String id) {
 		return restaurantRepository.findByName(id);
 	}
+
+	@Override
+	public Restaurant getRestaurant(String id) {
+		return restaurantManagerRepository.findByEmail(id).getRestaurant();
+	}
 }

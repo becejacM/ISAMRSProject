@@ -8,8 +8,14 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Entity
 @Table(name = "employees")
@@ -31,17 +37,22 @@ public class Employee extends User {
 	@Column(name = "firstTime", nullable=false)
 	protected String firstTime;
 	
-	@Column(name = "restaurant", nullable=false)
-	protected String restaurant;
+	@JsonIgnore
+    @OneToOne
+    @JoinColumn(name = "rid")
+	private Restaurant restaurant;
 	
-	@Column(name = "region", nullable=false)
-	protected String region;
+	@JsonIgnore
+    @OneToOne
+    @JoinColumn(name = "regid")
+    private Region region;
+	
 	
 	public Employee(){
 		super();
 	}
 
-	public Employee(Long id, String email, String firstName, String lastName, String password, Date birthday, String dressSize, String shoeSize, String restaurant, String region){
+	public Employee(Long id, String email, String firstName, String lastName, String password, Date birthday, String dressSize, String shoeSize, Restaurant restaurant, Region region){
     	this.id = id;
     	this.email = email;
 		this.fname = firstName;
@@ -56,7 +67,7 @@ public class Employee extends User {
 		this.region = region;
     }
 	
-	public Employee(Long id, String email, String firstName, String lastName, String password, Date birthday, String dressSize, String shoeSize, String role, String restaurant, String region){
+	public Employee(Long id, String email, String firstName, String lastName, String password, Date birthday, String dressSize, String shoeSize, String role, Restaurant restaurant, Region region){
     	this.id = id;
     	this.email = email;
 		this.fname = firstName;
@@ -112,19 +123,19 @@ public class Employee extends User {
 		this.firstTime = firstTime;
 	}
 
-	public String getRestaurant() {
+	public Restaurant getRestaurant() {
 		return restaurant;
 	}
 
-	public void setRestaurant(String restaurant) {
+	public void setRestaurant(Restaurant restaurant) {
 		this.restaurant = restaurant;
 	}
 
-	public String getRegion() {
+	public Region getRegion() {
 		return region;
 	}
 
-	public void setRegion(String region) {
+	public void setRegion(Region region) {
 		this.region = region;
 	}
 

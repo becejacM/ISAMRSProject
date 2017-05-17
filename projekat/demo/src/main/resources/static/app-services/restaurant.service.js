@@ -16,9 +16,12 @@
         service.find = find;
         service.CreateTable = CreateTable;
         service.UpdateTable = UpdateTable;
+        service.DeleteTable = DeleteTable;
         
-        service.GetByName = GetByName;
-        //service.GetRegion = GetRegion;
+        //service.GetByName = GetByName;
+        service.GetRestaurant = GetRestaurant;
+        service.GetRestaurantE = GetRestaurantE;
+        service.GetRestaurantRegions = GetRestaurantRegions;
         return service;
 
         
@@ -38,20 +41,13 @@
             }); 
         }
         
-        /*function GetRegion(name){
-        	return $http.get('/api/getregion/' + name)
-            .then(function(response) {
-                return response;
-            }); 
-        }*/
-        
-        function GetByName(name) {
+        /*function GetByName(name) {
             //return $http.get('/api/users/' + email).then(handleSuccess, handleError('Error getting user by email'));
             return $http.get('/api/getrestaurant/' + name)
             .then(function(response) {
                 return response;
             }); 
-        }
+        }*/
         
         function CreateTable(table) {
             return $http.post('/api/users/createTable', table)
@@ -103,6 +99,35 @@
             .then(function(response) {
                 return response;
             }); 
+        }
+        
+        function GetRestaurant(id){
+        	return $http.get('/api/getrestaurant/' + id)
+        	.then(function(response){
+        		return response;
+        	});
+        }
+        
+        function GetRestaurantE(id){
+        	return $http.get('/api/getrestaurantE/' + id)
+        	.then(function(response){
+        		return response;
+        	});
+        }
+        
+        function GetRestaurantRegions(id){
+        	return $http.get('/api/getregions/' + id)
+        	.then(function(response){
+        		return response;
+        	});
+        }
+        
+        function DeleteTable(table) {
+            return $http.put('/api/users/deleteTable', table).then(handleSuccess, handleError('Error deleting table'));
+            /*.then(function(response) {
+                return response;
+            });  */             
+
         }
     }
     

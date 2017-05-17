@@ -5,5 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import rs.team15.model.Employee;
 
 public interface EmployeeRepository extends JpaRepository<Employee, Long>{
+	
+	Employee findByEmail(String id);
 
 }

@@ -29,6 +29,10 @@ public class Region {
 
     @Column(name = "regionNo")
     private Integer regionNo;
+    
+    @JsonIgnore
+    @OneToMany(mappedBy = "region", fetch = FetchType.LAZY)
+    private Set <Employee> employees = new HashSet <Employee>(0);
 
     public Region(Long regionId, String name, String color, Restaurant restaurant, Integer regionNo,
 			Set<TableR> tables) {
@@ -97,5 +101,26 @@ public class Region {
     public void setRegionNo(Integer regionNo) {
         this.regionNo = regionNo;
     }
+
+    @JsonProperty
+	public Set<Employee> getEmployees() {
+		return employees;
+	}
+
+    @JsonIgnore
+	public void setEmployees(Set<Employee> employees) {
+		this.employees = employees;
+	}
+
+	public Long getRegId() {
+		return regId;
+	}
+
+	public void setRegId(Long regId) {
+		this.regId = regId;
+	}
+    
+    
+    
 }
 

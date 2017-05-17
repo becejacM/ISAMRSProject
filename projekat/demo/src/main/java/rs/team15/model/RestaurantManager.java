@@ -2,8 +2,13 @@ package rs.team15.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "managers")
@@ -11,13 +16,17 @@ import javax.persistence.Table;
 public class RestaurantManager extends User{
 	@Column(name = "m_id", insertable = false, updatable = false)
     private Long mid;
-	private String restaurantName;
+	
+	@JsonIgnore
+    @OneToOne
+    @JoinColumn(name = "rid")
+	private Restaurant restaurant;
 	
 	public RestaurantManager(){
 		super();
 	}
 	
-	public RestaurantManager(Long id, String email, String firstName, String lastName, String password, String rName){
+	public RestaurantManager(Long id, String email, String firstName, String lastName, String password, Restaurant restaurant){
     	this.id = id;
 		this.email = email;
 		this.fname = firstName;
@@ -27,7 +36,7 @@ public class RestaurantManager extends User{
 		this.role = "manager";
 		this.verified = "no";
 		this.login = "no";
-		this.restaurantName = rName;
+		this.restaurant = restaurant;
     }
 
 	public Long getGid() {
@@ -38,12 +47,12 @@ public class RestaurantManager extends User{
 		this.mid = smid;
 	}
 
-	public String getRestaurantName() {
-		return restaurantName;
+	public Restaurant getRestaurant() {
+		return restaurant;
 	}
 
-	public void setRestaurantName(String restaurantName) {
-		this.restaurantName = restaurantName;
+	public void setRestaurant(Restaurant restaurant) {
+		this.restaurant = restaurant;
 	}
 
 	@Override

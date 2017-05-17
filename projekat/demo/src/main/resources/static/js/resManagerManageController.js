@@ -17,10 +17,11 @@
         
         vm.regions = [];
         vm.tables = [];
+        vm.regs = [];
         
         vm.rest = null;
         vm.loadRestaurant = loadRestaurant;
-        //vm.loadTables = loadTables;
+        vm.loadRegions = loadRegions;
         
         vm.logout = logout;
         vm.registerWorker = registerWorker;
@@ -29,12 +30,15 @@
         
         vm.show = show;
         vm.addTable = addTable;
+        vm.deleteTable = deleteTable;
         vm.table = null;
         
         vm.editMode = false;
+        vm.enableButton = false;
         vm.editTable = editTable;
         vm.save = save;
         vm.created = null;
+        vm.selectedMode = false;
         
         var canvas = new fabric.Canvas('c');
   	  	canvas.setDimensions({width:800, height:500});
@@ -48,44 +52,57 @@
         	
         	loadCurrentUser();
             loadAllUsers();
+            
         })();
         
-        function loadRestaurant() {
-        	
-	        	
+        function loadRestaurant(){
+        	RestaurantService.GetRestaurant(vm.user.email)
+            .then(function (response) {
+                vm.rest = response.data;
+                loadRegions();
+            });
+        }
+        
+        function loadRegions(){
+        	RestaurantService.GetRestaurantRegions(vm.rest.name)
+        	.then(function(response){
+        		vm.regs = response.data;
+        		//alert(vm.regs.length);
+        	});
+        }
+        
+        function changeTable(){
+        	if(canvas.getActiveObject() === null) return;
+        	var o = canvas.getActiveObject();
         	
         	
         }
         
-        /*function loadTables(){
-        	loadRestaurant();
-        	//alert(vm.rest.name);
+        function deleteTable(){
+        	if(canvas.getActiveObject() === null) return;
         	
-        }*/
-        
-        
+        	var o = canvas.getActiveObject();
+        	
+        	canvas.remove(o);
+        	
+        	var id = o.id;
+        	alert(id);
+        	
+        	var table = new Object();
+  	      	table.tableInRestaurantNo = id;
+        	
+        	RestaurantService.DeleteTable(table)
+            .then(function (response) {
+          	  	//alert(vm.table.height);
+                	//FlashService.Success('Table successfully deleted', true);
+                	//alert("asdfghj");
+                	
+                	
+            });
+        }
         
         function addTable(){
-        	
-        	var rect = new fabric.Rect({
-    	  		width: 50, height: 50, originX: 'center', originY: 'center',
-    	  	    fill: '#0000ff'
-    	  	});
-        	var text = new fabric.Text('4', {fontSize: 20, originX: 'center', originY: 'center'});
-        	var group = new fabric.Group([rect, text], {left: 400, top: 400, angle: 0});
-        	canvas.add(group);
-        	
-        	
-        	
-      	  	canvas.on({
-      	  		'object:moving': onChange,
-      	  		'object:scaling': onChange,
-      	  		'object:rotating': onChange,
-      	  		'mouse:up': onObjectSelected,
-      	  		
-      	  	});
-      	  	
-      	  	
+
       	  vm.table = new Object();
       	  
       	  vm.table.width = 50.00;
@@ -93,37 +110,78 @@
       	  vm.table.datax = 400.00;
       	  vm.table.datay = 400.00;
       	  vm.table.numOfChairs = 4;
+      	  
+      	  //alert(vm.rest.name);
+      	  
+      	  for (var j=0; j < vm.regs.length; j++){
+      		  var v = vm.regs[j];
+      		  //alert(v.color + " " + v.name + " " + v.regionNo + " " + v.restaurant);
+      	  }
+      	  
+	      //alert(vm.regs.length);
+	      if(vm.regs.length != 0)
+	    	  //alert(vm.regs[0]);
+		      vm.table.region = vm.regs[0];
+    	  
+    	  var rect = new fabric.Rect({
+  	  		width: 50, height: 50, originX: 'center', originY: 'center', fill: "#" + vm.table.region.color
+  	  	  });
+      	  var text = new fabric.Text('4', {fontSize: 20, originX: 'center', originY: 'center'});
+      	  var group = new fabric.Group([rect, text], {left: 400, top: 400, angle: 0});
+      	  canvas.add(group);
+
+    	  	canvas.on({
+    	  		'object:moving': onChange,
+    	  		'object:scaling': onChange,
+    	  		'object:rotating': onChange,
+    	  		'mouse:up': onMouseUp,
+    	  		'object:selected': onObjectSelected,
+    	  		'after:selection:cleared': onObjectDeselected,
+    	  		
+    	  	});
+
       	  	
       	  RestaurantService.CreateTable(vm.table)
           .then(function (response) {
         	  	//alert(vm.table.height);
-              	FlashService.Success('Table successfully added', true);
+              	//FlashService.Success('Table successfully added', true);
               	//alert(response.data.tableInRestaurantNo);
               	group.id = response.data.tableInRestaurantNo;
           });
       	  
-      	  
-
+		  	function onObjectDeselected(e){
+			  vm.selectedMode = false;
+		  }
+		  
+		  	function onObjectSelected(e){
+      		  if(e.target === null) 
+      			  vm.selectedMode = false;
+      		  else {
+      			  vm.selectedMode = true;
+      		  }
+      		  
+      	  }
       	  	
-      	function onObjectSelected(e) {
+      	function onMouseUp(e) {
+      		 if(e.target === null) return;
 	      	 console.log(e.target.get('left'));
 	      	 console.log(e.target.get('top'));
-	      	console.log(e.target.get('id'));
-	      	if(e.target != null){
-	      		 var id = e.target.get('id');
-	   	      	 var l = e.target.get('left');
-	   	      	 var t = e.target.get('top');
-	   	      	 var table = new Object();
-	   	      	 table.datax = l;
-	   	      	 table.datay = t;
-	   	      	 table.tableInRestaurantNo = id;
-	   	      	 RestaurantService.UpdateTable(table)
-	   	          .then(function (response) {
-	   	        	  	//alert(vm.table.height);
-	   	              	FlashService.Success('Table successfully updated', true);
-	   	              
-	   	          });
-	      	}
+	      	 console.log(e.target.get('id'));
+	      	
+      		 var id = e.target.get('id');
+   	      	 var l = e.target.get('left');
+   	      	 var t = e.target.get('top');
+   	      	 var table = new Object();
+   	      	 table.datax = l;
+   	      	 table.datay = t;
+   	      	 table.tableInRestaurantNo = id;
+   	      	 RestaurantService.UpdateTable(table)
+   	          .then(function (response) {
+   	        	  	//alert(vm.table.height);
+   	              	//FlashService.Success('Table successfully updated', true);
+   	              
+   	          });
+	      	
 	      }
       	
       	  	
@@ -141,24 +199,27 @@
         }
         
         function show() {
-        	RestaurantService.GetByName(vm.user.restaurantName)
+        	/*RestaurantService.GetRestaurant(vm.user.email)
             .then(function (response) {
             	
-                vm.rest = response.data;
+                vm.rest = response.data;*/
                 //alert(vm.rest.name);
                 RestaurantService.GetAllTables(vm.rest.name)
 	            .then(function (response) {
 	                vm.regions = response.data;
 	                //alert(vm.regions.length);
 	            	for (var j=0; j < vm.regions.length; j++) {
-	            			//alert(vm.regions[j].tableInRestaurantNo);
+	            		//alert(vm.regions[j].deleted);
+	            		if(vm.regions[j].deleted === "no"){
 	            			var re = new fabric.Rect({width: vm.regions[j].width, height: vm.regions[j].height, angle: 0, originX: 'center', originY: 'center', fill: '#' + vm.regions[j].region.color});
 	            			var text = new fabric.Text((vm.regions[j].numOfChairs).toString(), {fontSize: 20, originX: 'center', originY: 'center'});
         					var group = new fabric.Group([re, text], {id: vm.regions[j].tableInRestaurantNo, left: vm.regions[j].datax, top: vm.regions[j].datay, angle: 0});
         					canvas.add(group);
+	            		}
+	            			
 	            	}
 	                
-	            });
+	            //});
             });
         	
             
@@ -169,29 +230,45 @@
         	    'object:moving': onChange,
         	    'object:scaling': onChange,
         	    'object:rotating': onChange,
-        	    'mouse:up': onObjectSelected,
+        	    'mouse:up': onMouseUp,
+        	    'object:selected': onObjectSelected,
+        	    'after:selection:cleared': onObjectDeselected,
         	    
         	  });
         	  
-        	  function onObjectSelected(e) {
+        	  function onObjectDeselected(e){
+        		  vm.selectedMode = false;
+        	  }
+        	  
+        	  function onObjectSelected(e){
+        		  if(e.target === null) 
+        			  vm.selectedMode = false;
+        		  else {
+        			  vm.selectedMode = true;
+        		  }
+        		  
+        	  }
+        	  
+        	  function onMouseUp(e) {
+        		 if(e.target === null) return;
      	      	 console.log(e.target.get('left'));
      	      	 console.log(e.target.get('top'));
-     	      	console.log(e.target.get('id'));
-     	      	if(e.target != null){
-     	      		var id = e.target.get('id');
-        	      	 var l = e.target.get('left');
-        	      	 var t = e.target.get('top');
-        	      	 var table = new Object();
-        	      	 table.datax = l;
-        	      	 table.datay = t;
-        	      	 table.tableInRestaurantNo = id;
-        	      	 RestaurantService.UpdateTable(table)
-        	          .then(function (response) {
-        	        	  	//alert(vm.table.height);
-        	              	FlashService.Success('Table successfully updated', true);
-        	              
-        	          });
-     	      	}
+     	      	 console.log(e.target.get('id'));
+     	      	
+ 	      		 var id = e.target.get('id');
+    	      	 var l = e.target.get('left');
+    	      	 var t = e.target.get('top');
+    	      	 var table = new Object();
+    	      	 table.datax = l;
+    	      	 table.datay = t;
+    	      	 table.tableInRestaurantNo = id;
+    	      	 RestaurantService.UpdateTable(table)
+    	          .then(function (response) {
+    	        	  	//alert(vm.table.height);
+    	              	//FlashService.Success('Table successfully updated', true);
+    	              
+    	          });
+     	      
      	      	
      	      	 
      	      	 //alert(e.target.get('type'));
@@ -230,6 +307,7 @@
             UserService.GetByUsername($rootScope.globals.currentUser.email)
                 .then(function (response) {
                     vm.user = response.data;
+                    loadRestaurant();
                 });
         }
         
