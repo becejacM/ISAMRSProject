@@ -71,7 +71,7 @@ public class RestaurantController {
 	}
 	
 	@RequestMapping(
-            value    = "/api/restaurants/{id:.+}",
+            value    = "/api/restaurants/get/{id:.+}",
             method   = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE
 		)
