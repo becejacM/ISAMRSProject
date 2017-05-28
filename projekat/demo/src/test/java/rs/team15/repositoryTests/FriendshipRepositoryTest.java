@@ -31,7 +31,7 @@ public class FriendshipRepositoryTest {
 		userRepository.save(u);
 		User u2 = new User(Long.parseLong("2"),"rik.becejac@gmail.com","Rik","Becejac","pass");
 		userRepository.save(u2);
-		Friendship f = new Friendship(Long.parseLong("1"),u,u2,"pending");
+		Friendship f = new Friendship(u,u2,"pending");
 		friendshipRepository.save(f);
 		Collection<User> users = friendshipRepository.findRequests("pending", Long.parseLong("1"));
 		assertNotNull(f);

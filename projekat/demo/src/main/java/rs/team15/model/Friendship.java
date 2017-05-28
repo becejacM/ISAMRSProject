@@ -22,11 +22,11 @@ public class Friendship implements Serializable{
     private Long fid;
 
     @JoinColumn(name = "first")
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
     private User sender;
 
     @JoinColumn(name = "second")
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
     private User receiver;
 
     @Column(name = "status")
@@ -36,7 +36,7 @@ public class Friendship implements Serializable{
     	super();
     }
 
-	public Friendship(Long fid, rs.team15.model.User sender, rs.team15.model.User receiver, String status) {
+	public Friendship(rs.team15.model.User sender, rs.team15.model.User receiver, String status) {
 		super();
 		this.fid = fid;
 		this.sender = sender;

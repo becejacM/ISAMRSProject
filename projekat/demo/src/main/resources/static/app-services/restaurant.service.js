@@ -30,13 +30,14 @@
         //service.GetByName = GetByName;
         //service.GetRegion = GetRegion;
 
-        //service.GetHours = GetHours;
+        service.GetHours = GetHours;
         service.Reserve = Reserve;
 
         return service;
 
         
         function GetAllRests() {
+        	
             //return $http.get('/api/users').then(handleSuccess, handleError('Error getting all users'));
         	return $http.get('/api/restaurants')
             .then(function(response) {
@@ -45,17 +46,18 @@
         }
         
         function GetById(id) {
+        	alert("ovd");
             //return $http.get('/api/users/' + email).then(handleSuccess, handleError('Error getting user by email'));
-            return $http.get('/api/restaurants/' + id)
+            return $http.get('/api/restaurants/get/' + id)
             .then(function(response) {
                 return response;
             }); 
         }
         
-        /*function GetByName(name) {
+       /* function GetByName(name) {
             //return $http.get('/api/users/' + email).then(handleSuccess, handleError('Error getting user by email'));
             return $http.get('/api/getrestaurant/get/' + name)
-        }
+        }*/
         function GetHours(id) {
             //return $http.get('/api/users/' + email).then(handleSuccess, handleError('Error getting user by email'));
             return $http.get('/api/restaurants/hours/' + id)
@@ -63,7 +65,7 @@
             .then(function(response) {
                 return response;
             }); 
-        }*/
+        }
         
         function CreateTable(table) {
             return $http.post('/api/users/createTable', table)
