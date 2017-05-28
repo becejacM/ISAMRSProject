@@ -69,6 +69,7 @@ public class RestaurantController {
 		System.out.println(rest.size());
 		for(Restaurant r :rest){
 			System.out.println(r.getName());
+			logger.info(r.getName());
 		}
 		logger.info("< get rest");
 		return new ResponseEntity<Collection<Restaurant>>(rest, HttpStatus.OK);
