@@ -19,7 +19,7 @@ public class FriendshipTest {
 	public void createFriendship(){
 		User u = new User(Long.parseLong("1"),"milana.becejac@gmail.com","Milana","Becejac","pass");
 		User u2 = new User(Long.parseLong("2"),"rik.becejac@gmail.com","Rik","Becejac","pass");
-		Friendship f = new Friendship(Long.parseLong("1"),u,u2,"pending");
+		Friendship f = new Friendship(u,u2,"pending");
 		assertNotNull(f);
 	}
 }
