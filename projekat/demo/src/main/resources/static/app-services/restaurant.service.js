@@ -27,10 +27,10 @@
         service.GetRestaurantE = GetRestaurantE;
         service.GetRestaurantRegions = GetRestaurantRegions;
 
-        service.GetByName = GetByName;
+        //service.GetByName = GetByName;
         //service.GetRegion = GetRegion;
 
-        service.GetHours = GetHours;
+        //service.GetHours = GetHours;
         service.Reserve = Reserve;
 
         return service;

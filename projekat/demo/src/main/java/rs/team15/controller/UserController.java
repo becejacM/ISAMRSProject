@@ -102,12 +102,13 @@ public class UserController {
     public ResponseEntity<User> registerCook(@RequestBody Cook employee) {
 		//Restaurant rest = restaurantService.findById("sdf");
 		Restaurant r = new Restaurant();
+		Region reg = new Region();
 		employee.setImage("pictures/user.png");
 		employee.setRestaurant(r);
 		employee.setLogin("no");
 		employee.setVerified("no");
 		employee.setFirstTime("yes");
-		employee.setRegion("region");
+		employee.setRegion(reg);
 		User u = userService.findOne(employee.getEmail());
 		if(u!=null){
 			u.setMessage("User with that email allready exists");
@@ -133,12 +134,13 @@ public class UserController {
     public ResponseEntity<User> registerWaiter(@RequestBody Waiter employee) {
         //Restaurant rest = (Restaurant)restaurantService.findById("sdf");
         Restaurant r = new Restaurant();
+        Region reg = new Region();
 		employee.setImage("pictures/user.png");
 		employee.setRestaurant(r);
 		employee.setLogin("no");
 		employee.setVerified("no");
 		employee.setFirstTime("yes");
-		employee.setRegion("region");
+		employee.setRegion(reg);
 		User u = userService.findOne(employee.getEmail());
 		if(u!=null){
 			u.setMessage("User with that email allready exists");
@@ -164,12 +166,13 @@ public class UserController {
     public ResponseEntity<User> registerBartender(@RequestBody Bartender employee) {
         //Restaurant rest = (Restaurant)restaurantService.findById("sdf");
 		Restaurant r = new Restaurant();
+		Region reg = new Region();
 		employee.setImage("pictures/user.png");
 		employee.setRestaurant(r);
 		employee.setLogin("no");
 		employee.setVerified("no");
 		employee.setFirstTime("yes");
-		employee.setRegion("region");
+		employee.setRegion(reg);
 		User u = userService.findOne(employee.getEmail());
 		if(u!=null){
 			u.setMessage("User with that email allready exists");

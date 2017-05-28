@@ -41,12 +41,12 @@ public class Employee extends User {
 	
 
 	@JsonIgnore
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "rid")
 	private Restaurant restaurant;
 	
 	@JsonIgnore
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "regid")
     private Region region;
 

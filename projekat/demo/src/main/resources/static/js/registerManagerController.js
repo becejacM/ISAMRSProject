@@ -9,16 +9,19 @@
         .controller('registerManagerController', registerManagerController);
 
     
-    registerManagerController.$inject = ['UserService','AuthenticationService', '$location', '$rootScope', 'FlashService'];
+    registerManagerController.$inject = ['UserService','RestaurantService','AuthenticationService', '$location', '$rootScope', 'FlashService'];
     
     
     
-    function registerManagerController(UserService,AuthenticationService, $location, $rootScope, FlashService) {
+    function registerManagerController(UserService,RestaurantService,AuthenticationService, $location, $rootScope, FlashService) {
         var vm = this;
         vm.user = null;
         vm.cuser = null;
         vm.registerManager = registerManager;
         vm.loadCurrentUser = loadCurrentUser;
+        vm.loadRestaurants = loadRestaurants;
+        vm.allRestaurants = [];
+        vm.logout = logout;
         /*vm.registerM = registerM;
         
         function registeM(){
@@ -30,12 +33,17 @@
         (function initController() {
             // reset login status
     		loadCurrentUser();
-
+    		loadRestaurants();
     		//alert(vm.cuser.email);
         })();
         function r(){
         	AuthenticationService.SetCredentials(vm.cuser.email, vm.cuser.password, "SysManagerHome");
         	$location.path('/SysManagerHome');
+        }
+        
+        function logout(){
+            AuthenticationService.ClearCredentials();
+            $location.path('/login');
         }
 
         function registerManager() {
@@ -50,7 +58,7 @@
                 	}
                 	else if (response.data.email!==null) {
                     	FlashService.Success('Registration successful', true);
-                    	AuthenticationService.SetCredentials(vm.user.email, vm.user.password, "SysManagerHome");
+                    	AuthenticationService.SetCredentials(vm.cuser.email, vm.cuser.password, "SysManagerHome");
                         $location.path('/SysManagerHome');
                     } else {
                         FlashService.Error(response.message);
@@ -64,6 +72,13 @@
                 .then(function (response) {
                     vm.cuser = response.data;
                 });
+        }
+        
+        function loadRestaurants(){
+        	RestaurantService.GetAllRests()
+            .then(function (response) {
+                vm.allRestaurants = response.data;
+            });
         }
     }
     
