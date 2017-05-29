@@ -13,6 +13,7 @@
         vm.rest = null;
         vm.step1par = null;
         vm.parametar = null;
+        vm.currReservation = null;
         vm.realUser = {};
         vm.allUsers = [];
         vm.allRests = [];
@@ -241,6 +242,8 @@
         			  RestaurantService.Reserve(vm.c,vm.step1par.vreme,vm.step1par.trajanje, vm.rest.name, id, vm.user.email)
       	            .then(function (response) {
       	            	
+      	            	vm.currReservation = response.data;
+      	            	//alert(vm.currReservation.reservationId);
       	                FlashService.Success('Reservation successfuly created.',false);
 
       	                loadAllRests();

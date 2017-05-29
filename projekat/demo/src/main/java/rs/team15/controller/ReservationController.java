@@ -15,10 +15,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import rs.team15.model.FriendInvitation;
+import rs.team15.model.Guest;
 import rs.team15.model.Reservation;
 import rs.team15.model.Restaurant;
 import rs.team15.model.TableR;
 import rs.team15.model.User;
+import rs.team15.service.GuestService;
 import rs.team15.service.ReservationService;
 import rs.team15.service.RestaurantService;
 import rs.team15.service.TableService;
@@ -40,6 +43,10 @@ public class ReservationController {
 	
 	@Autowired
 	private UserService userService;
+	
+	@Autowired
+	private GuestService guestService;
+	
 	@RequestMapping(
             value    = "/api/reservations/reserve/{datum:.+}/{vreme:.+}/{trajanje:.+}/{id:.+}/{idStola:.+}/{idUser:.+}",
             method   = RequestMethod.GET,
@@ -114,5 +121,67 @@ public class ReservationController {
 		Reservation r = reservationService.cancel(res);
 		logger.info("< cancel res "+res.getReservationDateTime());
 		return new ResponseEntity<Reservation>(res, HttpStatus.OK);
+	}
+	
+	@RequestMapping(
+            value    = "/api/reservations/findFriends/{parametar:.+}/{email:.+}",
+            method   = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE
+)
+		public ResponseEntity<Collection<Guest>> findFriends(@PathVariable String parametar,@PathVariable String email) {
+			logger.info("> find guests"+parametar);
+			Collection<Guest> guests = guestService.getGuestByFirstName(parametar);
+			
+			User u = userService.findByEmail(email);
+			
+			Collection<User> friendsIAccept = guestService.findFriendsIAccept(u.getId());
+			Collection<User> friendsIAdd = guestService.findFriendsIAdd(u.getId());
+			
+			Collection<Guest> finded = new ArrayList<Guest>();
+			logger.info("< find guests");
+			for(Guest g : guests){
+				logger.info(g.getFirstName());
+				for(User u1 : friendsIAccept){
+					if(u1.getEmail().equals(g.getEmail())){
+						finded.add(g);
+					}
+				}
+				for(User u1 : friendsIAdd){
+					if(u1.getEmail().equals(g.getEmail())){
+						finded.add(g);
+					}
+				}
+			}
+			return new ResponseEntity<Collection<Guest>>(finded, HttpStatus.OK);
+	}
+	
+	@RequestMapping(
+            value    = "/api/reservations/call/{parametar:.+}/{email:.+}/{rsid:.+}",
+            method   = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE
+)
+		public ResponseEntity<FriendInvitation> callFriend(@PathVariable String parametar,@PathVariable String email, @PathVariable String rsid) {
+			logger.info("> find guests"+parametar);
+			User u1 = userService.findByEmail(parametar);
+			User u = userService.findByEmail(email);
+			Reservation r = reservationService.findByResId(Long.parseLong(rsid));
+			logger.info(r.getLength().toString());
+			FriendInvitation g = guestService.addFriendInvite(u.getId(), u1.getId(),r);
+			
+			return new ResponseEntity<FriendInvitation>(g, HttpStatus.OK);
+	}
+	
+	@RequestMapping(
+            value    = "/api/reservations/findFI/{email:.+}",
+            method   = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE
+)
+		public ResponseEntity<Collection<FriendInvitation>> callFriend(@PathVariable String email) {
+			logger.info("> find guests"+email);
+			User u = userService.findByEmail(email);
+			
+			Collection<FriendInvitation> invitations = guestService.findFI(u.getId());
+			
+			return new ResponseEntity<Collection<FriendInvitation>>(invitations, HttpStatus.OK);
 	}
 }

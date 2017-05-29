@@ -5,6 +5,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "reservations")
@@ -76,6 +78,18 @@ public class Reservation {
 		this.tableRes = tid;
 	}
 
+    @OneToMany(mappedBy = "reservation", fetch = FetchType.LAZY)
+    private Set <FriendInvitation> invitations = new HashSet <FriendInvitation>(0);
+    
+	@JsonIgnore
+	public Set<FriendInvitation> getInvitations() {
+		return invitations;
+	}
+	
+	@JsonProperty
+	public void setInvitations(Set<FriendInvitation> invitations) {
+		this.invitations = invitations;
+	}
 	public Reservation(Restaurant restaurant, String date, String time, String length, TableR tid) {
 		super();
 		this.restaurant = restaurant;

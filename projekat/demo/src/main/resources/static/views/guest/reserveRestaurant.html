@@ -96,7 +96,7 @@
 <table ng-repeat="user in vm.allUsers">
 
         <tr><td><img id="thumbnail" src={{user.image}}></td><td>{{user.firstName}}</td><td> &nbsp;&nbsp;{{user.lastName}}</td>
-       <td><button class="btn btn-primary" ng-click="vm.add(user.id)">ADD</button></td></tr>
+       <td><button class="btn btn-primary" ng-click="vm.call(user.email)">CALL</button></td></tr>
      </table>
 <form ng-submit="vm.findUsers()" role="form">
 <div class="form-group" ng-class="{ 'has-error': form.parametar.$dirty && form.parametar.$error.required && form.parametar.$error.maxlength && form.parametar.$error.minlength }">
