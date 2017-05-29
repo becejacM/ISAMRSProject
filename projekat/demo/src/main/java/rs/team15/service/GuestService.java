@@ -2,8 +2,10 @@ package rs.team15.service;
 
 import java.util.Collection;
 
+import rs.team15.model.FriendInvitation;
 import rs.team15.model.Friendship;
 import rs.team15.model.Guest;
+import rs.team15.model.Reservation;
 import rs.team15.model.User;
 
 
@@ -30,4 +32,9 @@ public interface GuestService {
 	Friendship reject(Long senderId, Long receiverId);
 
 	Friendship deleteF(Long senderId, Long receiverId);
+	
+	
+	FriendInvitation addFriendInvite(Long senderId, Long receiverId, Reservation r);
+	
+	Collection<FriendInvitation> findFI(Long id);
 }

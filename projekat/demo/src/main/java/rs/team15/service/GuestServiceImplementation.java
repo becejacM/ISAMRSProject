@@ -7,9 +7,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import rs.team15.model.FriendInvitation;
 import rs.team15.model.Friendship;
 import rs.team15.model.Guest;
+import rs.team15.model.Reservation;
 import rs.team15.model.User;
+import rs.team15.repository.FriendInvitationRepository;
 import rs.team15.repository.FriendshipRepository;
 import rs.team15.repository.GuestRepository;
 import rs.team15.repository.UserRepository;
@@ -26,6 +29,8 @@ public class GuestServiceImplementation implements GuestService{
 	 @Autowired
 	 FriendshipRepository friendshipRepository;
 	 
+	 @Autowired
+	 FriendInvitationRepository friendInvitationRepository;
 	@Override
 	public Guest getGuest(Long id) {
 		// TODO Auto-generated method stub
@@ -124,5 +129,31 @@ public class GuestServiceImplementation implements GuestService{
 
         return null;
 		
+	}
+
+	@Override
+	public FriendInvitation addFriendInvite(Long senderId, Long receiverId, Reservation r) {
+		// TODO Auto-generated method stub
+		FriendInvitation f = friendInvitationRepository.getFriendship("pending", senderId, receiverId);
+		if(f!=null){
+			return null;
+		}
+		FriendInvitation ff = friendInvitationRepository.getFriendship("accept", senderId, receiverId);
+		if(ff!=null){
+			return null;
+		}
+		FriendInvitation fs = new FriendInvitation();
+        fs.setSender(guestRepository.findOne(senderId));
+        fs.setReceiver(guestRepository.findOne(receiverId));
+        fs.setStatus("pending");
+        fs.setReservation(r);
+
+        return friendInvitationRepository.save(fs);
+	}
+
+	@Override
+	public Collection<FriendInvitation> findFI(Long id) {
+		// TODO Auto-generated method stub
+		return friendInvitationRepository.findRequests("pending", id);
 	}
 }
