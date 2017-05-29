@@ -5,18 +5,23 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import rs.team15.model.Reservation;
 import rs.team15.repository.ReservationRepository;
 import rs.team15.repository.RestaurantRepository;
 
 @Service
+//@Transactional(readOnly = true)
 public class ReservationServiceImplementation implements ReservationService{
 
 	@Autowired
     ReservationRepository reservationRepository;
 	
 	@Override
+	//@Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED)
 	public Reservation create(Reservation reservation) {
 		// TODO Auto-generated method stub
 		
@@ -44,11 +49,12 @@ public class ReservationServiceImplementation implements ReservationService{
 	}
 
 	@Override
+	//@Transactional(readOnly = false)
 	public Reservation cancel(Reservation r) {
 		// TODO Auto-generated method stub
 		r.setStatus("cancel");
-		reservationRepository.save(r);
-		return null;
+		
+		return reservationRepository.save(r);
 	}
 
 }
