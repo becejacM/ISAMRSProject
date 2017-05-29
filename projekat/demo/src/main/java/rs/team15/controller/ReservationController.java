@@ -118,7 +118,9 @@ public class ReservationController {
 	public ResponseEntity<Reservation> cancel(@PathVariable String reservationId) {
 		logger.info("> cancel res  "+reservationId);
 		Reservation res = reservationService.findByResId(Long.parseLong(reservationId));
+		logger.info("> cancel res  "+res.getId());
 		Reservation r = reservationService.cancel(res);
+		logger.info("> cancel res  "+r.getId());
 		logger.info("< cancel res "+res.getReservationDateTime());
 		return new ResponseEntity<Reservation>(res, HttpStatus.OK);
 	}

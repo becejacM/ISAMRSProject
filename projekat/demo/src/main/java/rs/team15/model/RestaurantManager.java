@@ -24,13 +24,13 @@ public class RestaurantManager extends User{
     private Long mid;
 	
 	@JsonIgnore
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "rid")
 	private Restaurant restaurant;
 
-	/*@JoinColumn(name = "rid")
-    @ManyToOne(cascade = CascadeType.ALL)*/
-	//private String restaurantName;
+	/*@JoinColumn(name = "name")
+    @ManyToOne(cascade = CascadeType.ALL)
+	private String restaurantName;*/
 
 	
 	public RestaurantManager(){

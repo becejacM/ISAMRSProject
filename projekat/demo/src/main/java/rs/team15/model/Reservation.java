@@ -45,7 +45,18 @@ public class Reservation {
     @Column(name = "status")
     private String status;
     
-    public String getStatus() {
+    /*@Version
+	private Long version;
+    
+    public Long getVersion() {
+		return version;
+	}
+
+	public void setVersion(Long version) {
+		this.version = version;
+	}*/
+
+	public String getStatus() {
 		return status;
 	}
 
