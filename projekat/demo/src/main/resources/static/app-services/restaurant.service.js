@@ -9,6 +9,11 @@
     function RestaurantService($http, $q) {
         var service = {};
 
+        service.Reserve = Reserve;
+        service.GetHours = GetHours;
+        service.getRestByUserEmail = getRestByUserEmail;
+        service.cancel = cancel;
+      
         service.GetAllRests = GetAllRests;
         service.GetById = GetById;
 
@@ -30,12 +35,29 @@
         //service.GetByName = GetByName;
         //service.GetRegion = GetRegion;
 
-        service.GetHours = GetHours;
-        service.Reserve = Reserve;
-
         return service;
 
+        function Reserve(datum, vreme, trajanje, nameRest,idstola, iduser) {
+            //return $http.get('/api/users/' + email).then(handleSuccess, handleError('Error getting user by email'));
+            return $http.get('api/reservations/reserve/' + datum+'/'+vreme+'/'+trajanje+'/'+nameRest+'/'+idstola+'/'+iduser)
+            .then(function(response) {
+                return response;
+            }); 
+        }
         
+        function getRestByUserEmail(email){
+        	return $http.get('api/reservations/getByUserEmail/' + email)
+            .then(function(response) {
+                return response;
+            }); 
+        }
+        
+        function cancel(reservationId){
+        	return $http.get('api/reservations/cancel/' + reservationId)
+            .then(function(response) {
+                return response;
+            }); 
+        }
         function GetAllRests() {
         	
             //return $http.get('/api/users').then(handleSuccess, handleError('Error getting all users'));
@@ -46,7 +68,6 @@
         }
         
         function GetById(id) {
-        	alert("ovd");
             //return $http.get('/api/users/' + email).then(handleSuccess, handleError('Error getting user by email'));
             return $http.get('/api/restaurants/get/' + id)
             .then(function(response) {
@@ -125,14 +146,7 @@
             }); 
         }
         
-        function Reserve(datum, vreme, trajanje, nameRest,idstola) {
-        	
-            //return $http.get('/api/users/' + email).then(handleSuccess, handleError('Error getting user by email'));
-            return $http.get('api/reservations/reserve/' + datum+'/'+vreme+'/'+trajanje+'/'+nameRest+'/'+idstola)
-            .then(function(response) {
-                return response;
-            }); 
-        }
+        
         
         function find(parametar,parametar2) {
             //return $http.get('/api/users').then(handleSuccess, handleError('Error getting all users'));

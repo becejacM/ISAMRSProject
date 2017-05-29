@@ -93,6 +93,7 @@ public class Region {
         this.tables = tables;
     }
 
+    
     public Integer getRegionNo() {
         return regionNo;
     }
@@ -101,12 +102,12 @@ public class Region {
         this.regionNo = regionNo;
     }
 
-    @JsonProperty
+    @JsonIgnore
 	public Set<Employee> getEmployees() {
 		return employees;
 	}
 
-    @JsonIgnore
+    @JsonProperty
 	public void setEmployees(Set<Employee> employees) {
 		this.employees = employees;
 	}

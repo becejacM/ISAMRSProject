@@ -111,7 +111,7 @@ public class RestaurantController {
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity <Restaurant> CreateRestaurant(@RequestBody Restaurant restaurant,@PathVariable("email") String email) {
 		logger.info("< create userrrrrrrrrrrrrrrrrrrrr "+restaurant.getName()+"   "+email);
-        SystemManager manager = (SystemManager)userService.findByEmail(email);
+        RestaurantManager manager = (RestaurantManager)userService.findByEmail(email);
         restaurant.setSystemManager(manager);
 		restaurant.setImage("pictures/user.png");
         restaurant.setMenuItemMenu(null);
@@ -155,9 +155,12 @@ public class RestaurantController {
 					dateDo.setMinutes(dateDo.getMinutes()+1);
 					logger.info(dateOd.toString());
 					logger.info(dateDo.toString());
-				    if((date.after(dateOd) && date.before(dateDo))||(date2.after(dateOd) && date2.before(dateDo)) ){
-				    	available = false;
+					if(reservation.getStatus().equals("reserved")){
+						if((date.after(dateOd) && date.before(dateDo))||(date2.after(dateOd) && date2.before(dateDo)) ){
+					    	available = false;
+						}
 					}
+				    
 			    }
 			    if(available){
 				    ret.add(t);

@@ -34,34 +34,20 @@ public class ReservationServiceTest {
 	@Autowired
 	ReservationService resService;
 	
-
 	@Autowired
-	RestaurantRepository rRepository;
-	
-	@Autowired
-	RegionRepository regRepository;
-	
-	@Autowired
-	TableRepository tRepository;
+	UserService userService;
 	
 	@Test
 	public void createResService(){
-		/*Set<MenuItem> menuItems = new HashSet<MenuItem>();
-		Set<Region> regions = new HashSet<Region>();
-		Set<TableR> tables = new HashSet<TableR>();
-		Restaurant u = new Restaurant("kkk",Integer.parseInt("8"),Integer.parseInt("21"), menuItems, regions);
-		rRepository.save(u);
-		
-		Region r = new Region("region255","FC1501",u,Integer.parseInt("2"),tables);
-		regRepository.save(r);
-		TableR t = new TableR(Double.parseDouble("100"),Double.parseDouble("100"),Double.parseDouble("200"),Double.parseDouble("50"),5);
-		tRepository.save(t);
-
-		Reservation rest = new Reservation(u,"05.05.2017","10:00","12:00",t);
-		
-
-		resService.create(rest);
-		Reservation res = resService.findByResId(Long.parseLong("2"));*/
-		//assertEquals(res.get, "Marko");
+	}
+	
+	@Test
+	public void getReservationsByUser(){
+		User u = userService.findByEmail("milana.becejac@gmail.com");
+		Collection<Reservation> res = resService.findByUserId(u.getId());
+		for(Reservation r : res){
+			System.out.println(r.getUid().getEmail());
+		}
+		assertNotNull(res);
 	}
 }

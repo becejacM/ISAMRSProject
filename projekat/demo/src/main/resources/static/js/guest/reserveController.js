@@ -12,9 +12,11 @@
         vm.user = null;
         vm.rest = null;
         vm.step1par = null;
+        vm.parametar = null;
         vm.realUser = {};
         vm.allUsers = [];
         vm.allRests = [];
+        vm.AllReservations = [];
         vm.regions = [];
         vm.tables = [];
 
@@ -26,6 +28,9 @@
         
         vm.show = show;
         
+        vm.allReservationsMode = false;
+        vm.showReservations = showReservations;
+        
         vm.allRestsMode = false;
         vm.showRests = showRests;
         
@@ -35,10 +40,16 @@
         vm.restModeStep2 = false;
         vm.showRestStep2 = showRestStep2;
         
+        vm.restModeStep3 = false;
+        vm.showRestStep3 = showRestStep3;
+        
         vm.step1 = step1;
         vm.step2 = step2;
+        vm.step3 = step3;
         
-        vm.find = find
+        vm.find = find;
+        vm.findUsers = findUsers;
+        vm.cancel = cancel;
         vm.parametar = null;
         vm.c = "";
         vm.time=[];
@@ -58,18 +69,35 @@
         	vm.allRestsMode = true;
         	vm.restModeStep1 = false;
         	vm.restModeStep2 = false;
+        	vm.restModeStep3 = false;
+        	vm.allReservationsMode = false;
+
         }
         
         function showRestStep1(){
         	vm.allRestsMode = false;
         	vm.restModeStep1 = true;
         	vm.restModeStep2 = false;
+        	vm.restModeStep3 = false;
+        	vm.allReservationsMode = false;
+
         }
         
         function showRestStep2(){
         	vm.allRestsMode = false;
         	vm.restModeStep1 = false;
         	vm.restModeStep2 = true;
+        	vm.restModeStep3 = false;
+        	vm.allReservationsMode = false;
+
+        }
+        function showRestStep3(){
+        	vm.allRestsMode = false;
+        	vm.restModeStep1 = false;
+        	vm.restModeStep2 = false;
+        	vm.restModeStep3 = true;
+        	vm.allReservationsMode = false;
+
         }
         vm.v = null;
         function loadAllRests() {
@@ -81,6 +109,20 @@
                 });
         }
         
+        function showReservations(){
+        	FlashService.clearFlashMessageP();
+        	RestaurantService.getRestByUserEmail(vm.user.email)
+            .then(function (rests) {
+            	
+                vm.allReservations = rests.data;
+                loadAllRests();
+            	vm.allRestsMode = false;
+            	vm.restModeStep1 = false;
+            	vm.restModeStep2 = false;
+            	vm.restModeStep3 = false;
+                vm.allReservationsMode = true;
+            });
+        }
         function step1(id){
         	FlashService.clearFlashMessageP();
         	RestaurantService.GetById(id)
@@ -119,7 +161,7 @@
         			canvas.add(new fabric.Rect({
         				width: vm.regions[j].width, height: vm.regions[j].height, left: vm.regions[j].datax, top: vm.regions[j].datay, angle: 0,fill: '#'+vm.regions[j].region.color}));
 
-        			var t = "#"+vm.regions[j].tableInRestaurantNo;
+        			var t = (vm.regions[j].numOfChairs).toString();
         			var text = new fabric.Text(t, {
         			  fontSize: 15,
         			  originX: 'center',
@@ -149,7 +191,7 @@
         	canvas.setDimensions({width:800, height:500});
         	canvas.border = 2;
         	for (var j=0; j < vm.regions.length; j++) {
-        		var t = ""+vm.regions[j].tableInRestaurantNo;
+        		var t = (vm.regions[j].numOfChairs).toString();
     			var text = new fabric.Text(t, {
     			  fontSize: 15,
     			  originX: 'center',
@@ -163,7 +205,7 @@
     				angle: 0,
     				fill: '#'+vm.regions[j].region.color});
     			var group = new fabric.Group([ rect, text ], {
-    				
+    				id : vm.regions[j].tableInRestaurantNo,
     				left: vm.regions[j].datax, 
     				top: vm.regions[j].datay, 
     				angle: 0
@@ -171,7 +213,7 @@
     			group.on('selected', function() {
     				
     				//alert(t);
-    				RestaurantService.Reserve(vm.c,vm.step1par.vreme,vm.step1par.trajanje, vm.rest.name, t)
+    				/*RestaurantService.Reserve(vm.c,vm.step1par.vreme,vm.step1par.trajanje, vm.rest.name, t, vm.user.email)
     	            .then(function (response) {
     	            	
     	                FlashService.Success('Reservation successfuly created.',false);
@@ -180,11 +222,38 @@
     	            	vm.allRestsMode = false;
     	            	vm.restModeStep1 = false;
     	            	vm.restModeStep2 = false;
-    	            });
+    	            	vm.restModeStep3 = true;
+    	            });*/
     			});
     			canvas.add(group);
         		}
+        	canvas.on({
+        	    'object:selected': onObjectSelected
+        	    
+        	  });
+        	  
+        	  
+        	  function onObjectSelected(e){
+        		  if(e.target === null) 
+        			  alert("no");
+        		  else {
+        			  var id = e.target.get('id');
+        			  RestaurantService.Reserve(vm.c,vm.step1par.vreme,vm.step1par.trajanje, vm.rest.name, id, vm.user.email)
+      	            .then(function (response) {
+      	            	
+      	                FlashService.Success('Reservation successfuly created.',false);
+
+      	                loadAllRests();
+      	            	vm.allRestsMode = false;
+      	            	vm.restModeStep1 = false;
+      	            	vm.restModeStep2 = false;
+      	            	vm.restModeStep3 = true;
+      	            });
+        		  }
+        		  
+        	  }
         }
+        
         function step2() {
         	var d=new Date(document.getElementById("dt").value);
         	var dt=d.getDate();
@@ -197,8 +266,8 @@
             	
                 vm.regions = response.data;
             	if(vm.regions.length===0){
-                	FlashService.Error('This restaurant have no table for this date.',false);
-
+                	FlashService.Error('This restaurant has no table for this date.',false);
+                	//showRests();
             	}
             	else{
             		
@@ -212,6 +281,11 @@
       	  
       	 
       	}
+        
+        
+        function step3(){
+        	
+        }
 
         function profil(){
         	
@@ -249,9 +323,20 @@
         
         
         
-        
+        function findUsers() {
+        	
+        	UserService.find(vm.parametar.par)
+            .then(function (response) {
+            	vm.allUsers = response.data;
+            });
+        }
 
-        
+        function cancel(reservationId){
+        	RestaurantService.cancel(reservationId)
+            .then(function (response) {
+            	showReservations();
+            });
+        }
     }
 
 })();

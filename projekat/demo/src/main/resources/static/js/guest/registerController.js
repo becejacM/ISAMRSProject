@@ -29,7 +29,6 @@
                         $location.path('/login');
                     } else {
                         FlashService.Error(response.message);
-                        //vm.dataLoading = false;
                         $location.path('/register');
                     }
                 });

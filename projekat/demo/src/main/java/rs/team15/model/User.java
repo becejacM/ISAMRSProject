@@ -1,25 +1,32 @@
 package rs.team15.model;
 
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.OneToMany;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Proxy;
 import org.hibernate.annotations.Type;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Entity
 @Table(name="app_users")
 @PrimaryKeyJoinColumn(name="id")
 @Inheritance(strategy = InheritanceType.JOINED)
+@Proxy(lazy=false) //za testove da se ne zatvara sesija
 public class User implements Serializable{
 	
 	@Id
@@ -53,13 +60,19 @@ public class User implements Serializable{
 
     private String message;
     
+    @OneToMany(mappedBy = "userid", fetch = FetchType.LAZY)
+    private Set <Reservation> reservations = new HashSet <Reservation>(0);
     
-    public String getMessage() {
-		return message;
+	@JsonIgnore
+	public Set<Reservation> getReservations() {
+		return reservations;
 	}
-	public void setMessage(String message) {
-		this.message = message;
+	
+	@JsonProperty
+	public void setReservations(Set<Reservation> reservations) {
+		this.reservations = reservations;
 	}
+	
 	public User(Long id, String email, String firstName, String lastName, String password){
     	this.id = id;
 		this.email = email;
@@ -101,6 +114,12 @@ public class User implements Serializable{
 		
 	}
 
+	public String getMessage() {
+			return message;
+		}
+	public void setMessage(String message) {
+			this.message = message;
+		}
 	public Long getId() {
 		return id;
 	}

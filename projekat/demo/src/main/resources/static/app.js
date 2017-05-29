@@ -19,31 +19,31 @@
 
             .when('/register', {
                 controller: 'RegisterController',
-                templateUrl: 'views/register.html',
+                templateUrl: 'views/guest/register.html',
                 controllerAs: 'vm'
             })
             
             .when('/home', {
                 controller: 'HomeController',
-                templateUrl: 'views/home.html',
+                templateUrl: 'views/guest/home.html',
                 controllerAs: 'vm'
             })
 
             .when('/guestProfil', {
                 controller: 'GuestProfilController',
-                templateUrl: 'views/guestProfil.html',
+                templateUrl: 'views/guest/guestProfil.html',
                 controllerAs: 'vm'
             })
 
             .when('/reserveRestaurant', {
                 controller: 'GuestReserveController',
-                templateUrl: 'views/reserveRestaurant.html',
+                templateUrl: 'views/guest/reserveRestaurant.html',
                 controllerAs: 'vm'
             })
             
             .when('/myFriends', {
                 controller: 'GuestFriendsController',
-                templateUrl: 'views/myFriends.html',
+                templateUrl: 'views/guest/myFriends.html',
                 controllerAs: 'vm'
             })
             .when('/waiterHome', {
