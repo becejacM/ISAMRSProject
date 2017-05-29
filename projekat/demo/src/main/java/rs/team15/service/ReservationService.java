@@ -12,6 +12,9 @@ public interface ReservationService {
 	
 	Collection<Reservation> findAll();
 	
+	Collection<Reservation> findByUserId(Long userid);
+	
 	Reservation findByResId(Long id);
 	
+	Reservation cancel(Reservation r);
 }

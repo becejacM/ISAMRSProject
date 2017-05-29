@@ -20,7 +20,18 @@ public class Reservation {
     @JoinColumn(name = "rid")
     private Restaurant restaurant;
 
-    @Column(name = "date")
+    @Column(name = "nameRest")
+    private String nameRest;
+    
+    public String getId() {
+		return nameRest;
+	}
+
+	public void setId(String id) {
+		this.nameRest = id;
+	}
+
+	@Column(name = "date")
     private String date;
 
     @Column(name = "time")
@@ -29,17 +40,38 @@ public class Reservation {
     @Column(name = "length")
     private String length;
     
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @Column(name = "status")
+    private String status;
+    
+    public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
+	public User getUid() {
+		return userid;
+	}
+
+	public void setUid(User uid) {
+		this.userid = uid;
+	}
+
+	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
     @JoinColumn(name = "tid")
     private TableR tableRes;
     
-    
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "uid")
+    private User userid;
 
-    
+    @JsonIgnore
     public TableR getTid() {
 		return tableRes;
 	}
-
+    @JsonProperty
 	public void setTid(TableR tid) {
 		this.tableRes = tid;
 	}
@@ -65,12 +97,14 @@ public class Reservation {
         this.rsid = reservationId;
     }
 
+    //@JsonIgnore
     @JsonIgnore
     public Restaurant getRestaurant() {
         return restaurant;
     }
 
     @JsonProperty
+    //@JsonIgnore
     public void setRestaurant(Restaurant restaurant) {
         this.restaurant = restaurant;
     }

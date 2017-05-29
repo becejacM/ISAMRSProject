@@ -30,14 +30,6 @@ public class TableR {
     @Column(name = "height")
     private Double height;
 
-    public Set<Reservation> getReservations() {
-		return reservations;
-	}
-
-	public void setReservations(Set<Reservation> reservations) {
-		this.reservations = reservations;
-	}
-
 	@Column(name = "positions")
     private Integer positions;
 
@@ -65,6 +57,17 @@ public class TableR {
 
     public TableR() {
     }
+    
+
+    @JsonIgnore
+    public Set<Reservation> getReservations() {
+		return reservations;
+	}
+
+    @JsonProperty
+	public void setReservations(Set<Reservation> reservations) {
+		this.reservations = reservations;
+	}
 
     public Long getTableId() {
         return tid;

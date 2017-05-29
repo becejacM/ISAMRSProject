@@ -18,14 +18,6 @@ public class Restaurant implements Serializable {
     @Column(name = "rid")
     private Long rid;
 
-    public Long getRid() {
-		return rid;
-	}
-
-	public void setRid(Long rid) {
-		this.rid = rid;
-	}
-
 	@Column(name = "name")
     private String name;
 
@@ -49,7 +41,7 @@ public class Restaurant implements Serializable {
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "sm_id")
-    private SystemManager systemManager;
+    private RestaurantManager systemManager;
 
     @OneToMany(mappedBy = "restaurant", fetch = FetchType.LAZY)
     private Set <MenuItem> menuItemMenu = new HashSet <MenuItem>(0);
@@ -62,8 +54,22 @@ public class Restaurant implements Serializable {
     @OneToMany(mappedBy = "restaurant", fetch = FetchType.LAZY)
     private Set <Employee> employees = new HashSet <Employee>(0);*/
 
+    @JsonIgnore
+    @OneToMany(mappedBy = "restaurant", fetch = FetchType.LAZY)
+    private Set <Reservation> reservations = new HashSet <Reservation>(0);
+    
+	@JsonIgnore
+	public Set<Reservation> getReservations() {
+		return reservations;
+	}
+	
+	@JsonProperty
+	public void setReservations(Set<Reservation> reservations) {
+		this.reservations = reservations;
+	}
     public Restaurant() {
     }
+
 
     public Long getRestaurantId() {
         return rid;
@@ -113,11 +119,13 @@ public class Restaurant implements Serializable {
         this.endTime = endTime;
     }
 
-    public SystemManager getSystemManager() {
+    //@JsonIgnore
+    public RestaurantManager getSystemManager() {
         return systemManager;
     }
 
-    public void setSystemManager(SystemManager systemManager) {
+    //@JsonProperty
+    public void setSystemManager(RestaurantManager systemManager) {
         this.systemManager = systemManager;
     }
 
@@ -148,6 +156,7 @@ public class Restaurant implements Serializable {
     public void setRegions(Set <Region> regions) {
         this.regions = regions;
     }
+
 
     /*@JsonProperty
 	public Set<Employee> getEmployees() {

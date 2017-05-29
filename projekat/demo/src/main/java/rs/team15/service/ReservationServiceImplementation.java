@@ -19,21 +19,35 @@ public class ReservationServiceImplementation implements ReservationService{
 	@Override
 	public Reservation create(Reservation reservation) {
 		// TODO Auto-generated method stub
-		reservationRepository.save(reservation);
-		return null;
+		
+		return reservationRepository.save(reservation);
 	}
 
 	@Override
 	public Collection<Reservation> findAll() {
 		// TODO Auto-generated method stub
-		reservationRepository.findAll();
-		return null;
+		
+		return reservationRepository.findAll();
 	}
 
 	@Override
 	public Reservation findByResId(Long id) {
 		// TODO Auto-generated method stub
-		reservationRepository.findByReserveID(id);
+		
+		return reservationRepository.findByRsid(id);
+	}
+
+	@Override
+	public Collection<Reservation> findByUserId(Long userid) {
+		// TODO Auto-generated method stub
+		return reservationRepository.findByUserid_Id(userid);
+	}
+
+	@Override
+	public Reservation cancel(Reservation r) {
+		// TODO Auto-generated method stub
+		r.setStatus("cancel");
+		reservationRepository.save(r);
 		return null;
 	}
 
