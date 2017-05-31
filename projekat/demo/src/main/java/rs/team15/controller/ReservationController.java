@@ -163,10 +163,14 @@ public class ReservationController {
             produces = MediaType.APPLICATION_JSON_VALUE
 )
 		public ResponseEntity<FriendInvitation> callFriend(@PathVariable String parametar,@PathVariable String email, @PathVariable String rsid) {
-			logger.info("> find guests"+parametar);
+			logger.info("> find guests "+rsid);
+			logger.info("> find guests "+parametar);
+			logger.info("> find guests "+email);
 			User u1 = userService.findByEmail(parametar);
 			User u = userService.findByEmail(email);
 			Reservation r = reservationService.findByResId(Long.parseLong(rsid));
+			logger.info("> find guests "+u1.getId());
+			logger.info("> find guests "+u.getId());
 			logger.info(r.getLength().toString());
 			FriendInvitation g = guestService.addFriendInvite(u.getId(), u1.getId(),r);
 			
@@ -185,5 +189,17 @@ public class ReservationController {
 			Collection<FriendInvitation> invitations = guestService.findFI(u.getId());
 			
 			return new ResponseEntity<Collection<FriendInvitation>>(invitations, HttpStatus.OK);
+	}
+	
+	@RequestMapping(
+            value    = "/api/reservations/getCalledFriends/{id:.+}",
+            method   = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE
+)
+		public ResponseEntity<Collection<FriendInvitation>> getCalledFriends(@PathVariable String id) {
+			logger.info("> find invites "+id);
+			Collection<FriendInvitation> f = guestService.getByReservation_rsid(Long.parseLong(id));
+			
+			return new ResponseEntity<Collection<FriendInvitation>>(f, HttpStatus.OK);
 	}
 }

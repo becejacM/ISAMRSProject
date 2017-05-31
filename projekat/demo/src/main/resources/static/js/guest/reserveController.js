@@ -23,7 +23,7 @@
                 geocoder.geocode({'address': address}, function(results, status) {
         			
         		    if (status === google.maps.GeocoderStatus.OK) {
-        		    	alert("ok");
+        		    	//alert("ok");
         		    	mapa.setCenter(results[0].geometry.location);
         		      var marker = new google.maps.Marker({
         		        map: resultsMap,
@@ -90,6 +90,9 @@
         vm.time2=[];
         
         vm.tid = "";
+        
+        vm.call = call;
+        
         (function initController() {
         	loadAllRests();
             loadCurrentUser();
@@ -406,7 +409,7 @@
         
         function findUsers() {
         	
-        	UserService.find(vm.parametar.par)
+        	UserService.findUsers(vm.parametar.par, vm.user.email)
             .then(function (response) {
             	vm.allUsers = response.data;
             });
@@ -417,6 +420,32 @@
             .then(function (response) {
             	showReservations();
             });
+        }
+        
+        function call(email){
+        	RestaurantService.callFriend(email, vm.user.email, vm.currReservation.reservationId)
+            .then(function (response) {
+            	FlashService.Success('Friend successfuly called.',false);
+            });
+        }
+        vm.getCalledFriends = getCalledFriends;
+        vm.friends = [];
+        function getCalledFriends(reservationId)
+        {
+        	vm.friends = [];
+        	RestaurantService.getCalledFriends(reservationId)
+            .then(function (response) {
+            	vm.friends[reservationId]= response.data;
+            	angular.forEach(vm.friends, function(value, key){
+              	     alert(key + ': ' + value);
+              	     angular.forEach(value, function(value, key){
+                  	     alert(key + ': ' + value);
+                  	});
+              	});
+            	//FlashService.Success('Friend successfuly called.',false);
+            });
+        	
+        	
         }
     }
 

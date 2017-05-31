@@ -13,7 +13,9 @@
         service.GetHours = GetHours;
         service.getRestByUserEmail = getRestByUserEmail;
         service.cancel = cancel;
-      
+        service.callFriend = callFriend;
+        service.getCalledFriends = getCalledFriends;
+        
         service.GetAllRests = GetAllRests;
         service.GetById = GetById;
 
@@ -58,6 +60,21 @@
                 return response;
             }); 
         }
+        
+        function callFriend(parametar, email, reservationId){
+        	return $http.get('api/reservations/call/' + parametar+'/' + email+'/' + reservationId)
+            .then(function(response) {
+                return response;
+            }); 
+        }
+        
+        function getCalledFriends(reservationId){
+        	return $http.get('api/reservations/getCalledFriends/' + reservationId)
+            .then(function(response) {
+                return response;
+            }); 
+        }
+        
         function GetAllRests() {
         	
             //return $http.get('/api/users').then(handleSuccess, handleError('Error getting all users'));
