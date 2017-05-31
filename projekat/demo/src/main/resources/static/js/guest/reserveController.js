@@ -5,8 +5,40 @@
         .module('app')
         .controller('GuestReserveController', GuestReserveController);
 
-    GuestReserveController.$inject = ['$location','UserService','RestaurantService', 'AuthenticationService', '$rootScope', 'FlashService','$scope'];
-    function GuestReserveController($location,UserService,RestaurantService,AuthenticationService, $rootScope, FlashService,$scope) {
+    var geocoder = null;
+    var mapa = null;
+    angular.module('app').directive("initMap", function($window) {
+        return {
+            restrict: "E",
+            template: '<div style="height: 400px;">XXX</div>',
+            link: function(scope,elem,attrs) {
+                var jElem = elem.find('div')[0];
+                console.log(jElem);
+                mapa = new google.maps.Map(jElem, {
+                    center: {lat: -34.397, lng: 150.644},
+                    zoom: 16
+                });
+                geocoder = new google.maps.Geocoder();
+                var address = "Novi Sad, Srbija";
+                geocoder.geocode({'address': address}, function(results, status) {
+        			
+        		    if (status === google.maps.GeocoderStatus.OK) {
+        		    	//alert("ok");
+        		    	mapa.setCenter(results[0].geometry.location);
+        		      var marker = new google.maps.Marker({
+        		        map: resultsMap,
+        		        position: results[0].geometry.location
+        		      });
+        		    } else {
+        		      alert('Geocode was not successful for the following reason: ' + status);
+        		    }
+        		  });
+                console.log(jElem);
+            }
+        };
+    });
+    GuestReserveController.$inject = ['$window','$document','$location','UserService','RestaurantService', 'AuthenticationService', '$rootScope', 'FlashService','$scope'];
+    function GuestReserveController($window,$document,$location,UserService,RestaurantService,AuthenticationService, $rootScope, FlashService,$scope) {
         var vm = this;
 
         vm.user = null;
@@ -44,6 +76,7 @@
         vm.restModeStep3 = false;
         vm.showRestStep3 = showRestStep3;
         
+        
         vm.step1 = step1;
         vm.step2 = step2;
         vm.step3 = step3;
@@ -57,10 +90,12 @@
         vm.time2=[];
         
         vm.tid = "";
+        
+        vm.call = call;
+        
         (function initController() {
         	loadAllRests();
             loadCurrentUser();
-            
            
         })();
         
@@ -124,11 +159,57 @@
                 vm.allReservationsMode = true;
             });
         }
+        
+        var map;
+        var marker;
+        //vm.initMap = initMap;
+        vm.showOnMap = showOnMap;
+        
+        function showOnMap(id){
+        	
+        	FlashService.clearFlashMessageP();
+        	RestaurantService.GetById(id)
+            .then(function (response) {
+                vm.rest = response.data; 
+                
+                //initMap();
+                geocodeAddress();
+            });        	
+        }
+        /*function initMap() {
+        	alert("usao");
+    	     map = new google.maps.Map(document.getElementById('map'), {
+    	     center: {lat: -34.397, lng: 150.644},
+    	     zoom: 16
+    	     });
+    	     var geocoder = new google.maps.Geocoder();
+    	     geocodeAddress(geocoder, map);
+
+        }*/
+        function geocodeAddress() {
+        	//if(user!=null && user!=""){
+        	var address = vm.rest.address +", Srbija";
+        	geocoder.geocode({'address': address}, function(results, status) {
+    			
+    		    if (status === google.maps.GeocoderStatus.OK) {
+    		    	mapa.setCenter(results[0].geometry.location);
+    		      var marker = new google.maps.Marker({
+    		        map: resultsMap,
+    		        position: results[0].geometry.location
+    		      });
+    		    } else {
+    		      alert('Geocode was not successful for the following reason: ' + status);
+    		    }
+    		  });
+        	//}
+    }
+        
         function step1(id){
         	FlashService.clearFlashMessageP();
         	RestaurantService.GetById(id)
             .then(function (response) {
                 vm.rest = response.data;
+                geocodeAddress();
                 RestaurantService.GetHours(id)
                 .then(function (response) {
                 	vm.time = response.data;
@@ -245,7 +326,7 @@
       	            	vm.currReservation = response.data;
       	            	//alert(vm.currReservation.reservationId);
       	                FlashService.Success('Reservation successfuly created.',false);
-
+      	                geocodeAddress();
       	                loadAllRests();
       	            	vm.allRestsMode = false;
       	            	vm.restModeStep1 = false;
@@ -328,7 +409,7 @@
         
         function findUsers() {
         	
-        	UserService.find(vm.parametar.par)
+        	UserService.findUsers(vm.parametar.par, vm.user.email)
             .then(function (response) {
             	vm.allUsers = response.data;
             });
@@ -339,6 +420,32 @@
             .then(function (response) {
             	showReservations();
             });
+        }
+        
+        function call(email){
+        	RestaurantService.callFriend(email, vm.user.email, vm.currReservation.reservationId)
+            .then(function (response) {
+            	FlashService.Success('Friend successfuly called.',false);
+            });
+        }
+        vm.getCalledFriends = getCalledFriends;
+        vm.friends = [];
+        function getCalledFriends(reservationId)
+        {
+        	vm.friends = [];
+        	RestaurantService.getCalledFriends(reservationId)
+            .then(function (response) {
+            	vm.friends[reservationId]= response.data;
+            	angular.forEach(vm.friends, function(value, key){
+              	     alert(key + ': ' + value);
+              	     angular.forEach(value, function(value, key){
+                  	     alert(key + ': ' + value);
+                  	});
+              	});
+            	//FlashService.Success('Friend successfuly called.',false);
+            });
+        	
+        	
         }
     }
 

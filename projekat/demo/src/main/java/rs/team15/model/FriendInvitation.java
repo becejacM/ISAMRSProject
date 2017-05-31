@@ -57,6 +57,13 @@ public class FriendInvitation implements Serializable{
 		this.status = status;
 	}
 
+	public FriendInvitation(User email, User email2, Reservation r) {
+		// TODO Auto-generated constructor stub
+		sender = email2;
+		receiver = email;
+		reservation = r;
+	}
+
 	public Long getFid() {
 		return fid;
 	}

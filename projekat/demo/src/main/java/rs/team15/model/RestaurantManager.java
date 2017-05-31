@@ -23,13 +23,15 @@ public class RestaurantManager extends User{
 	@Column(name = "m_id", insertable = false, updatable = false)
     private Long mid;
 	
+
     @OneToOne(cascade = CascadeType.MERGE)
+
     @JoinColumn(name = "rid")
 	private Restaurant restaurant;
 
-	/*@JoinColumn(name = "rid")
-    @ManyToOne(cascade = CascadeType.ALL)*/
-	//private String restaurantName;
+	/*@JoinColumn(name = "name")
+    @ManyToOne(cascade = CascadeType.ALL)
+	private String restaurantName;*/
 
 	
 	public RestaurantManager(){

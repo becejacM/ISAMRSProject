@@ -134,14 +134,14 @@ public class GuestServiceImplementation implements GuestService{
 	@Override
 	public FriendInvitation addFriendInvite(Long senderId, Long receiverId, Reservation r) {
 		// TODO Auto-generated method stub
-		FriendInvitation f = friendInvitationRepository.getFriendship("pending", senderId, receiverId);
+		/*FriendInvitation f = friendInvitationRepository.getFriendship("pending", senderId, receiverId);
 		if(f!=null){
 			return null;
 		}
 		FriendInvitation ff = friendInvitationRepository.getFriendship("accept", senderId, receiverId);
 		if(ff!=null){
 			return null;
-		}
+		}*/
 		FriendInvitation fs = new FriendInvitation();
         fs.setSender(guestRepository.findOne(senderId));
         fs.setReceiver(guestRepository.findOne(receiverId));
@@ -155,5 +155,11 @@ public class GuestServiceImplementation implements GuestService{
 	public Collection<FriendInvitation> findFI(Long id) {
 		// TODO Auto-generated method stub
 		return friendInvitationRepository.findRequests("pending", id);
+	}
+
+	@Override
+	public Collection<FriendInvitation> getByReservation_rsid(Long resid) {
+		// TODO Auto-generated method stub
+		return friendInvitationRepository.getByReservation_rsid(resid);
 	}
 }

@@ -37,4 +37,6 @@ public interface GuestService {
 	FriendInvitation addFriendInvite(Long senderId, Long receiverId, Reservation r);
 	
 	Collection<FriendInvitation> findFI(Long id);
+	
+	Collection<FriendInvitation> getByReservation_rsid(Long resid);
 }
