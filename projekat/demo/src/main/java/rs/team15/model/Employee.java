@@ -40,13 +40,12 @@ public class Employee extends User {
 	protected String firstTime;
 	
 
-	@JsonIgnore
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "rid")
 	private Restaurant restaurant;
 	
-	@JsonIgnore
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	//@JsonIgnore
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "regid")
     private Region region;
 

@@ -26,5 +26,9 @@ public interface RestaurantService {
     
     TableR delete(TableR table);
     
+    TableR find(Integer id);
+    
+    TableR update2(TableR table);
+    
     
 }

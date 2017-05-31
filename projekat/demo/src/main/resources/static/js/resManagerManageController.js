@@ -14,6 +14,8 @@
         vm.allUsers = [];
         vm.deleteUser = deleteUser;
         vm.id = null;
+        vm.activeObject = null;
+        vm.table = null;
         
         vm.regions = [];
         vm.tables = [];
@@ -27,6 +29,7 @@
         vm.registerWorker = registerWorker;
         vm.registerSuplier = registerSuplier;
         vm.resManagerProfil = resManagerProfil;
+        vm.setMenu = setMenu;
         
         vm.show = show;
         vm.addTable = addTable;
@@ -63,6 +66,11 @@
             });
         }
         
+        function setMenu(){
+        	AuthenticationService.SetCredentials(vm.user.email, vm.user.password, "setMenuItem");
+        	$location.path('/setMenuItem');
+        }
+        
         function loadRegions(){
         	RestaurantService.GetRestaurantRegions(vm.rest.name)
         	.then(function(response){
@@ -72,7 +80,9 @@
         }
         
         function changeTable(){
-        	if(canvas.getActiveObject() === null) return;
+        	if(canvas.getActiveObject() === null) 
+        		alert("No table selected!");
+        		return;
         	var o = canvas.getActiveObject();
         	
         	
@@ -145,7 +155,7 @@
           .then(function (response) {
         	  	//alert(vm.table.height);
               	//FlashService.Success('Table successfully added', true);
-              	//alert(response.data.tableInRestaurantNo);
+              	alert(response.data.tableInRestaurantNo);
               	group.id = response.data.tableInRestaurantNo;
           });
       	  
@@ -312,15 +322,24 @@
         }
         
         function editTable() {
+        	if(canvas.getActiveObject() === null) return;
             vm.editMode = true;
             vm.realUser = vm.user;
+            vm.activeObject = canvas.getActiveObject();
+            //alert(canvas.getActiveObject().get('id'));
+            var id = canvas.getActiveObject().get('id');
+            //t.tableInRestaurantNo = id;
+            RestaurantService.FindTable(id)
+	          .then(function (response) {
+	        	  	vm.table = response.data;
+	        	  	//alert('broj stola: ' + vm.table.tableInRestaurantNo);
+	              
+	          });
         }
         
         function save() {
         	vm.editMode = false;
-        	
-        	
-        	
+
         	canvas.on({
         	    'object:moving': onChange,
         	    'object:scaling': onChange,
@@ -334,6 +353,22 @@
         	      obj.setOpacity(options.target.intersectsWithObject(obj) ? 0.5 : 1);
         	    });
         	  }
+        	  
+        	  
+        	  
+        	  RestaurantService.UpdateTable2(vm.table)
+	          .then(function (response) {
+	        	  
+	        	  alert(canvas.getActiveObject().item(0).get('type'));
+	        	  alert(canvas.getActiveObject().item(1).get('type'));
+	        	  canvas.getActiveObject().item(0).set('fill', "#" + response.data.region.color);
+	        	  //canvas.renderAll();
+	        	  canvas.getActiveObject().item(1).setText((response.data.numOfChairs).toString());
+	        	  canvas.renderAll();
+	          });
+        	  
+        	  
+        	  
         }
         
         

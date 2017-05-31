@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import rs.team15.model.Guest;
+import rs.team15.model.MenuItem;
 import rs.team15.model.Region;
 import rs.team15.model.Reservation;
 import rs.team15.model.Restaurant;
@@ -36,7 +37,7 @@ import rs.team15.model.User;
 import rs.team15.repository.TableRepository;
 
 import rs.team15.repository.RestaurantRepository;
-
+import rs.team15.service.MenuItemService;
 import rs.team15.service.RestaurantService;
 import rs.team15.service.SystemManagerService;
 import rs.team15.service.UserService;
@@ -56,6 +57,9 @@ public class RestaurantController {
 	
 	@Autowired
 	private SystemManagerService systemManagerService; 
+	
+	@Autowired
+	private MenuItemService menuItemService;
 
 	
 	@RequestMapping(
@@ -111,7 +115,7 @@ public class RestaurantController {
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity <Restaurant> CreateRestaurant(@RequestBody Restaurant restaurant,@PathVariable("email") String email) {
 		logger.info("< create userrrrrrrrrrrrrrrrrrrrr "+restaurant.getName()+"   "+email);
-        RestaurantManager manager = (RestaurantManager)userService.findByEmail(email);
+        SystemManager manager = (SystemManager)userService.findByEmail(email);
         restaurant.setSystemManager(manager);
 		restaurant.setImage("pictures/user.png");
         restaurant.setMenuItemMenu(null);
@@ -120,6 +124,87 @@ public class RestaurantController {
 		logger.info("< create user");
 		return new ResponseEntity<Restaurant>(created, HttpStatus.OK);
 	}
+	
+	//add dishes
+	@RequestMapping(value = "/api/dishes/{name}",
+            method = RequestMethod.POST,
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity <MenuItem> CreateDish(@RequestBody MenuItem menuItem,@PathVariable("name") String name) {
+		logger.info("< create dishhhhhhhhhhhh "+name);
+        Restaurant res = restaurantService.findById(name);
+        menuItem.setImage("image");
+        menuItem.setDeleted(false);
+        menuItem.setType("dish");
+        MenuItem created = menuItemService.create(menuItem);
+        res.getMenuItemMenu().add(created);
+		logger.info("< create user");
+		return new ResponseEntity<MenuItem>(created, HttpStatus.OK);
+	}
+	
+	//listDishes
+	@RequestMapping(
+            value    = "/api/dishes",
+            method   = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE
+			)
+	public ResponseEntity<Collection<MenuItem>> getDishes() {
+		logger.info("> get dishes");
+		Collection<MenuItem> items = menuItemService.findAll();
+		Collection<MenuItem> dishes = new ArrayList<MenuItem>();
+		System.out.println(items.size());
+		for(MenuItem r :items){
+			System.out.println(r.getName());
+			logger.info(r.getType());
+			if(r.getType().equals("dish")){
+				dishes.add(r);
+			}
+		}
+		System.out.println(dishes.size());
+		logger.info("< get dish");
+		return new ResponseEntity<Collection<MenuItem>>(dishes, HttpStatus.OK);
+	}
+	
+	//add drinks
+		@RequestMapping(value = "/api/drinks/{name}",
+	            method = RequestMethod.POST,
+	            consumes = MediaType.APPLICATION_JSON_VALUE,
+	            produces = MediaType.APPLICATION_JSON_VALUE)
+	    public ResponseEntity <MenuItem> CreateDrink(@RequestBody MenuItem menuItem,@PathVariable("name") String name) {
+			logger.info("< create dishhhhhhhhhhhh "+name);
+	        Restaurant res = restaurantService.findById(name);
+	        menuItem.setImage("image");
+	        menuItem.setDeleted(false);
+	        menuItem.setType("drink");
+	        MenuItem created = menuItemService.create(menuItem);
+	        res.getMenuItemMenu().add(created);
+			logger.info("< create user");
+			return new ResponseEntity<MenuItem>(created, HttpStatus.OK);
+		}
+		
+		//listDishes
+		@RequestMapping(
+	            value    = "/api/drinks",
+	            method   = RequestMethod.GET,
+	            produces = MediaType.APPLICATION_JSON_VALUE
+				)
+		public ResponseEntity<Collection<MenuItem>> getDrinks() {
+			logger.info("> get drinks");
+			Collection<MenuItem> items = menuItemService.findAll();
+			Collection<MenuItem> drinks = new ArrayList<MenuItem>();
+			System.out.println(items.size());
+			for(MenuItem r :items){
+				System.out.println(r.getName());
+				logger.info(r.getType());
+				if(r.getType().equals("drink")){
+					drinks.add(r);
+				}
+			}
+			System.out.println(drinks.size());
+			logger.info("< get drink");
+			return new ResponseEntity<Collection<MenuItem>>(drinks, HttpStatus.OK);
+		}
+
 
 	@RequestMapping(
             value    = "/api/restaurants/getAllATables/{datum:.+}/{vreme:.+}/{trajanje:.+}/{id:.+}",
@@ -252,7 +337,7 @@ public class RestaurantController {
 		
 	       
 		TableR created = restaurantService.create(table);
-		logger.info("< create table {}", table.getRegion().getRegId());
+		//logger.info("< create table {}", table.getRegion().getRegId());
 		return new ResponseEntity<TableR>(created, HttpStatus.CREATED);
 	}
 	
@@ -285,5 +370,34 @@ public class RestaurantController {
 		logger.info("< delete table {}", table.getTableInRestaurantNo());
 		
 		return new ResponseEntity<TableR>(deleted, HttpStatus.OK);
+	}
+	
+	@RequestMapping(
+            value    = "/api/users/findTable/{id:.+}",
+            method   = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE
+		)
+	public ResponseEntity<TableR> findTableById(@PathVariable Integer id) {
+		
+		TableR t = restaurantService.find(id);
+
+		return new ResponseEntity<TableR>(t, HttpStatus.OK);
+	}
+	
+	@RequestMapping(
+            value    = "api/users/updateTable2",
+            method   = RequestMethod.PUT,
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE
+		)
+	public ResponseEntity<TableR> updateTable2(@RequestBody TableR table) {
+		/*table.setWidth(50.00);
+		table.setHeight(50.00);
+		table.setDatax(400.00);
+		table.setDatay(400.00);*/
+	       
+		TableR updated = restaurantService.update2(table);
+		logger.info("< update table");
+		return new ResponseEntity<TableR>(updated, HttpStatus.OK);
 	}
 }

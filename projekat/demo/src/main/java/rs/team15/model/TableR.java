@@ -43,7 +43,7 @@ public class TableR {
     private Integer numOfChairs;
 
     //@JsonIgnore
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "regid")
     private Region region;
 

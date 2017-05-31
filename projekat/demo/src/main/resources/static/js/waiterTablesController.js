@@ -15,7 +15,7 @@
         vm.deleteUser = deleteUser;
 
         vm.regions = [];
-        
+        vm.tables = [];
         vm.rest = null;
         
         vm.show = show;
@@ -42,7 +42,6 @@
         })();
         
         function loadRestaurant(){
-        	alert("aaaa");
         	RestaurantService.GetRestaurantE(vm.user.email)
             .then(function (response) {
                 vm.rest = response.data;
@@ -52,23 +51,26 @@
         
         
         function show() {
-        	RestaurantService.GetByName(vm.user.restaurant.name)
+        	/*RestaurantService.GetByName(vm.user.restaurant.name)
             .then(function (response) {
                 vm.rest = response.data;
-                //alert(vm.rest.name);
+                //alert(vm.rest.name);*/
+        		alert(vm.rest.name);
                 RestaurantService.GetAllTables(vm.rest.name)
 	            .then(function (response) {
 	                vm.regions = response.data;
 	                //alert(vm.regions.length);
 	            	for (var j=0; j < vm.regions.length; j++) {
-	            			//alert(vm.regions[j].numOfChairs);
+	            		if(vm.regions[j].deleted === "no"){
 	            			var re = new fabric.Rect({width: vm.regions[j].width, height: vm.regions[j].height, angle: 0, originX: 'center', originY: 'center', fill: '#' + vm.regions[j].region.color});
 	            			var text = new fabric.Text((vm.regions[j].numOfChairs).toString(), {fontSize: 20, originX: 'center', originY: 'center'});
         					var group = new fabric.Group([re, text], {left: vm.regions[j].datax, top: vm.regions[j].datay, angle: 0});
         					canvas.add(group);
+	            		}
+	            			
 	            	}
 	                
-	            });
+	            //});
             });
 
         	  canvas.on({
@@ -121,6 +123,8 @@
             UserService.GetByUsername($rootScope.globals.currentUser.email)
                 .then(function (response) {
                     vm.user = response.data;
+                    alert(vm.user.email);
+                    loadRestaurant();
                 });
         }
         

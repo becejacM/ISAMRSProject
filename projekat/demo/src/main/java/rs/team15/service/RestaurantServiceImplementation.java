@@ -55,12 +55,16 @@ public class RestaurantServiceImplementation implements RestaurantService{
 	@Override
 	public TableR create(TableR table) {
 		TableR t = tableRepository.findOne();
-		
-		int i = t.getTableInRestaurantNo() + 1;
-		logger.info("<< number: {}", i);
-		table.setTableInRestaurantNo(i);
-		
-		
+		int i = 1;
+		if(t == null){
+			table.setTableInRestaurantNo(i);
+		}
+		else {
+			i = t.getTableInRestaurantNo() + 1;
+			logger.info("<< number: {}", i);
+			table.setTableInRestaurantNo(i);
+		}
+
 		return tableRepository.save(table);
 	}
 
@@ -92,6 +96,21 @@ public class RestaurantServiceImplementation implements RestaurantService{
 			return null;
 		deleted.setDeleted("yes");
 		return tableRepository.save(deleted);
+	}
+
+	@Override
+	public TableR find(Integer id) {
+		return tableRepository.findByTableInRestaurantNo(id);
+	}
+
+	@Override
+	public TableR update2(TableR table) {
+		TableR updated = tableRepository.findByTableInRestaurantNo(table.getTableInRestaurantNo());
+		if (updated == null)
+			return null;
+		updated.setNumOfChairs(table.getNumOfChairs());
+		updated.setRegion(table.getRegion());
+		return tableRepository.save(updated);
 	}
 
 	/*@Override

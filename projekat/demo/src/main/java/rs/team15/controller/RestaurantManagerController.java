@@ -36,7 +36,7 @@ private Logger logger = LoggerFactory.getLogger(this.getClass());
 	public ResponseEntity<Restaurant> getRestaurant(@PathVariable String id) {
 		
 		Restaurant r = restaurantManagerService.getRestaurant(id);
-		logger.info("< get name:{}", r.getName());
+		//logger.info("< get name:{}", r.getName());
 		return new ResponseEntity<Restaurant>(r, HttpStatus.OK);
 	}
 

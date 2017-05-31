@@ -23,8 +23,9 @@ public class RestaurantManager extends User{
 	@Column(name = "m_id", insertable = false, updatable = false)
     private Long mid;
 	
-	@JsonIgnore
-    @ManyToOne
+
+    @OneToOne(cascade = CascadeType.MERGE)
+
     @JoinColumn(name = "rid")
 	private Restaurant restaurant;
 
