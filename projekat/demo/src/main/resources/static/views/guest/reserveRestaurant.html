@@ -37,8 +37,9 @@
     </button>
     
     <div ng-show="vm.allReservationsMode">
-    <table ng-repeat="r in vm.allReservations">
+    <table ng-repeat="r in vm.allReservations" ng-init='vm.getCalledFriends(r.reservationId)'>
         <tr><td>{{r.id}}&nbsp;&nbsp;&nbsp;<td>{{r.reservationDateTime}}&nbsp;&nbsp;&nbsp;</td><td>{{r.time}}&nbsp;&nbsp;&nbsp;</td><td>{{r.length}}</td>
+        <td>&nbsp;&nbsp;&nbsp;<table ng-repeat="s in vm.friends[r.reservationId]" ><tr><td>{{ s.receiver.firstName }}</td></tr></table></td>
        <td><button class="btn btn-primary" ng-click="vm.cancel(r.reservationId)">Cancel</button></td></tr>
         
     </table>

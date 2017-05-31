@@ -23,6 +23,7 @@
         service.Upload = Upload;
         service.GetAllGuests = GetAllGuests;
         service.find = find;
+        service.findUsers = findUsers;
         service.add = add;
         service.loadFriendsIAccept = loadFriendsIAccept;
         service.loadFriendsIAdd = loadFriendsIAdd;
@@ -76,6 +77,13 @@
             }); 
         }
         
+        function findUsers(parametar, email) {
+            //return $http.get('/api/users').then(handleSuccess, handleError('Error getting all users'));
+        	return $http.get('/api/reservations/findFriends/'+ parametar+'/'+email)
+            .then(function(response) {
+                return response;
+            }); 
+        }
         function add(ids,idr) {
         	
             //return $http.get('/api/users').then(handleSuccess, handleError('Error getting all users'));
