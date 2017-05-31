@@ -22,10 +22,13 @@
         vm.tables = tables;
         vm.home = home;
         
+        
+        
         (function initController() {
         	//alert("schedule");
         	loadCurrentUser();
             loadAllUsers();
+            //calendar();
             
             
         })();
@@ -82,6 +85,11 @@
                 loadAllUsers();
             });
         }
+        
+        function calendar() {
+            $('#calendar').calendar();
+        };
+        
     }
 
 })();

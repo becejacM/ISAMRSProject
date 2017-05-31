@@ -208,6 +208,13 @@
             	templateUrl: 'views/registerWorker.html',
             	controllerAs: 'vm'
         	})
+        	
+        	.when('/setMenuItem',{
+            	controller: 'setMenuItemController',
+            	templateUrl: 'views/setMenuItem.html',
+            	controllerAs: 'vm'
+        	})
+
 
 
 

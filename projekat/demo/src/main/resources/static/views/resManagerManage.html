@@ -33,23 +33,25 @@ Manage restaurant
 <!-- <button class="btn btn-default navbar-btn" background-color= "Transparent"  ng-click="">ADD REGION</button>  -->
 <button class="btn btn-default navbar-btn" background-color= "Transparent"  ng-click="vm.addTable()">ADD TABLE</button>
 <button class="btn btn-default navbar-btn" background-color= "Transparent"  ng-click="vm.deleteTable()">DELETE TABLE</button>
+<button class="btn btn-default navbar-btn" background-color= "Transparent"ng-click="vm.setMenu()">MENU</button>
 </div>
 
-<!-- 
-<button ng-hide="vm.editMode" ng-disabled="!vm.selectedMode" class="btn btn-primary" aria-label="Edit table" ng-click="vm.editTable()">
+<button ng-hide="vm.editMode" class="btn btn-primary" aria-label="Edit table" ng-click="vm.editTable()">
           <md-icon aria-label="Edit table" class="material-icons">EDIT TABLE</md-icon>
         </button>
         
 <md-input-container class="md-block" flex-gt-sm>
 	<form name="form" ng-show="vm.editMode" ng-submit="vm.save()" role="form">
-              <div class="form-group" >
-            <label for="region">Choose region: </label>
-            <input type="region" name="region" id="region" class="form-control" />
-        </div>   
-        <div class="form-group" >
-            <label for="chairs">Enter number of chairs: </label>
-            <input type="chairs" name="chairs" id="chairs" class="form-control"  />
-        </div>      
+        <div class="form-group">
+        <label for="region">Select region: </label>
+        <select name="region" id="region" class="form-control" ng-model="vm.table.region" required
+        	ng-options="item as item.name for item in vm.regs">	
+		</select>
+		</div> 
+        <div class="form-group">
+            <label for="numOfChairs">Number of chairs: </label>
+            <input type="number" name="numOfChairs" id="numOfChairs" class="form-control" ng-model="vm.table.numOfChairs" required />
+        </div>     
         <div class="form-actions">
             <button type="submit" ng-disabled="form.$invalid || vm.dataLoading" class="btn btn-primary">Save</button>
         </div>
@@ -58,7 +60,7 @@ Manage restaurant
       
    </form>
     </md-input-container>
- -->
+
 <div>
 <canvas id="c"></canvas>
 </div>

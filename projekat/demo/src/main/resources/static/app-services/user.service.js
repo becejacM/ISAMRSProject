@@ -61,7 +61,7 @@
         
         function CreateBartender(user) {
         	console.log("create");
-            return $http.post('/api/users/createWaiter', user)
+            return $http.post('/api/users/createBartender', user)
             .then(function (response) {
                 return response;
             });               

@@ -37,8 +37,8 @@ public class EmployeeController {
 		
 		Restaurant r = employeeService.getRestaurantE(id);
 		logger.info("< get name:{}", r.getName());
-		Region rr = employeeService.getRegion(id);
-		logger.info("< get name:{}", rr.getName());
+		//Region rr = employeeService.getRegion(id);
+		//logger.info("< get name:{}", rr.getName());
 		return new ResponseEntity<Restaurant>(r, HttpStatus.OK);
 	}
 

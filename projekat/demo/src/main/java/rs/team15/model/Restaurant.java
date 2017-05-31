@@ -41,7 +41,7 @@ public class Restaurant implements Serializable {
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "sm_id")
-    private RestaurantManager systemManager;
+    private SystemManager systemManager;
 
     @OneToMany(mappedBy = "restaurant", fetch = FetchType.LAZY)
     private Set <MenuItem> menuItemMenu = new HashSet <MenuItem>(0);
@@ -120,12 +120,12 @@ public class Restaurant implements Serializable {
     }
 
     //@JsonIgnore
-    public RestaurantManager getSystemManager() {
+    public SystemManager getSystemManager() {
         return systemManager;
     }
 
     //@JsonProperty
-    public void setSystemManager(RestaurantManager systemManager) {
+    public void setSystemManager(SystemManager systemManager) {
         this.systemManager = systemManager;
     }
 

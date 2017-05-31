@@ -26,13 +26,18 @@
         service.CreateTable = CreateTable;
         service.UpdateTable = UpdateTable;
         service.DeleteTable = DeleteTable;
+        service.FindTable = FindTable;
+        service.UpdateTable2 = UpdateTable2;
         
         //service.GetByName = GetByName;
         service.GetRestaurant = GetRestaurant;
         service.GetRestaurantE = GetRestaurantE;
         service.GetRestaurantRegions = GetRestaurantRegions;
+        service.GetAllDishes = GetAllDishes;
+        service.GetAllDrinks = GetAllDrinks;
 
-        //service.GetByName = GetByName;
+        service.AddDish = AddDish;
+        service.AddDrink = AddDrink;
         //service.GetRegion = GetRegion;
 
         return service;
@@ -40,6 +45,38 @@
         function Reserve(datum, vreme, trajanje, nameRest,idstola, iduser) {
             //return $http.get('/api/users/' + email).then(handleSuccess, handleError('Error getting user by email'));
             return $http.get('api/reservations/reserve/' + datum+'/'+vreme+'/'+trajanje+'/'+nameRest+'/'+idstola+'/'+iduser)
+            .then(function(response) {
+                return response;
+            }); 
+        }
+        
+        function AddDish(dish, name) {
+            //return $http.get('/api/users/' + email).then(handleSuccess, handleError('Error getting user by email'));
+            return $http.post('/api/dishes/' + name, dish)
+            .then(function(response) {
+                return response;
+            }); 
+        }
+        
+        function GetAllDishes() {
+            //return $http.get('/api/users').then(handleSuccess, handleError('Error getting all users'));
+        	return $http.get('/api/dishes')
+            .then(function(response) {
+                return response;
+            }); 
+        }
+        
+        function AddDrink(drink, name) {
+            //return $http.get('/api/users/' + email).then(handleSuccess, handleError('Error getting user by email'));
+            return $http.post('/api/drinks/' + name, drink)
+            .then(function(response) {
+                return response;
+            }); 
+        }
+        
+        function GetAllDrinks() {
+            //return $http.get('/api/users').then(handleSuccess, handleError('Error getting all users'));
+        	return $http.get('/api/drinks')
             .then(function(response) {
                 return response;
             }); 
@@ -103,6 +140,15 @@
 
      }
         
+        function FindTable(id) {
+            //return $http.get('/api/users/' + email).then(handleSuccess, handleError('Error getting user by email'));
+            return $http.get('/api/users/findTable/' + id)
+            .then(function(response) {
+                return response;
+            }); 
+        }
+        
+        
         function CreateRestaurant(restaurant, email) {
         	console.log("create");
             return $http.post('/api/restaurants/' + email,restaurant)
@@ -111,7 +157,7 @@
             });               
 
         }
-        /*function handleSuccessTrue(res) {
+        function handleSuccessTrue(res) {
             return res;
         }
 
@@ -127,7 +173,7 @@
         }
         
 
-            };*/
+           
 
         function GetAllTables(id) {
             //return $http.get('/api/users/' + email).then(handleSuccess, handleError('Error getting user by email'));
@@ -185,6 +231,14 @@
             });  */             
 
         }
+        
+        function UpdateTable2(table) {
+            return $http.put('/api/users/updateTable2', table)
+            .then(function(response) {
+                return response;
+            });              
+
+     }
     }
     
 

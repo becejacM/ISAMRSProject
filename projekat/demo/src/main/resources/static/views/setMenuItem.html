@@ -1,0 +1,99 @@
+<nav id="myNavbar"
+		class="navbar navbar-default navbar-inverse navbar-fixed-top"
+		role="navigation">
+		<div class="container">
+		<div class="navbar-header">
+				<a class="navbar-brand" href="">Restaurants</a>
+			</div>
+			
+			<div id="guestProfil" class="navbar-header">
+				<button class="btn btn-default navbar-btn" background-color= "Transparent" ng-click="vm.home()">ABOUT US</button>
+			</div>
+			<div id="guestProfil2" class="navbar-header">
+				<button class="btn btn-default navbar-btn" background-color= "Transparent"  ng-click="vm.resManagerProfil()">MY PROFIL</button>
+			</div>
+			<div id="guestProfil3" class="navbar-header">
+				<button class="btn btn-default navbar-btn" background-color= "Transparent"  ng-click="">MANAGE</button>
+			</div>
+			<div id="guestProfil4" class="navbar-header">
+				<button class="btn btn-default navbar-btn" background-color= "Transparent"  ng-click="vm.registerWorker()">REGISTER WORKER</button>
+			</div>
+			<div id="guestProfil5" class="navbar-header">
+				<button class="btn btn-default navbar-btn" background-color= "Transparent"  ng-click="vm.registerSuplier()">REGISTER SUPLIER</button>
+			</div>
+			<div id="guestProfil6" class="navbar-header">
+				<button class="btn btn-default navbar-btn" background-color= "Transparent"ng-click="vm.logout()">LOGOUT</button>
+			</div>
+				
+		</div>
+</nav>
+<div>
+	<button class="btn btn-default navbar-btn" background-color= "Transparent"ng-click="vm.addDish()">ADD DISH</button>
+	<md-input-container class="md-block" flex-gt-sm>
+	<form name="form" ng-show="vm.addDishMode" ng-submit="vm.saveDish()" role="form">
+              <div class="form-group" ng-class="{ 'has-error': form.name.$error.required}">
+            <label for="name">Dish name</label>
+            <input type="text" name="name" id="name" class="form-control" ng-model="vm.dish.name" required />
+            <span ng-show=" form.name.$error.required" class="help-block">Dish name is required</span>
+        </div>
+        <div class="form-group" ng-class="{ 'has-error': form.info.$error.required }">
+            <label for="info">Dish info</label>
+            <input type="text" name="info" id="info" class="form-control" ng-model="vm.dish.info" required />
+            <span ng-show="form.lastName.$error.required" class="help-block">Dish info is required</span>
+        </div>
+        <div class="form-group" ng-class="{ 'has-error': form.price.$error.required }">
+            <label for="price">Dish price</label>
+            <input type="number" name="price" id="price" class="form-control" ng-model="vm.dish.price" required />
+            <span ng-show="form.price.$error.required" class="help-block">Dish price is required</span>
+        </div>
+        <div class="form-group" ng-class="{ 'has-error': form.spec_type.$error.required }">
+            <label for="spec_type">Dish type</label>
+            <input type="text" name="spec_type" id="spec_type" class="form-control" ng-model="vm.dish.specType" required />
+            <span ng-show="form.spec_type.$error.required" class="help-block">Dish type is required</span>
+        </div>    
+        <div class="form-actions">
+            <button type="submit" ng-disabled="form.$invalid || vm.dataLoading" class="btn btn-primary">Save</button>
+        </div>           
+   </form>
+	<button class="btn btn-default navbar-btn" background-color= "Transparent"ng-click="vm.addDrink()">ADD DRINK</button>
+	<md-input-container class="md-block" flex-gt-sm>
+	<form name="form" ng-show="vm.addDrinkMode" ng-submit="vm.saveDrink()" role="form">
+              <div class="form-group" ng-class="{ 'has-error': form.name.$error.required}">
+            <label for="name">Drink name</label>
+            <input type="text" name="name" id="name" class="form-control" ng-model="vm.drink.name" required />
+            <span ng-show=" form.name.$error.required" class="help-block">Drink name is required</span>
+        </div>
+        <div class="form-group" ng-class="{ 'has-error': form.info.$error.required }">
+            <label for="info">Drink info</label>
+            <input type="text" name="info" id="info" class="form-control" ng-model="vm.drink.info" required />
+            <span ng-show="form.lastName.$error.required" class="help-block">Drink info is required</span>
+        </div>
+        <div class="form-group" ng-class="{ 'has-error': form.price.$error.required }">
+            <label for="price">Drink price</label>
+            <input type="number" name="price" id="price" class="form-control" ng-model="vm.drink.price" required />
+            <span ng-show="form.price.$error.required" class="help-block">Drink price is required</span>
+        </div>
+        <div class="form-group" ng-class="{ 'has-error': form.spec_type.$error.required }">
+            <label for="spec_type">Drink type</label>
+            <input type="text" name="spec_type" id="spec_type" class="form-control" ng-model="vm.drink.specType" required />
+            <span ng-show="form.spec_type.$error.required" class="help-block">Drink type is required</span>
+        </div>    
+        <div class="form-actions">
+            <button type="submit" ng-disabled="form.$invalid || vm.dataLoading" class="btn btn-primary">Save</button>
+        </div>           
+   </form>
+	<div>
+	<h1>Dishes</h1>
+	<table ng-repeat="item in vm.dishes">
+        <tr><td>{{item.name}}</td><td> &nbsp;&nbsp;{{item.price}}</td><td> &nbsp;&nbsp;{{item.specType}}</td>
+       <td><button class="btn btn-primary" ng-click="vm.editDish(item.id)">EDIT</button></td></tr>
+     </table>
+     </div>
+     <div>
+	<h1>Drinks</h1>
+	<table ng-repeat="item in vm.drinks">
+        <tr><td>{{item.name}}</td><td> &nbsp;&nbsp;{{item.price}}</td><td> &nbsp;&nbsp;{{item.specType}}</td>
+       <td> &nbsp;&nbsp;<button class="btn btn-primary" ng-click="vm.editDrink(item.id)">EDIT</button></td></tr>
+     </table>
+     </div>
+</div>
