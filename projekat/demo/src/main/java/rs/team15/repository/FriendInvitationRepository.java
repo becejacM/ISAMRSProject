@@ -23,5 +23,10 @@ public interface FriendInvitationRepository extends JpaRepository<FriendInvitati
     @Query ("SELECT f FROM FriendInvitation f WHERE f.status = ?1 AND ((f.sender.id = ?2 AND f.receiver.id = ?3) OR (f.sender.id = ?3 AND f.receiver.id = ?2))")
     FriendInvitation getFriendship(String status, Long receiverId, Long senderId) ;   //odradjeno
     
-    Collection<FriendInvitation> getByReservation_rsid(Long resid) ; 
+    @Query ("SELECT f FROM FriendInvitation f WHERE f.status = ?1 AND f.receiver.id = ?2")
+    Collection<FriendInvitation> getFIAccept(String status, Long senderId) ;
+    
+    Collection<FriendInvitation> getByReservation_rsid(Long resid) ;
+    
+    FriendInvitation getByFid(Long fid);
 }

@@ -34,9 +34,15 @@ public interface GuestService {
 	Friendship deleteF(Long senderId, Long receiverId);
 	
 	
+	
 	FriendInvitation addFriendInvite(Long senderId, Long receiverId, Reservation r);
 	
 	Collection<FriendInvitation> findFI(Long id);
 	
 	Collection<FriendInvitation> getByReservation_rsid(Long resid);
+	
+	FriendInvitation acceptInvite(Long fid);
+	FriendInvitation rejectInvite(Long fid);
+	
+	Collection<FriendInvitation> findFIAccept(String status, Long senderid);
 }

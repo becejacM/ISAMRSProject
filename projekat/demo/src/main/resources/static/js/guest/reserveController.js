@@ -50,6 +50,8 @@
         vm.allUsers = [];
         vm.allRests = [];
         vm.AllReservations = [];
+        vm.AllInvitations = [];
+        vm.AllAcceptInvitations = [];
         vm.regions = [];
         vm.tables = [];
 
@@ -63,6 +65,9 @@
         
         vm.allReservationsMode = false;
         vm.showReservations = showReservations;
+        
+        vm.allInvitationsMode = false;
+        vm.showInvitations = showInvitations;
         
         vm.allRestsMode = false;
         vm.showRests = showRests;
@@ -92,7 +97,8 @@
         vm.tid = "";
         
         vm.call = call;
-        
+        vm.accept = accept;
+        vm.reject = reject;
         (function initController() {
         	loadAllRests();
             loadCurrentUser();
@@ -107,7 +113,21 @@
         	vm.restModeStep2 = false;
         	vm.restModeStep3 = false;
         	vm.allReservationsMode = false;
-
+        	vm.allInvitationsMode = false;
+        }
+        
+        function showInvitations(){
+        	FlashService.clearFlashMessageP();
+        	RestaurantService.showInvitations(vm.user.email)
+            .then(function (rests) {
+                vm.allInvitations = rests.data;
+                vm.allRestsMode = false;
+            	vm.restModeStep1 = false;
+            	vm.restModeStep2 = false;
+            	vm.restModeStep3 = false;
+            	vm.allReservationsMode = false;
+            	vm.allInvitationsMode = true;
+            });
         }
         
         function showRestStep1(){
@@ -116,7 +136,7 @@
         	vm.restModeStep2 = false;
         	vm.restModeStep3 = false;
         	vm.allReservationsMode = false;
-
+        	vm.allInvitationsMode = false;
         }
         
         function showRestStep2(){
@@ -125,7 +145,7 @@
         	vm.restModeStep2 = true;
         	vm.restModeStep3 = false;
         	vm.allReservationsMode = false;
-
+        	vm.allInvitationsMode = false;
         }
         function showRestStep3(){
         	vm.allRestsMode = false;
@@ -133,7 +153,7 @@
         	vm.restModeStep2 = false;
         	vm.restModeStep3 = true;
         	vm.allReservationsMode = false;
-
+        	vm.allInvitationsMode = false;
         }
         vm.v = null;
         function loadAllRests() {
@@ -143,13 +163,40 @@
                     vm.allRests = rests.data;
                     
                 });
+        	
         }
         
+        function accept(id){
+        	RestaurantService.accept(id)
+            .then(function (response) {
+            	showInvitations();
+            });
+        	
+        }
+        
+        function reject(id){
+        	RestaurantService.reject(id)
+            .then(function (response) {
+            	showInvitations();
+            });
+        	
+        }
         function showReservations(){
         	FlashService.clearFlashMessageP();
         	RestaurantService.getRestByUserEmail(vm.user.email)
             .then(function (rests) {
-            	
+            	RestaurantService.GetAllAcceptRest(vm.user.id)
+                .then(function (res) {
+                	alert("mmm");
+                    vm.allAcceptInvitations = res.data;
+                    angular.forEach(vm.allAcceptInvitations, function(value, key){
+                 	     alert(key + ': ' + value);
+                 	     angular.forEach(value, function(value, key){
+                     	     alert(key + ': ' + value);
+                     	});
+                 	});
+                    
+                });
                 vm.allReservations = rests.data;
                 loadAllRests();
             	vm.allRestsMode = false;
@@ -158,6 +205,8 @@
             	vm.restModeStep3 = false;
                 vm.allReservationsMode = true;
             });
+        	
+        	
         }
         
         var map;
@@ -436,13 +485,12 @@
         	RestaurantService.getCalledFriends(reservationId)
             .then(function (response) {
             	vm.friends[reservationId]= response.data;
-            	angular.forEach(vm.friends, function(value, key){
+            	/*angular.forEach(vm.friends, function(value, key){
               	     alert(key + ': ' + value);
               	     angular.forEach(value, function(value, key){
                   	     alert(key + ': ' + value);
                   	});
-              	});
-            	//FlashService.Success('Friend successfuly called.',false);
+              	});*/
             });
         	
         	

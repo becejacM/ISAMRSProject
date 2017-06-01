@@ -35,7 +35,19 @@
     <button  class="btn btn-primary" aria-label="All reservations" ng-click="vm.showReservations()">
           <md-icon aria-label="All rests" class="material-icons">View your reservations</md-icon>
     </button>
-    
+    <button  class="btn btn-primary" aria-label="All invitations" ng-click="vm.showInvitations()">
+          <md-icon aria-label="All rests" class="material-icons">View your invitations</md-icon>
+    </button>
+    <div ng-show="vm.allInvitationsMode">
+    <table ng-repeat="rr in vm.allInvitations" >
+        <tr><td><img id="thumbnail" src={{rr.sender.image}}></td><td>{{rr.sender.firstName}}</td><td>{{rr.reservation.id}}</td>
+        <td>{{rr.reservation.reservationDateTime}}</td>
+        <td>{{rr.reservation.time}}</td><td>{{rr.reservation.length}}</td>
+        <td><button class="btn btn-primary" ng-click="vm.accept(rr.fid)">ACCEPT</button></td>
+        <td><button class="btn btn-primary" ng-click="vm.reject(rr.fid)">REJECT</button></td></tr>
+        
+    </table>
+    </div>
     <div ng-show="vm.allReservationsMode">
     <table ng-repeat="r in vm.allReservations" ng-init='vm.getCalledFriends(r.reservationId)'>
         <tr><td>{{r.id}}&nbsp;&nbsp;&nbsp;<td>{{r.reservationDateTime}}&nbsp;&nbsp;&nbsp;</td><td>{{r.time}}&nbsp;&nbsp;&nbsp;</td><td>{{r.length}}</td>
@@ -43,7 +55,16 @@
        <td><button class="btn btn-primary" ng-click="vm.cancel(r.reservationId)">Cancel</button></td></tr>
         
     </table>
+    
+    <table ng-repeat="r in vm.allAcceptInvitations" ng-init='vm.getCalledFriends(r.reservation.reservationId)'>
+        <tr><td>{{r.reservation.id}}&nbsp;&nbsp;&nbsp;<td>{{r.reservation.reservationDateTime}}&nbsp;&nbsp;&nbsp;</td><td>{{r.reservation.time}}
+        &nbsp;&nbsp;&nbsp;</td><td>{{r.reservation.length}}</td>
+        <td>&nbsp;&nbsp;&nbsp;<table ng-repeat="s in vm.friends[r.reservation.reservationId]" ><tr><td>{{ s.sender.firstName }}</td></tr></table></td>
+       <td><button class="btn btn-primary" ng-click="vm.cancel(r.reservation.reservationId)">Cancel</button></td></tr>
+        
+    </table>
     </div>
+    
     
     <div ng-show="vm.restModeStep3">
 <br/>Restaurant name: {{vm.rest.name}}<br/>

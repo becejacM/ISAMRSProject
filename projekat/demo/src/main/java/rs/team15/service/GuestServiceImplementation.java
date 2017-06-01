@@ -162,4 +162,29 @@ public class GuestServiceImplementation implements GuestService{
 		// TODO Auto-generated method stub
 		return friendInvitationRepository.getByReservation_rsid(resid);
 	}
+
+	@Override
+	public FriendInvitation acceptInvite(Long fid) {
+		// TODO Auto-generated method stub
+		FriendInvitation fs = friendInvitationRepository.getByFid(fid);
+        
+        fs.setStatus("accept");
+
+        return friendInvitationRepository.save(fs);
+	}
+
+	@Override
+	public FriendInvitation rejectInvite(Long fid) {
+		// TODO Auto-generated method stub
+		FriendInvitation fs = friendInvitationRepository.getByFid(fid);
+        fs.setStatus("reject");
+
+        return friendInvitationRepository.save(fs);
+	}
+
+	@Override
+	public Collection<FriendInvitation> findFIAccept(String status, Long senderid) {
+		// TODO Auto-generated method stub
+		return friendInvitationRepository.getFIAccept(status, senderid);
+	}
 }
