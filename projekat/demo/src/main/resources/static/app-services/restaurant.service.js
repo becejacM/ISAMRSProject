@@ -15,6 +15,10 @@
         service.cancel = cancel;
         service.callFriend = callFriend;
         service.getCalledFriends = getCalledFriends;
+        service.showInvitations=showInvitations;
+        service.accept = accept;
+        service.reject = reject;
+        service.GetAllAcceptRest = GetAllAcceptRest;
         
         service.GetAllRests = GetAllRests;
         service.GetById = GetById;
@@ -112,11 +116,46 @@
             }); 
         }
         
+        
+        function showInvitations(email){
+        	return $http.get('api/reservations/findFI/' + email)
+            .then(function(response) {
+                return response;
+            }); 
+        }
+        
+        function accept(ids) {
+        	
+            //return $http.get('/api/users').then(handleSuccess, handleError('Error getting all users'));
+        	return $http.post('/api/reservations/accept/'+ ids)
+            .then(function(response) {
+                return response;
+            }); 
+        }
+        
+        function reject(ids) {
+        	
+            //return $http.get('/api/users').then(handleSuccess, handleError('Error getting all users'));
+        	return $http.post('/api/reservations/reject/'+ ids)
+            .then(function(response) {
+                return response;
+            }); 
+        }
+        
         function GetAllRests() {
         	
             //return $http.get('/api/users').then(handleSuccess, handleError('Error getting all users'));
         	return $http.get('/api/restaurants')
             .then(function(response) {
+                return response;
+            }); 
+        }
+        function GetAllAcceptRest(id) {
+        	
+            //return $http.get('/api/users').then(handleSuccess, handleError('Error getting all users'));
+        	return $http.get('/api/reservations/findFIAccept/'+id)
+            .then(function(response) {
+            	alert(id);
                 return response;
             }); 
         }

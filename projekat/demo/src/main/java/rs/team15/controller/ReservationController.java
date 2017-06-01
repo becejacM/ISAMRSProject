@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import rs.team15.model.FriendInvitation;
+import rs.team15.model.Friendship;
 import rs.team15.model.Guest;
 import rs.team15.model.Reservation;
 import rs.team15.model.Restaurant;
@@ -182,7 +183,7 @@ public class ReservationController {
             method   = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE
 )
-		public ResponseEntity<Collection<FriendInvitation>> callFriend(@PathVariable String email) {
+		public ResponseEntity<Collection<FriendInvitation>> findFI(@PathVariable String email) {
 			logger.info("> find guests"+email);
 			User u = userService.findByEmail(email);
 			
@@ -191,6 +192,18 @@ public class ReservationController {
 			return new ResponseEntity<Collection<FriendInvitation>>(invitations, HttpStatus.OK);
 	}
 	
+	@RequestMapping(
+            value    = "/api/reservations/findFIAccept/{id:.+}",
+            method   = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE
+)
+		public ResponseEntity<Collection<FriendInvitation>> findFIAccept(@PathVariable Long id) {
+			logger.info("> find fia"+id);
+			
+			Collection<FriendInvitation> invitations = guestService.findFIAccept("accept", id);
+			
+			return new ResponseEntity<Collection<FriendInvitation>>(invitations, HttpStatus.OK);
+	}
 	@RequestMapping(
             value    = "/api/reservations/getCalledFriends/{id:.+}",
             method   = RequestMethod.GET,
@@ -202,4 +215,26 @@ public class ReservationController {
 			
 			return new ResponseEntity<Collection<FriendInvitation>>(f, HttpStatus.OK);
 	}
+	
+	@RequestMapping (
+            value    = "/api/reservations/accept/{fid:.+}",
+            method   = RequestMethod.POST,
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    public ResponseEntity<FriendInvitation> accept(@PathVariable Long fid) {
+    	logger.info("ovde sam prihvatam"+fid);
+    	FriendInvitation f = guestService.acceptInvite(fid);
+        return new ResponseEntity<FriendInvitation>(f, HttpStatus.OK);
+    }
+    
+    @RequestMapping (
+            value    = "/api/reservations/reject/{fid:.+}",
+            method   = RequestMethod.POST,
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    public ResponseEntity<FriendInvitation> reject(@PathVariable Long fid) {
+    	logger.info("ovde sam odbijam");
+    	FriendInvitation f = guestService.rejectInvite(fid);
+        return new ResponseEntity<FriendInvitation>(f, HttpStatus.OK);
+    }
 }
