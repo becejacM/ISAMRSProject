@@ -187,14 +187,14 @@
             .then(function (rests) {
             	RestaurantService.GetAllAcceptRest(vm.user.id)
                 .then(function (res) {
-                	alert("mmm");
+                	//alert("mmm");
                     vm.allAcceptInvitations = res.data;
-                    angular.forEach(vm.allAcceptInvitations, function(value, key){
+                    /*angular.forEach(vm.allAcceptInvitations, function(value, key){
                  	     alert(key + ': ' + value);
                  	     angular.forEach(value, function(value, key){
                      	     alert(key + ': ' + value);
                      	});
-                 	});
+                 	});*/
                     
                 });
                 vm.allReservations = rests.data;
@@ -465,9 +465,15 @@
         }
 
         function cancel(reservationId){
-        	RestaurantService.cancel(reservationId)
+        	RestaurantService.cancel(reservationId, vm.user.id)
             .then(function (response) {
-            	showReservations();
+            	if(angular.equals(response.data.status,"no")){
+            		alert("error");
+                	FlashService.Error('You can not cancel this reservation.',false);
+            	}
+            	else{
+            		showReservations();
+            	}
             });
         }
         

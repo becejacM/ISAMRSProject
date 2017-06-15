@@ -188,11 +188,11 @@
      
 
         function Update(user) {
-        		return $http.put('/api/user/update' , user).then(handleSuccess, handleError('Error updating user'));
-        		/*return $http.put('/api/user/update', user)
+        		//return $http.put('/api/user/update' , user).then(handleSuccess, handleError('Error updating user'));
+        		return $http.put('/api/user/update', user)
                 .then(function(response) {
                     return response;
-                }); */
+                }); 
         	
         }
 

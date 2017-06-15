@@ -32,7 +32,7 @@ public class UserServiceImplementation implements UserService{
 	
 	@Override
 	public Collection<User> findAll() {
-		// TODO Auto-generated method stub
+		/*Metoda koja vraca sve korisnike*/
 		return userRepository.findAll();
 	}
 
@@ -44,36 +44,37 @@ public class UserServiceImplementation implements UserService{
 
 	@Override
 	public User create(User user) {
-		// TODO Auto-generated method stub
+		/*Metoda koja kreira korisnika*/
 		return userRepository.save(user);
 	}
 
 	@Override
 	public User findOne(String email) {
-		// TODO Auto-generated method stub
+		/*Metoda koja vraca korisnika sa zadatim email-om*/
 		return userRepository.findByEmail(email);
 	}
 
 	@Override
 	public User findByEmailAndPassword(String email, String password) {
-		// TODO Auto-generated method stub
+		/*Metoda koja vraca korisnika sa zadatim email-om i pass*/
 		return userRepository.findByEmailAndPassword(email, password);
 	}
 	
 	@Override
 	public User findByEmail(String email) {
-		// TODO Auto-generated method stub
+		/*Metoda koja vraca korisnika sa zadatim email-om*/
 		return userRepository.findByEmail(email);
 	}
 
 	@Override
 	public User update(User user) {
-		// TODO Auto-generated method stub
+		/*Metoda koja menja podatke korisnika*/
 		User userUpdate = userRepository.findByEmail(user.getEmail());
 
         if (userUpdate == null)
             return null;
 
+        logger.info("< update userrrr "+userUpdate.isVerified());
         userUpdate.setLastName(user.getLastName());
         userUpdate.setFirstName(user.getFirstName());
         userUpdate.setImage(user.getImage());

@@ -52,6 +52,7 @@ public class ReservationServiceImplementation implements ReservationService{
 	//@Transactional(readOnly = false)
 	public Reservation cancel(Reservation r) {
 		// TODO Auto-generated method stub
+		
 		r.setStatus("cancel");
 		
 		return reservationRepository.save(r);

@@ -1,9 +1,16 @@
 package rs.team15.controller;
 
+import java.text.DateFormat;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
+import java.util.Locale;
 
+import javax.mail.search.DateTerm;
+
+import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -112,14 +119,32 @@ public class ReservationController {
 	}
 	
 	@RequestMapping(
-            value    = "/api/reservations/cancel/{reservationId:.+}",
+            value    = "/api/reservations/cancel/{reservationId:.+}/{id:.+}",
             method   = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE
 			)
-	public ResponseEntity<Reservation> cancel(@PathVariable String reservationId) {
+	public ResponseEntity<Reservation> cancel(@PathVariable String reservationId,@PathVariable String id) throws ParseException {
 		logger.info("> cancel res  "+reservationId);
 		Reservation res = reservationService.findByResId(Long.parseLong(reservationId));
+		DateFormat format = new SimpleDateFormat("dd.MM.yyyy HH:mm", Locale.ENGLISH);
+		java.util.Date date = format.parse(res.getReservationDateTime()+" "+res.getTime());
+		Date now = new Date();
+		Date date2=format.parse(res.getReservationDateTime()+" "+res.getTime());
+		date2.setMinutes(date.getMinutes()-30);
+		logger.info(now+" vremeeee");
+		logger.info(date2+"  reserveee "+date);
+		if(now.after(date2) && now.before(date)){
+			Reservation r = new Reservation();
+			r.setStatus("no");
+			return new ResponseEntity<Reservation>(r, HttpStatus.OK);
+		}
+		logger.info(res.getUid()+"  "+id);
+		if(!res.getUid().getId().toString().equals(id)){
+			guestService.findFIAcceptForDelete("accept", Long.parseLong(id), res.getReservationId());
+			return new ResponseEntity<Reservation>(res, HttpStatus.OK);
+		}
 		logger.info("> cancel res  "+res.getId());
+		Collection<FriendInvitation> ff = guestService.findFISendForDelete(Long.parseLong(id), res.getReservationId());
 		Reservation r = reservationService.cancel(res);
 		logger.info("> cancel res  "+r.getId());
 		logger.info("< cancel res "+res.getReservationDateTime());

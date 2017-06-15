@@ -29,4 +29,8 @@ public interface FriendInvitationRepository extends JpaRepository<FriendInvitati
     Collection<FriendInvitation> getByReservation_rsid(Long resid) ;
     
     FriendInvitation getByFid(Long fid);
+    
+    FriendInvitation getByReceiverIdAndReservationRsidAndStatus(Long rId, Long ResId, String staus);
+    
+    Collection<FriendInvitation> getBySenderIdAndReservationRsid(Long sId, Long ResId);
 }
