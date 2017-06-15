@@ -45,4 +45,8 @@ public interface GuestService {
 	FriendInvitation rejectInvite(Long fid);
 	
 	Collection<FriendInvitation> findFIAccept(String status, Long senderid);
+	
+	FriendInvitation findFIAcceptForDelete(String status, Long rId, Long resId);
+	
+	Collection<FriendInvitation> findFISendForDelete( Long sId, Long resId);
 }

@@ -95,8 +95,8 @@
             }); 
         }
         
-        function cancel(reservationId){
-        	return $http.get('api/reservations/cancel/' + reservationId)
+        function cancel(reservationId,id){
+        	return $http.get('api/reservations/cancel/' + reservationId+'/'+id)
             .then(function(response) {
                 return response;
             }); 
@@ -155,7 +155,7 @@
             //return $http.get('/api/users').then(handleSuccess, handleError('Error getting all users'));
         	return $http.get('/api/reservations/findFIAccept/'+id)
             .then(function(response) {
-            	alert(id);
+            	//alert(id);
                 return response;
             }); 
         }

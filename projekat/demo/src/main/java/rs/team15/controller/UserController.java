@@ -195,6 +195,7 @@ public class UserController {
 	            produces = MediaType.APPLICATION_JSON_VALUE
 	)
 	public ResponseEntity<Collection<User>> getUsers() {
+		/*Metoda koja vraca sve korisnike*/
 		logger.info("> get users");
 		Collection<User> users = userService.findAll();
 		logger.info("< get users");
@@ -207,6 +208,7 @@ public class UserController {
 	            produces = MediaType.APPLICATION_JSON_VALUE
 			)
 	public ResponseEntity<User> userExists(@PathVariable String email) {
+		/*Metoda koja vraca korisnika sa zadatim email-om*/
 		logger.info("> get user email:{}", email);
 		User user = userService.findOne(email);
 		
@@ -220,6 +222,7 @@ public class UserController {
             produces = MediaType.APPLICATION_JSON_VALUE
 		)
 	public ResponseEntity<User> verify(@PathVariable String email) {
+		/*Metoda koja se poziva kada korisnik u svom email-u klikne na link*/
 		logger.info("> get user verify email:{}", email);
 		User user = userService.findOne(email);
 		user.setVerified("yes");
@@ -234,6 +237,7 @@ public class UserController {
 	            produces = MediaType.APPLICATION_JSON_VALUE
 			)
 	public ResponseEntity<User> register(@RequestBody Guest guest) throws InterruptedException {
+		/*Metoda koja vraca reigstruje korisnika*/
 		guest.setLogin("no");
 		guest.setRole("guest");
 		guest.setVerified("no");
@@ -249,7 +253,7 @@ public class UserController {
 			u1.setMessage("Size of first name or last name is incompatible");
 			return new ResponseEntity<User>(u1, HttpStatus.OK);
 		}
-        Thread.sleep(10000);
+        //Thread.sleep(10000);
 		System.out.println("Slanje emaila...");
 
 		SimpleMailMessage mail = new SimpleMailMessage();
@@ -330,6 +334,7 @@ public class UserController {
             produces = MediaType.APPLICATION_JSON_VALUE
     )
     public ResponseEntity<User> authenticate(@RequestParam(value="email") String email, @RequestParam(value="password") String password, final HttpServletRequest request) {
+		/*Metoda koja proverava da li je korisnik registrovan*/
 		logger.info("> log user");
 		User u = userService.findByEmailAndPassword(email, password);
         if(u==null){
@@ -354,10 +359,12 @@ public class UserController {
             produces = MediaType.APPLICATION_JSON_VALUE
     )
     public ResponseEntity<User> update(@RequestBody User user) {
+		/*Metoda koja menja podatke korisnika*/
 		logger.info("> update user");
+		user.setVerified("yes");
         User updated = userService.update(user);
-        logger.info("< update user");
-        logger.info("hello" + updated.getEmail() + " " + updated.getPassword());
+        logger.info("< update user "+user.isVerified());
+        logger.info("hello" + updated.getEmail() + " " + updated.getPassword()+"  "+updated.isVerified());
         return new ResponseEntity<User>(updated, HttpStatus.OK);
     }
 	
@@ -368,7 +375,9 @@ public class UserController {
             produces = MediaType.APPLICATION_JSON_VALUE
     )
     public ResponseEntity<User> upload(@RequestBody User u) {
+		/*Metoda koja omogucava upload slike*/
 		logger.info("> upload image"+u.getImage());
+		u.setVerified("yes");
 		userService.uploadUserImage(u,"");
 		u.setImage("pictures/"+u.getFirstName()+".png");
         logger.info("< upload image"+u.getImage());

@@ -187,4 +187,22 @@ public class GuestServiceImplementation implements GuestService{
 		// TODO Auto-generated method stub
 		return friendInvitationRepository.getFIAccept(status, senderid);
 	}
+	
+	@Override
+	public FriendInvitation findFIAcceptForDelete(String status, Long rId, Long resId) {
+		// TODO Auto-generated method stub
+		FriendInvitation f= friendInvitationRepository.getByReceiverIdAndReservationRsidAndStatus(rId, resId, status);
+		friendInvitationRepository.delete(f);
+		return null;
+	}
+	
+	@Override
+	public Collection<FriendInvitation> findFISendForDelete( Long sId, Long resId) {
+		// TODO Auto-generated method stub
+		Collection<FriendInvitation> f= friendInvitationRepository.getBySenderIdAndReservationRsid(sId, resId);
+		for(FriendInvitation ff : f){
+			friendInvitationRepository.delete(ff);
+		}
+		return null;
+	}
 }
