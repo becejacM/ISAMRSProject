@@ -11,9 +11,13 @@
 
         vm.user = null;
         vm.dish = null;
+        vm.Ditem = null;
+        vm.DrItem = null;
         
         vm.addDishMode = false;
         vm.addDrinkMode = false;
+        vm.editDishMode = false;
+        vm.editDrinkMode = false;
         vm.realUser = {};
         vm.allUsers = [];
         vm.dishes = [];
@@ -30,6 +34,10 @@
         vm.saveDish = saveDish;
         vm.addDrink = addDrink;
         vm.saveDrink = saveDrink;
+        vm.editDMode = editDMode;
+        vm.editDrMode = editDrMode;
+        vm.editDish = editDish;
+        vm.editDrink = editDrink;
         
         (function initController() {
         	loadCurrentUser();
@@ -80,7 +88,35 @@
         	//loadAllDishes();
             .then(function (response) {
             	FlashService.Success('Dish added', false);
-        		
+            	loadAllDishes();
+            });
+        }
+        
+        function editDMode(item){
+        	vm.editDishMode = true;
+        	vm.Ditem = item;
+        }
+        
+        function editDrMode(item){
+        	vm.editDrinkMode = true;
+        	vm.DrItem = item;
+        }
+        
+        function editDish(){
+        	vm.editDishMode = false;
+        	RestaurantService.EditDish(vm.Ditem)
+        	.then(function (response) {
+            	FlashService.Success('Dish edited', false);
+            	loadAllDishes();
+            });
+        }
+        
+        function editDrink(){
+        	vm.editDrinkMode = false;
+        	RestaurantService.EditDrink(vm.DrItem)
+        	.then(function (response) {
+            	FlashService.Success('Drink edited', false);
+            	loadAllDrinks();
             });
         }
         
@@ -95,7 +131,7 @@
         	//loadAllDishes();
             .then(function (response) {
             	FlashService.Success('Drink added', false);
-        		
+        		loadAllDrinks();
             });
         }
         
