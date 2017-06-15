@@ -1,5 +1,6 @@
 package rs.team15.controller;
 
+import java.awt.Menu;
 import java.sql.Date;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -142,6 +143,21 @@ public class RestaurantController {
 		return new ResponseEntity<MenuItem>(created, HttpStatus.OK);
 	}
 	
+	//edit dishes
+	@RequestMapping(
+            value    = "api/dishes/edit",
+            method   = RequestMethod.PUT,
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    public ResponseEntity<MenuItem> editDish(@RequestBody MenuItem dish) {
+		logger.info("> update dish");
+        MenuItem updated = menuItemService.create(dish);
+        logger.info("< update dish");
+        //logger.info("hello" + updated.getEmail() + " " + updated.getPassword());
+        return new ResponseEntity<MenuItem>(updated, HttpStatus.OK);
+    }
+	
 	//listDishes
 	@RequestMapping(
             value    = "/api/dishes",
@@ -164,6 +180,21 @@ public class RestaurantController {
 		logger.info("< get dish");
 		return new ResponseEntity<Collection<MenuItem>>(dishes, HttpStatus.OK);
 	}
+	
+	//edit drink
+		@RequestMapping(
+	            value    = "api/drinks/edit",
+	            method   = RequestMethod.PUT,
+	            consumes = MediaType.APPLICATION_JSON_VALUE,
+	            produces = MediaType.APPLICATION_JSON_VALUE
+	    )
+	    public ResponseEntity<MenuItem> editDrink(@RequestBody MenuItem drink) {
+			logger.info("> update drink");
+	        MenuItem updated = menuItemService.create(drink);
+	        logger.info("< update drink");
+	        //logger.info("hello" + updated.getEmail() + " " + updated.getPassword());
+	        return new ResponseEntity<MenuItem>(updated, HttpStatus.OK);
+	    }
 	
 	//add drinks
 		@RequestMapping(value = "/api/drinks/{name}",

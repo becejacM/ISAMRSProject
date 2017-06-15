@@ -44,6 +44,8 @@
 
         service.AddDish = AddDish;
         service.AddDrink = AddDrink;
+        service.EditDish = EditDish;
+        service.EditDrink = EditDrink;
         //service.GetRegion = GetRegion;
 
         return service;
@@ -62,6 +64,20 @@
             .then(function(response) {
                 return response;
             }); 
+        }
+       
+        function EditDish(dish){
+        	return $http.put('api/dishes/edit', dish)
+        	.then(function(response){
+        		return response;
+        	});
+        }
+        
+        function EditDrink(drink){
+        	return $http.put('api/drinks/edit', drink)
+        	.then(function(response){
+        		return response;
+        	});
         }
         
         function GetAllDishes() {
