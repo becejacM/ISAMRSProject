@@ -54,7 +54,9 @@
         vm.AllAcceptInvitations = [];
         vm.regions = [];
         vm.tables = [];
-
+        vm.AllMI = [];
+        vm.orderItems = [];
+        vm.order = null;
         
         vm.logout = logout;
         vm.profil = profil;
@@ -81,10 +83,14 @@
         vm.restModeStep3 = false;
         vm.showRestStep3 = showRestStep3;
         
+        vm.restModeStep4 = false;
+        vm.showRestStep4 = showRestStep4;
+        
         
         vm.step1 = step1;
         vm.step2 = step2;
         vm.step3 = step3;
+        vm.step4 = step4;
         
         vm.find = find;
         vm.findUsers = findUsers;
@@ -99,6 +105,10 @@
         vm.call = call;
         vm.accept = accept;
         vm.reject = reject;
+        vm.loadAllMI = loadAllMI;
+        vm.addOrder = addOrder;
+        vm.removeOrder = removeOrder;
+        vm.finish=finish;
         (function initController() {
         	loadAllRests();
             loadCurrentUser();
@@ -112,6 +122,7 @@
         	vm.restModeStep1 = false;
         	vm.restModeStep2 = false;
         	vm.restModeStep3 = false;
+        	vm.restModeStep4 = false;
         	vm.allReservationsMode = false;
         	vm.allInvitationsMode = false;
         }
@@ -125,6 +136,7 @@
             	vm.restModeStep1 = false;
             	vm.restModeStep2 = false;
             	vm.restModeStep3 = false;
+            	vm.restModeStep4 = false;
             	vm.allReservationsMode = false;
             	vm.allInvitationsMode = true;
             });
@@ -135,6 +147,7 @@
         	vm.restModeStep1 = true;
         	vm.restModeStep2 = false;
         	vm.restModeStep3 = false;
+        	vm.restModeStep4 = false;
         	vm.allReservationsMode = false;
         	vm.allInvitationsMode = false;
         }
@@ -144,6 +157,7 @@
         	vm.restModeStep1 = false;
         	vm.restModeStep2 = true;
         	vm.restModeStep3 = false;
+        	vm.restModeStep4 = false;
         	vm.allReservationsMode = false;
         	vm.allInvitationsMode = false;
         }
@@ -152,9 +166,21 @@
         	vm.restModeStep1 = false;
         	vm.restModeStep2 = false;
         	vm.restModeStep3 = true;
+        	vm.restModeStep4 = false;
         	vm.allReservationsMode = false;
         	vm.allInvitationsMode = false;
         }
+        
+        function showRestStep4(){
+        	vm.allRestsMode = false;
+        	vm.restModeStep1 = false;
+        	vm.restModeStep2 = false;
+        	vm.restModeStep3 = false;
+        	vm.restModeStep4 = true;
+        	vm.allReservationsMode = false;
+        	vm.allInvitationsMode = false;
+        }
+        
         vm.v = null;
         function loadAllRests() {
         	RestaurantService.GetAllRests()
@@ -419,7 +445,86 @@
         function step3(){
         	
         }
+        
+        function step4(){
+        	loadAllMI();
+        	showRestStep4();
+        }
+        
+        function loadAllMI(){
+        	RestaurantService.LoadAllMeals(vm.rest.restaurantId)
+            .then(function (response) {
+            	vm.allMI = response.data;
+            	
+            });
+        }
 
+        function addOrder(meal){
+        	var idx = vm.allMI.indexOf(meal);
+            var idx2 = vm.orderItems.indexOf(meal);
+            
+            if (idx2 === -1) {
+                vm.orderItems.push(meal);
+                meal.count=1;
+            }
+            else {
+                meal.count+=1;
+            }
+        }
+        
+        function removeOrder(meal){
+        	var idx = vm.allMI.indexOf(meal);
+            var idx2 = vm.orderItems.indexOf(meal);
+            
+            if (idx2 === -1) {
+            }
+            else {
+                vm.orderItems.splice(idx2, 1);
+                meal.count=0;
+            }
+        }
+        function finish(){
+        	vm.order = createOrder();
+        	RestaurantService.Order(vm.rest.restaurantId, vm.order)
+            .then(function (response) {
+            	if(response.data===null){
+                	FlashService.Success('Reservation successfuly finished.',false);
+            	}
+            	else{
+                	FlashService.Success('You successfuly create order and reservation successfuly finished.',false);
+            	}
+            	vm.allRestsMode = false;
+            	vm.restModeStep1 = false;
+            	vm.restModeStep2 = false;
+            	vm.restModeStep3 = false;
+            	vm.restModeStep4 = false;
+            	vm.allReservationsMode = false;
+            	vm.allInvitationsMode = false;
+            });
+        }
+        
+        function createOrder(){
+        	var order2 = {
+                    date : new Date(),
+                    clientId: vm.user.id,
+                    reservation: vm.currReservation,
+                    items : [],
+                    status: "created"
+            };
+            vm.orderItems.forEach(function (meal) {
+                    var count = meal.count;
+                    delete meal.count;
+                    
+                    var item = {
+                        state : "created",
+                        menuItem : meal,
+                        amount : count
+                    };
+                    order2.items.push(item);
+            });
+            
+                return order2;
+        };
         function profil(){
         	
         	AuthenticationService.SetCredentials(vm.user.email, vm.user.password, "guestProfil");

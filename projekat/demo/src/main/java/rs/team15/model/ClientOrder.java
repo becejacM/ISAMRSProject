@@ -26,7 +26,7 @@ public class ClientOrder implements Serializable{
     private Date deadline;
 
     @JsonIgnore
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
     @JoinColumn(name = "rsid")
     private Reservation reservation;
 
@@ -53,18 +53,18 @@ public class ClientOrder implements Serializable{
     }
 
     
-    public ClientOrder(Long orderId, Date date, Date deadline, Reservation reservation, Integer clientId,
-			TableR table, Set<OrderItem> items, String status) {
+    /*public ClientOrder(Date date, Reservation reservation, Integer clientId,
+			 Set<OrderItem> items, String status) {
 		super();
-		this.oid = orderId;
+		//this.oid = orderId;
 		this.date = date;
-		this.deadline = deadline;
+		//this.deadline = deadline;
 		this.reservation = reservation;
 		this.clientId = clientId;
-		this.table = table;
+		//this.table = table;
 		this.items = items;
 		this.status = status;
-	}
+	}*/
 
 
 	public Long getOrderId() {

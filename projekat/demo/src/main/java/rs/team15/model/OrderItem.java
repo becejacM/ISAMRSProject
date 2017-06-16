@@ -37,7 +37,7 @@ public class OrderItem implements Serializable{
     private Integer version = 0;
 
     @Column(name = "restaurant_id")
-    private Integer restaurantId;
+    private Long restaurantId;
 
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
@@ -47,7 +47,18 @@ public class OrderItem implements Serializable{
     @Column(name = "oi_table_id")
     private Integer tableId;
 
-    public Long getItemId() {
+    public OrderItem(){
+    	
+    }
+    
+    /*public OrderItem(String state, MenuItem menuItem, Integer amount) {
+		super();
+		this.state = state;
+		this.menuItem = menuItem;
+		this.amount = amount;
+	}*/
+
+	public Long getItemId() {
         return oiid;
     }
 
@@ -95,11 +106,11 @@ public class OrderItem implements Serializable{
         this.version = version;
     }
 
-    public Integer getRestaurantId() {
+    public Long getRestaurantId() {
         return restaurantId;
     }
 
-    public void setRestaurantId(Integer restaurantId) {
+    public void setRestaurantId(Long restaurantId) {
         this.restaurantId = restaurantId;
     }
 

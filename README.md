@@ -38,4 +38,4 @@ Da bi se aplikacija pokrenula potrebno je skinuti MySql bazu podataka sa sajta: 
 
 Kada se baza instalira potrebno je kreirati semu baze podataka u MySql Workbench-u i rucno kreirati tabele sa potrebnim podacima ili jednostavno pokrenuti skriptu shema.sql koja kreira tabele i popunjava ih podacima.
 
-Kada je baza podesena i povezana sa projektom i projekat je pokrenut, treba otici na Google Chrome ili neki drugi pretrazivac i ukucati u polje za adresu : http://localhost:8082. Tada, ako je sve u redu otvorice se stranica za registraciju na sajt.
+Kada je baza podesena i povezana sa projektom i projekat je pokrenut, treba otici na Google Chrome ili neki drugi pretrazivac i ukucati u polje za adresu : http://localhost:8082. Tada, ako je sve u redu otvorice se stranica za logovanje na sajt.

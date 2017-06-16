@@ -19,6 +19,8 @@
         service.accept = accept;
         service.reject = reject;
         service.GetAllAcceptRest = GetAllAcceptRest;
+        service.LoadAllMeals = LoadAllMeals;
+        service.Order = Order;
         
         service.GetAllRests = GetAllRests;
         service.GetById = GetById;
@@ -160,6 +162,24 @@
             }); 
         }
         
+        function LoadAllMeals(id) {
+        	
+            //return $http.get('/api/users').then(handleSuccess, handleError('Error getting all users'));
+        	return $http.get('/api/menuItems/'+id)
+            .then(function(response) {
+            	//alert(id);
+                return response;
+            }); 
+        }
+        
+        function Order(id, order) {
+            //return $http.get('/api/users').then(handleSuccess, handleError('Error getting all users'));
+        	return $http.post('/api/orders/create/'+id,order)
+            .then(function(response) {
+            	//alert(id);
+                return response;
+            }); 
+        }
         function GetById(id) {
             //return $http.get('/api/users/' + email).then(handleSuccess, handleError('Error getting user by email'));
             return $http.get('/api/restaurants/get/' + id)

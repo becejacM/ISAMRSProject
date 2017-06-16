@@ -25,5 +25,17 @@ public class MenuItemServiceImplementation implements MenuItemService{
 		// TODO Auto-generated method stub
 		return menuItemRepository.findAll();
 	}
+
+	@Override
+	public Collection<MenuItem> findByRes(Long id) {
+		// TODO Auto-generated method stub
+		return menuItemRepository.findByRestaurantRid(id);
+	}
+
+	@Override
+	public MenuItem findOne(Long id) {
+		// TODO Auto-generated method stub
+		return menuItemRepository.findOne(id);
+	}
 	
 }

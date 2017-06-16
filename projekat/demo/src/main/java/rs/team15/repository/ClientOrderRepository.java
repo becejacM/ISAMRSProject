@@ -8,7 +8,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import rs.team15.model.ClientOrder;
 
 
-public interface OrderRepository extends JpaRepository<ClientOrder, Long> {
+public interface ClientOrderRepository extends JpaRepository<ClientOrder, Long> {
 
     ClientOrder findByReservation_RsidAndClientId(Long reservationId, Long userId);
 
