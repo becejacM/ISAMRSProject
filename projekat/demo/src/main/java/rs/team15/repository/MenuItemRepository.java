@@ -9,6 +9,10 @@ import rs.team15.model.MenuItem;
 public interface MenuItemRepository extends JpaRepository <MenuItem, Long> {
 
     Collection <MenuItem> findByMid(Integer id);
+    
+    //MenuItem findByMid(Long id);
 
     Collection <MenuItem> findByTypeAndDeletedAndMid(String type, boolean deleted, Long id);
+    
+    Collection <MenuItem> findByRestaurantRid(Long rId);
 }

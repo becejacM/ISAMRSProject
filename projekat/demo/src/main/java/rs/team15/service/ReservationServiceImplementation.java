@@ -9,7 +9,11 @@ import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import rs.team15.model.ClientOrder;
+import rs.team15.model.OrderItem;
 import rs.team15.model.Reservation;
+import rs.team15.repository.ClientOrderRepository;
+import rs.team15.repository.OrderItemRepository;
 import rs.team15.repository.ReservationRepository;
 import rs.team15.repository.RestaurantRepository;
 
@@ -20,6 +24,11 @@ public class ReservationServiceImplementation implements ReservationService{
 	@Autowired
     ReservationRepository reservationRepository;
 	
+	@Autowired
+    ClientOrderRepository orderRepository;
+	
+	@Autowired
+    OrderItemRepository orderItemRepository;
 	@Override
 	//@Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED)
 	public Reservation create(Reservation reservation) {
@@ -58,4 +67,17 @@ public class ReservationServiceImplementation implements ReservationService{
 		return reservationRepository.save(r);
 	}
 
+	@Override
+	public ClientOrder addOrder(ClientOrder co) {
+		// TODO Auto-generated method stub
+		return orderRepository.save(co);
+	}
+
+	@Override
+	public OrderItem addOrderItem(OrderItem oi) {
+		// TODO Auto-generated method stub
+		return orderItemRepository.save(oi);
+	}
+
+	
 }

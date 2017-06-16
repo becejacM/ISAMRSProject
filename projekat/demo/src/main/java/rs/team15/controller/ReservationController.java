@@ -6,6 +6,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 import javax.mail.search.DateTerm;
@@ -18,18 +19,23 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import rs.team15.model.ClientOrder;
 import rs.team15.model.FriendInvitation;
 import rs.team15.model.Friendship;
 import rs.team15.model.Guest;
+import rs.team15.model.MenuItem;
+import rs.team15.model.OrderItem;
 import rs.team15.model.Reservation;
 import rs.team15.model.Restaurant;
 import rs.team15.model.TableR;
 import rs.team15.model.User;
 import rs.team15.service.GuestService;
+import rs.team15.service.MenuItemService;
 import rs.team15.service.ReservationService;
 import rs.team15.service.RestaurantService;
 import rs.team15.service.TableService;
@@ -54,6 +60,9 @@ public class ReservationController {
 	
 	@Autowired
 	private GuestService guestService;
+	
+	@Autowired
+	private MenuItemService menuItemService;
 	
 	@RequestMapping(
             value    = "/api/reservations/reserve/{datum:.+}/{vreme:.+}/{trajanje:.+}/{id:.+}/{idStola:.+}/{idUser:.+}",
@@ -262,4 +271,36 @@ public class ReservationController {
     	FriendInvitation f = guestService.rejectInvite(fid);
         return new ResponseEntity<FriendInvitation>(f, HttpStatus.OK);
     }
+    
+    @RequestMapping(
+            value    = "/api/menuItems/{rid:.+}",
+            method   = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE
+			)
+	public ResponseEntity<Collection<MenuItem>> getMI(@PathVariable String rid) {
+		logger.info("> get mi");
+		Collection<MenuItem> mi = menuItemService.findByRes(Long.parseLong(rid));
+		logger.info("< get mi");
+		return new ResponseEntity<Collection<MenuItem>>(mi, HttpStatus.OK);
+	}
+    
+    @RequestMapping(
+            value    = "/api/orders/create/{rid:.+}",
+            method   = RequestMethod.POST,
+            produces = MediaType.APPLICATION_JSON_VALUE
+			)
+	public ResponseEntity<ClientOrder> createOrder(@RequestBody ClientOrder order,@PathVariable String rid) {
+		logger.info("> create order");
+		ClientOrder co = reservationService.addOrder(order);
+		for (OrderItem oi : order.getItems()) {
+			logger.info(oi.getMenuItem().getName());
+			OrderItem i = oi;
+            i.setOrder(co);
+            i.setMenuItem(menuItemService.findOne(i.getMenuItem().getMenuItemId()));
+            i.setRestaurantId(Long.parseLong(rid));
+            OrderItem nItem = reservationService.addOrderItem(i);
+		}
+		logger.info("< create order");
+		return new ResponseEntity<ClientOrder>(co, HttpStatus.OK);
+	}
 }

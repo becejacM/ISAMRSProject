@@ -9,4 +9,8 @@ public interface MenuItemService {
 	MenuItem create(MenuItem menuItem);
 	
 	Collection<MenuItem> findAll();
+	
+	Collection<MenuItem> findByRes(Long id);
+	
+	MenuItem findOne(Long id);
 }

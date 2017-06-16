@@ -87,9 +87,24 @@
             <button type="submit" ng-disabled="form.$invalid || vm.dataLoading" class="btn btn-primary">Find</button>
         </div></div>
 </form>
-<button class="btn btn-primary"  ng-click="vm.step3()">NEXT</button>
+<button class="btn btn-primary"  ng-click="vm.step4()">NEXT</button>
 </div>
     
+    <div ng-show="vm.restModeStep4">
+<br/>Restaurant name: {{vm.rest.name}}<br/>
+<br/>Start: {{vm.c}}  {{vm.step1par.vreme}}<br/>
+<br/>Finish:{{vm.c}}  {{vm.step1par.trajanje}}<br/>
+<table ng-repeat="r in vm.allMI">
+        <tr><td><img id="thumbnail" src={{r.image}}></td><td>{{r.name}}</td><td>{{r.price}}</td><td>{{r.info}}</td>
+       <td><button class="btn btn-primary" ng-click="vm.addOrder(r)">Add to order</button></td>        
+    </table>
+    <h1>Your order:</h1>
+    <table ng-repeat="r in vm.orderItems">
+        <tr><td><img id="thumbnail" src={{r.image}}></td><td>{{r.name}}</td><td>{{r.price}}</td><td>{{r.info}}</td><td>{{r.count}}</td>
+       <td><button class="btn btn-primary" ng-click="vm.removeOrder(r)">Remove from order</button></td>        </tr>
+    </table>
+<button class="btn btn-primary"  ng-click="vm.finish()">Finish</button>
+</div>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAbeDsTX5dKo833VlHoAoXnfGKjj4kRZvU"
         async defer>
 </script>
@@ -149,6 +164,8 @@
 <canvas id="c1"></canvas><br/>
 <button class="btn btn-primary"  ng-click="vm.step3()">NEXT</button>
 </div>
+
+
 
 
 
