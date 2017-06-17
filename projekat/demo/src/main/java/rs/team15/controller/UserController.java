@@ -26,6 +26,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.servlet.ModelAndView;
 
 import ch.qos.logback.core.Context;
 import rs.team15.model.Bartender;
@@ -221,14 +222,14 @@ public class UserController {
             method   = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE
 		)
-	public ResponseEntity<User> verify(@PathVariable String email) {
+	public ModelAndView verify(@PathVariable String email) {
 		/*Metoda koja se poziva kada korisnik u svom email-u klikne na link*/
 		logger.info("> get user verify email:{}", email);
 		User user = userService.findOne(email);
 		user.setVerified("yes");
 		userService.update(user);
 		logger.info("< get user verify email:{}", email);
-		return new ResponseEntity<User>(user, HttpStatus.OK);
+		return new ModelAndView("confirmOK");
 	}
 	@RequestMapping(
 	            value    = "api/users/register",
@@ -254,14 +255,14 @@ public class UserController {
 			return new ResponseEntity<User>(u1, HttpStatus.OK);
 		}
         //Thread.sleep(10000);
-		System.out.println("Slanje emaila...");
+		/*System.out.println("Slanje emaila...");
 
 		SimpleMailMessage mail = new SimpleMailMessage();
 		mail.setTo(guest.getEmail());
 		mail.setFrom(env.getProperty("spring.mail.username"));
 		mail.setSubject("Registration confirm ");
 		mail.setText("Hello " + guest.getFirstName() + "\n Click and verify your email : http://localhost:8080/api/user/confirm/"+guest.getEmail());
-		javaMailSender.send(mail);
+		javaMailSender.send(mail);*/
         
            
 		User created = guestService.create(guest);
