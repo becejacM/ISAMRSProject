@@ -26,10 +26,12 @@
         vm.loadRegions = loadRegions;
         
         vm.logout = logout;
+        vm.manage = manage;
         vm.registerWorker = registerWorker;
         vm.registerSuplier = registerSuplier;
         vm.resManagerProfil = resManagerProfil;
         vm.setMenu = setMenu;
+        vm.addRegion = addRegion;
         
         vm.show = show;
         vm.addTable = addTable;
@@ -69,6 +71,11 @@
         function setMenu(){
         	AuthenticationService.SetCredentials(vm.user.email, vm.user.password, "setMenuItem");
         	$location.path('/setMenuItem');
+        }
+        
+        function addRegion(){
+        	AuthenticationService.SetCredentials(vm.user.email, vm.user.password, "addRegion");
+        	$location.path('/addRegion');
         }
         
         function loadRegions(){
@@ -302,6 +309,11 @@
         function registerWorker(){
         	AuthenticationService.SetCredentials(vm.user.email, vm.user.password, "registerWorker");
         	$location.path('/registerWorker');
+        }
+        
+        function manage(){
+        	AuthenticationService.SetCredentials(vm.user.email, vm.user.password, "manage");
+        	$location.path('/manage');
         }
         
         function registerSuplier(){

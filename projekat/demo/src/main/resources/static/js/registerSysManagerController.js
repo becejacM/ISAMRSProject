@@ -10,14 +10,14 @@
 
     
     registerSysManagerController.$inject = ['UserService','AuthenticationService', '$location', '$rootScope', 'FlashService'];
-    
-    
-    
     function registerSysManagerController(UserService,AuthenticationService, $location, $rootScope, FlashService) {
         var vm = this;
+        vm.user = null;
+        vm.cuser = null;
         
         vm.registerSysManager = registerSysManager;
-        vm.loadCurrentUser = loadCurrentUser;
+        //vm.loadCurrentUser = loadCurrentUser;
+        vm.r = r;
 
         (function initController() {
             // reset login status
@@ -36,7 +36,7 @@
                 	}
                 	else if (response.data.email!==null) {
                     	FlashService.Success('Registration successful', true);
-                    	AuthenticationService.SetCredentials(vm.user.email, vm.user.password, "SysManagerHome");
+                    	AuthenticationService.SetCredentials(vm.cuser.email, vm.cuser.password, "SysManagerHome");
                         $location.path('/SysManagerHome');
                     } else {
                         FlashService.Error(response.message);
@@ -45,13 +45,20 @@
                     }
                 });
         }
+        
+        function r(){
+        	AuthenticationService.SetCredentials(vm.cuser.email, vm.cuser.password, "SysManagerHome");
+        	$location.path('/SysManagerHome');
+        }
+        
+        function loadCurrentUser() {
+            UserService.GetByUsername($rootScope.globals.currentUser.email)
+                .then(function (response) {
+                    vm.cuser = response.data;
+                });
+        }
     }
     
-    function loadCurrentUser() {
-        UserService.GetByUsername($rootScope.globals.currentUser.email)
-            .then(function (response) {
-                vm.user = response.data;
-            });
-    }
+
 
 })();

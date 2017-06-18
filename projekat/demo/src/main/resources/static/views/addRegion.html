@@ -1,0 +1,51 @@
+<nav id="myNavbar"
+		class="navbar navbar-default navbar-inverse navbar-fixed-top"
+		role="navigation">
+		<div class="container">
+		<div class="navbar-header">
+				<a class="navbar-brand" href="">Restaurants</a>
+			</div>
+			
+			<div id="guestProfil" class="navbar-header">
+				<button class="btn btn-default navbar-btn" background-color= "Transparent" ng-click="vm.home()">ABOUT US</button>
+			</div>
+			<div id="guestProfil2" class="navbar-header">
+				<button class="btn btn-default navbar-btn" background-color= "Transparent"  ng-click="vm.resManagerProfil()">MY PROFIL</button>
+			</div>
+			<div id="guestProfil3" class="navbar-header">
+				<button class="btn btn-default navbar-btn" background-color= "Transparent"  ng-click="vm.manage()">MANAGE</button>
+			</div>
+			<div id="guestProfil4" class="navbar-header">
+				<button class="btn btn-default navbar-btn" background-color= "Transparent"  ng-click="vm.registerWorker()">REGISTER WORKER</button>
+			</div>
+			<div id="guestProfil5" class="navbar-header">
+				<button class="btn btn-default navbar-btn" background-color= "Transparent"  ng-click="vm.registerSuplier()">REGISTER SUPLIER</button>
+			</div>
+			<div id="guestProfil6" class="navbar-header">
+				<button class="btn btn-default navbar-btn" background-color= "Transparent"ng-click="vm.logout()">LOGOUT</button>
+			</div>
+				
+		</div>
+	</nav>
+<div>
+ADD NEW REGION
+</div>
+<div>
+	<md-input-container class="md-block" flex-gt-sm>
+	<form name="form" ng-submit="vm.saveRegion()" role="form">
+              <div class="form-group" ng-class="{ 'has-error': form.name.$error.required}">
+            <label for="name">Region name</label>
+            <input type="text" name="name" id="name" class="form-control" ng-model="vm.region.name" required />
+            <span ng-show="form.name.$error.required" class="help-block">Region name is required</span>
+        </div>
+        <div class="form-group" ng-class="{ 'has-error': form.color.$error.required }">
+            <label for="info">Region color</label>
+            <input name="color" type="color" ng-model="vm.region.color"/>
+            <span ng-show="form.color.$error.required" class="help-block">Region color is required</span>
+        </div>    
+        <div class="form-actions">
+            <button type="submit" ng-disabled="form.$invalid || vm.dataLoading" class="btn btn-primary">Save</button>
+        </div>           
+   </form>
+   </md-input-container>
+   </div>
