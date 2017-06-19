@@ -17,4 +17,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
 	
 	@Query ("SELECT u FROM User u WHERE u.fname LIKE ?1 AND u.role = 'guest'")
 	Collection<Guest> findByFirstName(String fname);
+	
+	User findByToken(String token);
 }

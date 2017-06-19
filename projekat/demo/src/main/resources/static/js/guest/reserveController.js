@@ -527,17 +527,17 @@
         };
         function profil(){
         	
-        	AuthenticationService.SetCredentials(vm.user.email, vm.user.password, "guestProfil");
+        	AuthenticationService.SetCredentials(vm.user.email, vm.user.password, "guestProfil", vm.user.token);
         	$location.path('/guestProfil');
         }
         
         function home(){
-        	AuthenticationService.SetCredentials(vm.user.email, vm.user.password, "home");
+        	AuthenticationService.SetCredentials(vm.user.email, vm.user.password, "home", vm.user.token);
 
         	$location.path('/home');
         }
         function friends(){
-        	AuthenticationService.SetCredentials(vm.user.email, vm.user.password, "myFriends");
+        	AuthenticationService.SetCredentials(vm.user.email, vm.user.password, "myFriends", vm.user.token);
         	$location.path('/myFriends');
         }
         function logout(){

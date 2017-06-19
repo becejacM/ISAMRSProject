@@ -148,18 +148,18 @@
 
         function profil(){
         	
-        	AuthenticationService.SetCredentials(vm.user.email, vm.user.password, "guestProfil");
+        	AuthenticationService.SetCredentials(vm.user.email, vm.user.password, "guestProfil", vm.user.token);
         	$location.path('/guestProfil');
         }
         
         function home(){
-        	AuthenticationService.SetCredentials(vm.user.email, vm.user.password, "home");
+        	AuthenticationService.SetCredentials(vm.user.email, vm.user.password, "home", vm.user.token);
 
         	$location.path('/home');
         }
 
         function restaurants(){
-        	AuthenticationService.SetCredentials(vm.user.email, vm.user.password, "reserveRestaurant");
+        	AuthenticationService.SetCredentials(vm.user.email, vm.user.password, "reserveRestaurant", vm.user.token);
 
         	$location.path('/reserveRestaurant');
         }

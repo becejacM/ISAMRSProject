@@ -28,25 +28,25 @@
                 	
                 	//AuthenticationService.SetCredentials(vm.email, vm.password, "home");
                 	if(angular.equals(response.data.role, "guest")){
-                		AuthenticationService.SetCredentials(vm.email, vm.password, "home");
+                		AuthenticationService.SetCredentials(vm.email, vm.password, "home", response.data.token);
                 		$location.path('/home');
                         showOptions();
                 	}else if(angular.equals(response.data.role,"system_manager")){
-                		AuthenticationService.SetCredentials(vm.email, vm.password, "SysManagerHome");
+                		AuthenticationService.SetCredentials(vm.email, vm.password, "SysManagerHome", response.data.token);
                 		$location.path('/SysManagerHome');
                 	}else if(angular.equals(response.data.role,"manager")){
-                		AuthenticationService.SetCredentials(vm.email, vm.password, "ResManagerHome");
+                		AuthenticationService.SetCredentials(vm.email, vm.password, "ResManagerHome", response.data.token);
                 		$location.path('/ResManagerHome');
                 	}
                 	else if(angular.equals(response.data.role, "waiter")){
                 		if(angular.equals(response.data.firstTime, "yes")){
                 			alert(response.data.firstTime);
-                			AuthenticationService.SetCredentials(vm.email, vm.password, "waiterChangePassword");
+                			AuthenticationService.SetCredentials(vm.email, vm.password, "waiterChangePassword", response.data.token);
                     		$location.path('/waiterChangePassword');
                 		}
                 		else {
                 			alert(response.data.firstTime);
-                			AuthenticationService.SetCredentials(vm.email, vm.password, "waiterHome");
+                			AuthenticationService.SetCredentials(vm.email, vm.password, "waiterHome", response.data.token);
                     		$location.path('/waiterHome');
                 		}
                 		
@@ -54,12 +54,12 @@
                 	else if(angular.equals(response.data.role, "cook")){
                 		if(angular.equals(response.data.firstTime, "yes")){
                 			alert(response.data.firstTime);
-                			AuthenticationService.SetCredentials(vm.email, vm.password, "cookChangePassword");
+                			AuthenticationService.SetCredentials(vm.email, vm.password, "cookChangePassword", response.data.token);
                     		$location.path('/cookChangePassword');
                 		}
                 		else {
                 			alert(response.data.firstTime);
-                			AuthenticationService.SetCredentials(vm.email, vm.password, "cookHome");
+                			AuthenticationService.SetCredentials(vm.email, vm.password, "cookHome", response.data.token);
                     		$location.path('/cookHome');
                 		}
                 		
@@ -67,12 +67,12 @@
                 	else if(angular.equals(response.data.role, "bartender")){
                 		if(angular.equals(response.data.firstTime, "yes")){
                 			alert(response.data.firstTime);
-                			AuthenticationService.SetCredentials(vm.email, vm.password, "bartenderChangePassword");
+                			AuthenticationService.SetCredentials(vm.email, vm.password, "bartenderChangePassword", response.data.token);
                     		$location.path('/bartenderChangePassword');
                 		}
                 		else {
                 			alert(response.data.firstTime);
-                			AuthenticationService.SetCredentials(vm.email, vm.password, "bartenderHome");
+                			AuthenticationService.SetCredentials(vm.email, vm.password, "bartenderHome", response.data.token);
                     		$location.path('/bartenderHome');
                 		}
                 		

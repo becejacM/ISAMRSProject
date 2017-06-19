@@ -5,8 +5,8 @@
         .module('app')
         .factory('AuthenticationService', AuthenticationService);
 
-    AuthenticationService.$inject = ['$http', '$cookies', '$rootScope', '$timeout', 'UserService'];
-    function AuthenticationService($http, $cookies, $rootScope, $timeout, UserService) {
+    AuthenticationService.$inject = ['$http', '$cookies', '$rootScope', '$timeout', 'UserService', '$window'];
+    function AuthenticationService($http, $cookies, $rootScope, $timeout, UserService, $window) {
         var service = {};
 
         service.Login = Login;
@@ -43,8 +43,10 @@
             });
         }
 
-        function SetCredentials(email, password, path) {
-            var authdata = Base64.encode(email + ':' + password);
+        function SetCredentials(email, password, path, token) {
+            //var authdata = Base64.encode(email + ':' + password);
+        	var authdata = token;
+        	alert(authdata);
             $rootScope.globals = {
                 currentUser: {
                     email: email,
@@ -59,11 +61,20 @@
             var cookieExp = new Date();
             cookieExp.setDate(cookieExp.getDate()+7);
             $cookies.putObject('globals', $rootScope.globals, { expires: cookieExp });
+            $window.localStorage.setItem('AUTH_TOKEN', authdata);
+            $window.sessionStorage.setItem('globals', $rootScope.globals);
+            $window.localStorage.setItem('globals', $rootScope.globals);
+            $window.sessionStorage.setItem('AUTH_TOKEN', authdata);
+
         }
 
         function ClearCredentials() {
             $rootScope.globals = {};
             $cookies.remove('globals');
+            $window.sessionStorage.setItem('globals', null);
+            $window.localStorage.setItem('globals', null);
+            $window.sessionStorage.setItem('AUTH_TOKEN', null);
+            $window.localStorage.setItem('AUTH_TOKEN', null);
             $http.defaults.headers.common.Authorization = 'Basic';
         }
     }

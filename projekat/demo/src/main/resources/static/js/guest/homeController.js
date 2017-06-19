@@ -28,17 +28,17 @@
 
         function profil(){
         	
-        	AuthenticationService.SetCredentials(vm.user.email, vm.user.password, "guestProfil");
+        	AuthenticationService.SetCredentials(vm.user.email, vm.user.password, "guestProfil", vm.user.token);
         	$location.path('/guestProfil');
         }
         
         function restaurants(){
-        	AuthenticationService.SetCredentials(vm.user.email, vm.user.password, "reserveRestaurant");
+        	AuthenticationService.SetCredentials(vm.user.email, vm.user.password, "reserveRestaurant", vm.user.token);
 
         	$location.path('/reserveRestaurant');
         }
         function friends(){
-        	AuthenticationService.SetCredentials(vm.user.email, vm.user.password, "myFriends");
+        	AuthenticationService.SetCredentials(vm.user.email, vm.user.password, "myFriends", vm.user.token);
         	$location.path('/myFriends');
         }
         function logout(){
