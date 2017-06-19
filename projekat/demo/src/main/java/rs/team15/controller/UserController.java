@@ -1,7 +1,11 @@
 package rs.team15.controller;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Collection;
 import java.util.Date;
+import java.util.Locale;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -218,18 +222,37 @@ public class UserController {
 	}
 	
 	@RequestMapping(
-            value    = "/api/user/confirm/{email:.+}",
+            value    = "/api/user/confirm/{token:.+}/{datum:.+}",
             method   = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE
 		)
-	public ModelAndView verify(@PathVariable String email) {
+	public ModelAndView verify(@PathVariable String token,@PathVariable String datum) throws ParseException {
 		/*Metoda koja se poziva kada korisnik u svom email-u klikne na link*/
-		logger.info("> get user verify email:{}", email);
-		User user = userService.findOne(email);
+		logger.info("> get user verify email:{}", token);
+		User user = userService.findByToken(token);
+		Date sad = new Date();
+		DateFormat format = new SimpleDateFormat("dd.MM", Locale.ENGLISH);
+		Date d = format.parse(datum);
+		d.setMonth(d.getMonth()+1);
+		d.setYear(sad.getYear());
+		logger.info(sad+"      "+d);
+		if(sad.after(d)){
+			return new ModelAndView("confirmExpire");
+		}
 		user.setVerified("yes");
 		userService.update(user);
-		logger.info("< get user verify email:{}", email);
+		logger.info("< get user verify email:{}", token);
 		return new ModelAndView("confirmOK");
+	}
+	
+	@RequestMapping(
+            value    = "/api/user/confirmInvite",
+            method   = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE
+		)
+	public ModelAndView confirmInvite() {
+		/*Metoda koja se poziva kada korisnik u svom email-u klikne na link*/
+		return new ModelAndView("friendInvite");
 	}
 	@RequestMapping(
 	            value    = "api/users/register",
@@ -254,6 +277,10 @@ public class UserController {
 			u1.setMessage("Size of first name or last name is incompatible");
 			return new ResponseEntity<User>(u1, HttpStatus.OK);
 		}
+		String token = generateToken(guest.getEmail() +":"+ guest.getPassword());
+		logger.info(token);
+		guest.setToken(token);
+		//guest.se
         //Thread.sleep(10000);
 		/*System.out.println("Slanje emaila...");
 
@@ -270,6 +297,50 @@ public class UserController {
 		return new ResponseEntity<User>(created, HttpStatus.CREATED);
 	}
 	
+	public String generateToken(String input){
+		String keyStr="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";
+
+		String output = "";
+        char chr1=' ';
+		char chr2=' ';
+		char chr3=' ';
+        int enc1, enc2, enc3, enc4 = 0;
+        int i = 0;        	
+        logger.info("FFSZDFCS " +input.length());
+
+        while (i < input.length()-2){
+        	logger.info("FFSZDFCS " +i);
+            chr1 = input.charAt(i);
+            i++;
+        	logger.info("FFSZDFCS " +i);
+            chr2 = input.charAt(i);
+            i++;
+        	logger.info("FFSZDFCS " +i);
+            chr3 = input.charAt(i);
+            i++;
+
+            enc1 = chr1 >> 2;
+            enc2 = ((chr1 & 3) << 4) | (chr2 >> 4);
+            enc3 = ((chr2 & 15) << 2) | (chr3 >> 6);
+            enc4 = chr3 & 63;
+
+            if (chr2==' ') {
+                enc3 = enc4 = 64;
+            } else if (chr3==' ') {
+                enc4 = 64;
+            }
+
+            output = output +
+                keyStr.charAt(enc1) +
+                keyStr.charAt(enc2) +
+                keyStr.charAt(enc3) +
+                keyStr.charAt(enc4);
+            chr1 = chr2 = chr3 = ' ';
+            enc1 = enc2 = enc3 = enc4 = ' ';
+        } ;
+
+        return output;
+	}
 	@RequestMapping(
             value    = "api/users/registerManager",
             method   = RequestMethod.POST,
@@ -344,10 +415,14 @@ public class UserController {
         if(u.getRole().equals("guest") && u.isVerified().equals("no")){
         	return new ResponseEntity<User>(u, HttpStatus.NO_CONTENT);
         }
-        request.setAttribute("loggeduser", u);
-
-        User user = (User) request.getAttribute("loggeduser");
-        logger.info("req "+user.getEmail());
+        String token = generateToken(u.getEmail() +":"+ u.getPassword());
+		logger.info(token);
+		u.setToken(token);
+        userService.update(u);
+        //request.setAttribute("loggeduser", u);
+        
+        //User user = (User) request.getAttribute("loggeduser");
+        //logger.info("req "+user.getEmail());
 		logger.info("< log user "+u.getFirstName());
 
         return new ResponseEntity<User>(u, HttpStatus.OK);

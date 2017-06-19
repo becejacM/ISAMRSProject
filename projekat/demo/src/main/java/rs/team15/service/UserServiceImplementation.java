@@ -80,6 +80,7 @@ public class UserServiceImplementation implements UserService{
         userUpdate.setImage(user.getImage());
         userUpdate.setPassword(user.getPassword());
         userUpdate.setVerified(user.isVerified());
+        userUpdate.setToken(user.getToken());
         if(userUpdate.getRole().equals("waiter")){
         	Employee e = (Employee)userUpdate;
         	e.setFirstTime("no");
@@ -134,6 +135,12 @@ public class UserServiceImplementation implements UserService{
 		} 
 		
 		
+	}
+
+	@Override
+	public User findByToken(String token) {
+		// TODO Auto-generated method stub
+		return userRepository.findByToken(token);
 	}
 
 	
