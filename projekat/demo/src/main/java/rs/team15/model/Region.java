@@ -34,19 +34,13 @@ public class Region {
     @OneToMany(mappedBy = "region", fetch = FetchType.LAZY)
     private Set <Employee> employees = new HashSet <Employee>(0);
 
-    public Region(String name, String color, Restaurant restaurant, Integer regionNo,
-			Set<TableR> tables) {
+    public Region(String name, String color, Restaurant restaurant, Integer regionNo) {
 		super();
 		this.name = name;
 		this.color = color;
 		this.restaurant = restaurant;
 		this.regionNo = regionNo;
-		this.tables = tables;
 	}
-
-	@JsonIgnore
-    @OneToMany(mappedBy = "region", fetch = FetchType.LAZY)
-    private Set<TableR> tables = new HashSet <TableR>(0);
 
     public Region() {
     }
@@ -81,16 +75,6 @@ public class Region {
 
     public void setRestaurant(Restaurant restaurant) {
         this.restaurant = restaurant;
-    }
-
-    @JsonIgnore
-    public Set <TableR> getTables() {
-        return tables;
-    }
-
-    @JsonIgnore
-    public void setTables(Set <TableR> tables) {
-        this.tables = tables;
     }
 
     

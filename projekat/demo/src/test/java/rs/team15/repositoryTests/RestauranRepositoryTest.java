@@ -49,7 +49,7 @@ public class RestauranRepositoryTest {
 		Set<TableR> tables = new HashSet<TableR>();
 		Restaurant u = new Restaurant((long) 10,"Caribic",Integer.parseInt("8"),Integer.parseInt("21"), menuItems, regions);
 		rRepository.save(u);
-		Region r = new Region("region1","FC1501",u,Integer.parseInt("2"),tables);
+		Region r = new Region("region1","FC1501",u,Integer.parseInt("2"));
 		regRepository.save(r);
 
 		TableR t = new TableR(Long.parseLong("2"),Double.parseDouble("100"),Double.parseDouble("100"),Double.parseDouble("200"),Double.parseDouble("50"),r, Integer.parseInt("4"));

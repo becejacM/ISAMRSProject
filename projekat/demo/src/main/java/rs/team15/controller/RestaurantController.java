@@ -8,6 +8,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Locale;
 
 import org.slf4j.Logger;
@@ -39,8 +40,10 @@ import rs.team15.repository.TableRepository;
 
 import rs.team15.repository.RestaurantRepository;
 import rs.team15.service.MenuItemService;
+import rs.team15.service.RegionService;
 import rs.team15.service.RestaurantService;
 import rs.team15.service.SystemManagerService;
+import rs.team15.service.TableService;
 import rs.team15.service.UserService;
 
 @RestController
@@ -61,6 +64,12 @@ public class RestaurantController {
 	
 	@Autowired
 	private MenuItemService menuItemService;
+	
+	@Autowired
+	private TableService tableService;
+	
+	@Autowired
+	private RegionService regionService;
 
 	
 	@RequestMapping(
@@ -235,6 +244,26 @@ public class RestaurantController {
 			logger.info("< get drink");
 			return new ResponseEntity<Collection<MenuItem>>(drinks, HttpStatus.OK);
 		}
+		
+	//create new region
+		@RequestMapping(value = "/api/restaurants/createRegion/{id}",
+	            method = RequestMethod.POST,
+	            consumes = MediaType.APPLICATION_JSON_VALUE,
+	            produces = MediaType.APPLICATION_JSON_VALUE)
+	    public ResponseEntity <Region> CreateRegion(@RequestBody Region region,@PathVariable("id") String id) {
+			logger.info("< create regiooooooooon "+id);
+	        Restaurant res = restaurantService.findById(id);
+	        region.setRestaurant(res);
+	        String color = region.getColor();
+	        String newColor = color.substring(1);
+	        region.setColor(newColor);
+	        Region reg = regionService.findByRegno();
+	        int num = reg.getRegionNo();
+	        region.setRegionNo(num+1);
+	        Region created = regionService.create(region);
+			logger.info("< create user");
+			return new ResponseEntity<Region>(created, HttpStatus.OK);
+		}
 
 
 	@RequestMapping(
@@ -263,6 +292,7 @@ public class RestaurantController {
 			Region sto = region.next();
 			for (Iterator<TableR> item = sto.getTables().iterator(); item.hasNext();) {
 				System.out.println("stoooo ");
+			//for (Iterator<TableR> item = tableService.findTablesByRegId(sto).iterator(); item.hasNext();) {
 			    TableR t = item.next();
 			    available = true;
 			    for (Iterator<Reservation> res = t.getReservations().iterator(); res.hasNext();) {
@@ -305,9 +335,12 @@ public class RestaurantController {
 		Restaurant r = restaurantService.findById(id);
 	
 		Collection<TableR> ret = new ArrayList<TableR>();
+
 		for (Iterator<Region> region = r.getRegions().iterator(); region.hasNext();) {
 			Region sto = region.next();
-			for (Iterator<TableR> item = sto.getTables().iterator(); item.hasNext();) {
+			//List<TableR> tables = tableService.findTablesByReg(sto.getRegId());
+			//logger.info("aaaaaaaaaaaaaa" + tables.get(0));
+			for (Iterator<TableR> item = tableService.findTablesByRegId(sto).iterator(); item.hasNext();) {
 			    TableR t = item.next();
 			    System.out.println(t.getTableId());
 			    ret.add(t);

@@ -219,7 +219,11 @@
             	controllerAs: 'vm'
         	})
 
-
+        	.when('/addRegion',{
+            	controller: 'addRegionController',
+            	templateUrl: 'views/addRegion.html',
+            	controllerAs: 'vm'
+        	})
 
 
             .otherwise({controller: 'LoginController',

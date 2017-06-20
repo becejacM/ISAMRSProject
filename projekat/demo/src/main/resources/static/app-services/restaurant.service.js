@@ -50,6 +50,7 @@
         service.EditDish = EditDish;
         service.EditDrink = EditDrink;
         //service.GetRegion = GetRegion;
+        service.CreateRegion = CreateRegion;
 
         return service;
 
@@ -221,6 +222,14 @@
             .then(function(response) {
                 return response;
             }); 
+        }
+        
+        function CreateRegion(region,id) {
+            return $http.post('/api/restaurants/createRegion/'+id, region)
+            .then(function(response) {
+                return response;
+            });               
+
         }
         
         function CreateTable(table) {
