@@ -13,7 +13,7 @@
 				<button class="btn btn-default navbar-btn" background-color= "Transparent"  ng-click="vm.resManagerProfil()">MY PROFIL</button>
 			</div>
 			<div id="guestProfil3" class="navbar-header">
-				<button class="btn btn-default navbar-btn" background-color= "Transparent"  ng-click="">MANAGE</button>
+				<button class="btn btn-default navbar-btn" background-color= "Transparent"  ng-click="vm.manage()">MANAGE</button>
 			</div>
 			<div id="guestProfil4" class="navbar-header">
 				<button class="btn btn-default navbar-btn" background-color= "Transparent"  ng-click="vm.registerWorker()">REGISTER WORKER</button>
@@ -34,6 +34,7 @@ Manage restaurant
 <button class="btn btn-default navbar-btn" background-color= "Transparent"  ng-click="vm.addTable()">ADD TABLE</button>
 <button class="btn btn-default navbar-btn" background-color= "Transparent"  ng-click="vm.deleteTable()">DELETE TABLE</button>
 <button class="btn btn-default navbar-btn" background-color= "Transparent"ng-click="vm.setMenu()">MENU</button>
+<button class="btn btn-default navbar-btn" background-color= "Transparent"ng-click="vm.addRegion()">ADD NEW REGION</button>
 </div>
 
 <button ng-hide="vm.editMode" class="btn btn-primary" aria-label="Edit table" ng-click="vm.editTable()">
