@@ -57,6 +57,9 @@ public class RestauranRepositoryTest {
 		//TableR t = new TableR(Double.parseDouble("100"),Double.parseDouble("100"),Double.parseDouble("200"),Double.parseDouble("50"),r);
 
 		tRepository.save(t);
+		Set<TableR> s = new HashSet<TableR>(0);
+
+		s.add(t);
 		Reservation rest = new Reservation(u,"03.02.2017","20:00","22:00",t);
 		resRepository.save(rest);
 		Collection<Restaurant> res = rRepository.findAll();
@@ -65,6 +68,5 @@ public class RestauranRepositoryTest {
 		assertEquals(find.getName(), "Milana");
 		
 		
-		//assertEquals(find.getFirstName(), "Marko");
 	}
 }

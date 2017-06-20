@@ -10,5 +10,6 @@ public interface TableService {
 
 	TableR findByrno(int i);
 	
+	TableR update(TableR t);
 	List<TableR> findTablesByRegId(Region id);
 }

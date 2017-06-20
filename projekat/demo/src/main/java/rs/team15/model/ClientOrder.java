@@ -107,7 +107,7 @@ public class ClientOrder implements Serializable{
         this.status = status;
     }
 
-    @JsonIgnore
+    //@JsonIgnore
     public Set<OrderItem> getItems() {
         return items;
     }

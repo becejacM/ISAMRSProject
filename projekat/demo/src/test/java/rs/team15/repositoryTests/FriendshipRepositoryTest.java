@@ -26,14 +26,39 @@ public class FriendshipRepositoryTest {
 	FriendshipRepository friendshipRepository;
 	
 	@Test
+	public void findRequestsTest(){
+		Collection<User> users = friendshipRepository.findRequests("pending", Long.parseLong("16"));
+		assertNotNull(users);
+	}
+	
+	@Test
+	public void findSendersTest(){
+		Collection<User> users = friendshipRepository.findSenders("accept", Long.parseLong("15"));
+		assertNotNull(users);
+	}
+	
+	@Test
+	public void findReceiversTest(){
+		Collection<User> users = friendshipRepository.findReceivers("pending", Long.parseLong("15"));
+		assertNotNull(users);
+	}
+	
+	@Test
+	public void getFriendshipTest(){
+		Friendship f = friendshipRepository.getFriendship("accept",Long.parseLong("16"), Long.parseLong("19"));
+		assertNotNull(f);
+	}
+	@Test
 	public void createFriendshipRepository(){
-		User u = new User(Long.parseLong("1"),"milana.becejac@gmail.com","Milana","Becejac","pass");
+		/*User u = new User(Long.parseLong("1"),"milana.becejac@gmail.com","Milana","Becejac","pass");
 		userRepository.save(u);
 		User u2 = new User(Long.parseLong("2"),"rik.becejac@gmail.com","Rik","Becejac","pass");
 		userRepository.save(u2);
 		Friendship f = new Friendship(u,u2,"pending");
-		friendshipRepository.save(f);
-		Collection<User> users = friendshipRepository.findRequests("pending", Long.parseLong("1"));
-		assertNotNull(f);
+		friendshipRepository.save(f);*/
+		Collection<User> users = friendshipRepository.findRequests("pending", Long.parseLong("16"));
+		assertNotNull(users);
 	}
+	
+	
 }

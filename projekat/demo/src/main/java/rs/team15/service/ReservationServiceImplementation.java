@@ -79,5 +79,11 @@ public class ReservationServiceImplementation implements ReservationService{
 		return orderItemRepository.save(oi);
 	}
 
+	@Override
+	public Collection<ClientOrder> findByReservation(Long id) {
+		// TODO Auto-generated method stub
+		return orderRepository.findByReservation_Rsid(id);
+	}
+
 	
 }

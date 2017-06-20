@@ -23,6 +23,10 @@ public class TableServiceImplementation implements TableService{
 	}
 	
 	@Override
+	public TableR update(TableR t) {
+		// TODO Auto-generated method stub
+		TableR tt =  tableRepository.findByTableInRestaurantNo(t.getTableInRestaurantNo());
+		return tableRepository.save(tt);
 	public List<TableR> findTablesByRegId(Region id){
 		return tableRepository.findByRegion(id);
 	}
