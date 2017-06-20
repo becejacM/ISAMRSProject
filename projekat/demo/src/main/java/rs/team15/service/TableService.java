@@ -5,4 +5,6 @@ import rs.team15.model.TableR;
 public interface TableService {
 
 	TableR findByrno(int i);
+	
+	TableR update(TableR t);
 }

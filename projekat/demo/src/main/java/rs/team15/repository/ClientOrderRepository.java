@@ -1,5 +1,6 @@
 package rs.team15.repository;
 
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
@@ -12,5 +13,5 @@ public interface ClientOrderRepository extends JpaRepository<ClientOrder, Long> 
 
     ClientOrder findByReservation_RsidAndClientId(Long reservationId, Long userId);
 
-    List<ClientOrder> findByReservation_Rsid(Long reservationId);
+    Collection<ClientOrder> findByReservation_Rsid(Long reservationId);
 }

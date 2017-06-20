@@ -17,5 +17,12 @@ public class TableServiceImplementation implements TableService{
 		// TODO Auto-generated method stub
 		return tableRepository.findByTableInRestaurantNo(i);
 	}
+	
+	@Override
+	public TableR update(TableR t) {
+		// TODO Auto-generated method stub
+		TableR tt =  tableRepository.findByTableInRestaurantNo(t.getTableInRestaurantNo());
+		return tableRepository.save(tt);
+	}
 
 }

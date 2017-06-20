@@ -36,18 +36,72 @@ public class FriendInvitationRepositoryTests {
 	
 	@Autowired
 	ReservationService reservationService;
+	
+	@Test
+	public void findRequestsTest(){
+		Collection<FriendInvitation> users = friendRepository.findRequests("pending", Long.parseLong("19"));
+		assertNotNull(users);
+	}
+	
+	@Test
+	public void findSendersTest(){
+		Collection<User> users = friendRepository.findSenders("accept", Long.parseLong("15"));
+		assertNotNull(users);
+	}
+	
+	@Test
+	public void findReceiversTest(){
+		Collection<User> users = friendRepository.findReceivers("pending", Long.parseLong("16"));
+		assertNotNull(users);
+	}
+	
+	@Test
+	public void getFriendInvitationTest(){
+		FriendInvitation f = friendRepository.getFriendship("pending",Long.parseLong("16"), Long.parseLong("19"));
+		assertNotNull(f);
+	}
+	
+	@Test
+	public void getFriendInvitationIAccpetTest(){
+		Collection<FriendInvitation> f = friendRepository.getFIAccept("accept",Long.parseLong("7"));
+		assertNotNull(f);
+	}
+	
+	@Test
+	public void getByResIdTest(){
+		Collection<FriendInvitation> f = friendRepository.getByReservation_rsid(Long.parseLong("80"));
+		assertNotNull(f);
+	}
+	
+	@Test
+	public void getIdTest(){
+		FriendInvitation f = friendRepository.getByFid(Long.parseLong("12"));
+		assertNotNull(f);
+	}
+	
+
+	@Test
+	public void getByReceiverIdAndReservationRsidAndStatusTest(){
+		FriendInvitation f = friendRepository.getByReceiverIdAndReservationRsidAndStatus(Long.parseLong("7"), Long.parseLong("80"), "accept");
+		assertNotNull(f);
+	}
+	
+	@Test
+	public void getBySenderIdAndReservationRsidTest(){
+		Collection<FriendInvitation> f = friendRepository.getBySenderIdAndReservationRsid(Long.parseLong("19"),Long.parseLong("80"));
+		assertNotNull(f);
+	}
 	@Test
 	public void createF(){
 
 		User u = userService.findByEmail("milana.becejac@gmail.com");
 		System.out.println(u.getEmail());
-				//new User(Long.parseLong("1"),"milana.becejac@gmail.com","Milana","Becejac","pass");
-		//userService.create(u);
 		User u2 = userService.findByEmail("pipi@gmail.com");
 		Reservation r = reservationService.findByResId(Long.parseLong("58"));
 		FriendInvitation f = new FriendInvitation(u, u2,r);
-		friendRepository.save(f);
-		//Collection<User> users = friendshipRepository.findRequests("pending", Long.parseLong("1"));
+		//friendRepository.save(f);
 		assertNotNull(f);
 	}
+	
+	
 }

@@ -56,6 +56,8 @@
         vm.tables = [];
         vm.AllMI = [];
         vm.orderItems = [];
+        vm.listOfTables=[];
+        
         vm.order = null;
         
         vm.logout = logout;
@@ -109,10 +111,13 @@
         vm.addOrder = addOrder;
         vm.removeOrder = removeOrder;
         vm.finish=finish;
+        
+        vm.callF = callF;
         (function initController() {
         	loadAllRests();
             loadCurrentUser();
            
+            
         })();
         
         function showRests(){
@@ -400,14 +405,9 @@
       	            	
       	            	vm.currReservation = response.data;
       	            	//alert(vm.currReservation.reservationId);
-      	                FlashService.Success('Reservation successfuly created.',false);
-      	                geocodeAddress();
-      	                loadAllRests();
-      	            	vm.allRestsMode = false;
-      	            	vm.restModeStep1 = false;
-      	            	vm.restModeStep2 = false;
-      	            	vm.restModeStep3 = true;
+      	                
       	            });
+        			  step2();
         		  }
         		  
         	  }
@@ -429,7 +429,6 @@
                 	//showRests();
             	}
             	else{
-            		
                     showA();
                     showRestStep2();
             	}
@@ -443,9 +442,27 @@
         
         
         function step3(){
-        	
+        	FlashService.Success('Reservation successfuly created.',false);
+              geocodeAddress();
+              loadAllRests();
+          	vm.allReservationsMode = false;
+          	vm.allRestsMode = false;
+          	vm.restModeStep1 = false;
+          	vm.restModeStep2 = false;
+          	vm.restModeStep3 = true;
         }
         
+        function callF(r){
+        	alert("call f "+r.reservationId);
+        	//geocodeAddress();
+        	//loadAllRests();
+        	vm.currReservation = r;
+        	//vm.rest.name=r.id;
+        	//vm.step1par.vreme=r.time;
+        	//vm.step1par.trajanje=r.length;
+        	
+          	showRestStep3();
+        }
         function step4(){
         	loadAllMI();
         	showRestStep4();
@@ -573,7 +590,7 @@
         	RestaurantService.cancel(reservationId, vm.user.id)
             .then(function (response) {
             	if(angular.equals(response.data.status,"no")){
-            		alert("error");
+            		//alert("error");
                 	FlashService.Error('You can not cancel this reservation.',false);
             	}
             	else{
@@ -590,6 +607,7 @@
         }
         vm.getCalledFriends = getCalledFriends;
         vm.friends = [];
+        vm.makedMeals = [];
         function getCalledFriends(reservationId)
         {
         	vm.friends = [];
@@ -604,7 +622,84 @@
               	});*/
             });
         	
-        	
+        	vm.makedMeals = [];
+        	RestaurantService.getMakedMeals(reservationId)
+            .then(function (response) {
+            	vm.makedMeals[reservationId]= response.data;
+            	
+
+            });
+
+        }
+        vm.SortableTableRest=SortableTableRest;
+        function SortableTableRest() {
+
+            vm.head2 = {
+                    image: "Image",
+                    name: "Name",
+                    type: "Type",
+                    startTime: "Start time",
+                    endTime: "EndTime",
+                    address: "Address",
+                    info: "Info"
+                  
+                };
+                        
+            
+            vm.sort2 = {
+                column: 'name',
+                descending: false
+            };
+
+            vm.selectedCls2 = function(column) {
+                return column == vm.sort2.column && 'sort-' + vm.sort2.descending;
+            };
+            
+            vm.changeSorting2 = function(column) {
+                var sort = vm.sort2;
+                if (sort.column == column) {
+                    sort.descending = !sort.descending;
+                } else {
+                    sort.column = column;
+                    sort.descending = false;
+                }
+            };
+        
+        }
+        
+        vm.SortableTableCtrl=SortableTableCtrl;
+        function SortableTableCtrl() {
+            var scope = this;
+
+            vm.head = {
+                    a: "Name",
+                    b: "Date",
+                    c: "From",
+                    d: "To",
+                    e: "Friends",
+                    f: "Orders"
+                  
+                };
+                        
+            vm.sort = {
+                column: 'a',
+                descending: false
+            };
+
+            vm.selectedCls = function(column) {
+                return column == vm.sort.column && 'sort-' + vm.sort.descending;
+            };
+            
+            vm.changeSorting = function(column) {
+                var sort = vm.sort;
+                if (sort.column == column) {
+                    sort.descending = !sort.descending;
+                } else {
+                    sort.column = column;
+                    sort.descending = false;
+                }
+            };
+        
         }
     }
 

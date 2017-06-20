@@ -15,6 +15,7 @@
         service.cancel = cancel;
         service.callFriend = callFriend;
         service.getCalledFriends = getCalledFriends;
+        service.getMakedMeals = getMakedMeals;
         service.showInvitations=showInvitations;
         service.accept = accept;
         service.reject = reject;
@@ -134,7 +135,12 @@
             }); 
         }
         
-        
+        function getMakedMeals(reservationId){
+        	return $http.get('api/reservations/getMakedMeals/' + reservationId)
+            .then(function(response) {
+                return response;
+            }); 
+        }
         function showInvitations(email){
         	return $http.get('api/reservations/findFI/' + email)
             .then(function(response) {

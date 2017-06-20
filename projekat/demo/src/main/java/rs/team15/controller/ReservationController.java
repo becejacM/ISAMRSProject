@@ -250,6 +250,23 @@ public class ReservationController {
 			return new ResponseEntity<Collection<FriendInvitation>>(f, HttpStatus.OK);
 	}
 	
+	@RequestMapping(
+            value    = "/api/reservations/getMakedMeals/{id:.+}",
+            method   = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE
+)
+		public ResponseEntity<Collection<MenuItem>> getMakedMeals(@PathVariable String id) {
+			logger.info("> find meals "+id);
+			Collection<ClientOrder> f = reservationService.findByReservation(Long.parseLong(id));
+			ArrayList<MenuItem> mi = new ArrayList<MenuItem>();
+			for(ClientOrder co : f){
+				for(OrderItem oi : co.getItems()){
+					mi.add(oi.getMenuItem());
+				}
+			}
+			logger.info("sizeeee "+f.size());
+			return new ResponseEntity<Collection<MenuItem>>(mi, HttpStatus.OK);
+	}
 	@RequestMapping (
             value    = "/api/reservations/accept/{fid:.+}",
             method   = RequestMethod.POST,

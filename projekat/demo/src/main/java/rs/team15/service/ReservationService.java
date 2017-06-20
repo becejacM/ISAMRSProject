@@ -23,4 +23,6 @@ public interface ReservationService {
 	ClientOrder addOrder(ClientOrder co);
 	
 	OrderItem addOrderItem(OrderItem oi);
+	
+	Collection<ClientOrder> findByReservation(Long id);
 }

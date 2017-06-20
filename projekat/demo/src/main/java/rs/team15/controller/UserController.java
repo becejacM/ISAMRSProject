@@ -418,7 +418,10 @@ public class UserController {
         String token = generateToken(u.getEmail() +":"+ u.getPassword());
 		logger.info(token);
 		u.setToken(token);
-        userService.update(u);
+		if(u.getRole().equals("guest")){
+	        userService.update(u);
+
+		}
         //request.setAttribute("loggeduser", u);
         
         //User user = (User) request.getAttribute("loggeduser");

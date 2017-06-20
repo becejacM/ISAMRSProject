@@ -30,16 +30,12 @@ public class FriendshipServiceTest {
 	public void createFriendshipRepository(){
 		User u = userService.findByEmail("milana.becejac@gmail.com");
 		System.out.println(u.getEmail());
-				//new User(Long.parseLong("1"),"milana.becejac@gmail.com","Milana","Becejac","pass");
-		//userService.create(u);
 		User u2 = userService.findByEmail("pipi@gmail.com");
-				//new User(Long.parseLong("2"),"rik.becejac@gmail.com","Rik","Becejac","pass");
-		//userService.create(u2);
 		System.out.println(u2.getId());
 		Friendship f = new Friendship(u,u2,"pending");
 		guestService.addFriend(u.getId(), u2.getId());
 		Collection<User> users = guestService.findReq(u2.getId());
-		assertNotNull(f);
+		assertNotNull(users);
 	}
 
 }
