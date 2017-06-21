@@ -49,7 +49,7 @@ public class ReservationServiceImplementation implements ReservationService{
 	UserRepository userRepository;
 	
 	@Override
-	//@Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
 	public Reservation create(String datum, String vreme, String trajanje, String id, String idStola,  String idUser) {
 		// TODO Auto-generated method stub
 		
@@ -93,7 +93,7 @@ public class ReservationServiceImplementation implements ReservationService{
 			r.setTid(t);
 			Reservation rr = reservationRepository.save(r);
 
-			//System.out.println("Ovo mu je verzija posle cuvanja: " + t.getVersion());
+			System.out.println("Ovo mu je verzija posle cuvanja: " + t.getVersion());
 			
 
 			return rr;

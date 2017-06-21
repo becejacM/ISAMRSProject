@@ -55,7 +55,7 @@ public class TableR {
     @OneToMany(mappedBy = "table", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<ClientOrder> orders = new HashSet<ClientOrder>(0);
 
-    /*@Version
+    @Version
 	private Long version;
     
     public Long getVersion() {
@@ -64,7 +64,7 @@ public class TableR {
 
 	public void setVersion(Long version) {
 		this.version = version;
-	}*/
+	}
 	
 	private int brRezervacija;
 	
