@@ -39,6 +39,9 @@
     <button  class="button" aria-label="All invitations" ng-click="vm.showInvitations()">
           <md-icon aria-label="All rests" class="material-icons">Your invitations</md-icon>
     </button>
+    <button  class="button" aria-label="All finished" ng-click="vm.finished()">
+          <md-icon aria-label="All finished" class="material-icons">History</md-icon>
+    </button>
     <div ng-show="vm.allInvitationsMode">
     <table ng-repeat="rr in vm.allInvitations" >
         <tr><td><img id="thumbnail" src={{rr.sender.image}}></td><td>{{rr.sender.firstName}}</td><td>{{rr.reservation.id}}</td>
@@ -47,6 +50,25 @@
         <td><button class="button" ng-click="vm.accept(rr.fid)">ACCEPT</button></td>
         <td><button class="button" ng-click="vm.reject(rr.fid)">REJECT</button></td></tr>
         
+    </table>
+    </div>
+    
+    <div ng-show="vm.allFinishedMode">
+    <table id="myTable" class="table table-striped table-bordered" cellspacing="0" width="100%" ng:controller="vm.SortableTableFin">
+    <thead>
+    <tr>
+            <th ng:repeat="(i,th) in vm.head3" ng:class="vm.selectedCls3(i)" ng:click="vm.changeSorting3(i)">{{th}}</th>
+        </tr>
+        </thead>
+    <tbody>
+        <tr ng-repeat="r in vm.allFinished|orderBy:vm.sort3.column:vm.sort3.descending" ng-init='vm.getCalledFriends(r.reservationId)'>
+        <td>{{r.id}}</td>
+        <td>{{r.reservationDateTime}}</td><td>{{r.time}}</td><td>{{r.length}}</td>
+        <td><table ng-repeat="s in vm.friends[r.reservationId]" ><tr><td>{{ s.receiver.firstName }}</td></tr></table></td>
+       <td><table ng-repeat="ss in vm.makedMeals[r.reservationId]" ><tr><td>{{ ss.name }}</td></tr></table></td>
+       <td><button class="button" ng-click="vm.cancel(r.reservationId)">Cancel</button></td>
+       <td><button class="button" ng-click="vm.callF(r)">Call friends</button></td></tr>
+        </tbody>
     </table>
     </div>
     <div ng-show="vm.allReservationsMode">

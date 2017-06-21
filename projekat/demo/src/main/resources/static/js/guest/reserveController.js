@@ -52,6 +52,7 @@
         vm.AllReservations = [];
         vm.AllInvitations = [];
         vm.AllAcceptInvitations = [];
+        vm.AllFinished=[];
         vm.regions = [];
         vm.tables = [];
         vm.AllMI = [];
@@ -72,6 +73,9 @@
         
         vm.allInvitationsMode = false;
         vm.showInvitations = showInvitations;
+        
+        vm.allFinishedMode = false;
+        vm.showFinished = showFinished;
         
         vm.allRestsMode = false;
         vm.showRests = showRests;
@@ -108,11 +112,13 @@
         vm.accept = accept;
         vm.reject = reject;
         vm.loadAllMI = loadAllMI;
+        vm.loadAllFinished = loadAllFinished;
         vm.addOrder = addOrder;
         vm.removeOrder = removeOrder;
         vm.finish=finish;
         
         vm.callF = callF;
+        vm.showFinished = showFinished;
         (function initController() {
         	loadAllRests();
             loadCurrentUser();
@@ -130,6 +136,7 @@
         	vm.restModeStep4 = false;
         	vm.allReservationsMode = false;
         	vm.allInvitationsMode = false;
+        	vm.allFinishedMode = false;
         }
         
         function showInvitations(){
@@ -144,7 +151,26 @@
             	vm.restModeStep4 = false;
             	vm.allReservationsMode = false;
             	vm.allInvitationsMode = true;
+            	vm.allFinishedMode = false;
             });
+        }
+        
+        function showFinished(){
+        	FlashService.clearFlashMessageP();
+        	vm.allRestsMode = false;
+        	vm.restModeStep1 = false;
+        	vm.restModeStep2 = false;
+        	vm.restModeStep3 = false;
+        	vm.restModeStep4 = false;
+        	vm.allReservationsMode = false;
+        	vm.allInvitationsMode = false;
+        	vm.allFinishedMode = true;
+
+        }
+        
+        vm.finished=finished;
+        function finished(){
+        	loadAllFinished();
         }
         
         function showRestStep1(){
@@ -155,6 +181,7 @@
         	vm.restModeStep4 = false;
         	vm.allReservationsMode = false;
         	vm.allInvitationsMode = false;
+        	vm.allFinishedMode = false;
         }
         
         function showRestStep2(){
@@ -165,6 +192,7 @@
         	vm.restModeStep4 = false;
         	vm.allReservationsMode = false;
         	vm.allInvitationsMode = false;
+        	vm.allFinishedMode = false;
         }
         function showRestStep3(){
         	vm.allRestsMode = false;
@@ -174,6 +202,7 @@
         	vm.restModeStep4 = false;
         	vm.allReservationsMode = false;
         	vm.allInvitationsMode = false;
+        	vm.allFinishedMode = false;
         }
         
         function showRestStep4(){
@@ -184,6 +213,7 @@
         	vm.restModeStep4 = true;
         	vm.allReservationsMode = false;
         	vm.allInvitationsMode = false;
+        	vm.allFinishedMode = false;
         }
         
         vm.v = null;
@@ -402,12 +432,17 @@
         			  var id = e.target.get('id');
         			  RestaurantService.Reserve(vm.c,vm.step1par.vreme,vm.step1par.trajanje, vm.rest.name, id, vm.user.email)
       	            .then(function (response) {
+      	            	if(response.status===204){
+      	                	FlashService.Error('You can\'t create this reservation.',false);
+      	            	}
+      	            	else{
+      	            		vm.currReservation = response.data;
+          	            	//alert(vm.currReservation.reservationId);
+              			  step22();
+      	            	}
       	            	
-      	            	vm.currReservation = response.data;
-      	            	//alert(vm.currReservation.reservationId);
-      	                
+
       	            });
-        			  step2();
         		  }
         		  
         	  }
@@ -422,25 +457,49 @@
         	vm.c =dt+"."+mn+"."+yy;
         	RestaurantService.GetAllAvailableTables(vm.c,vm.step1par.vreme,vm.step1par.trajanje, vm.rest.name)
             .then(function (response) {
-            	
                 vm.regions = response.data;
             	if(vm.regions.length===0){
                 	FlashService.Error('This restaurant has no table for this date.',false);
-                	//showRests();
+                	//showRestStep2();
+                    //showA();
             	}
             	else{
-                    showA();
                     showRestStep2();
+                    showA();
+
             	}
-                
             });
         	
         	
       	  
       	 
       	}
-        
-        
+        vm.step22=step22;
+        function step22() {
+        	var d=new Date(document.getElementById("dt").value);
+        	var dt=d.getDate();
+        	var mn=d.getMonth();
+        	mn++;
+        	var yy=d.getFullYear();
+        	vm.c =dt+"."+mn+"."+yy;
+        	RestaurantService.GetAllAvailableTables(vm.c,vm.step1par.vreme,vm.step1par.trajanje, vm.rest.name)
+            .then(function (response) {
+                vm.regions = response.data;
+            	if(vm.regions.length===0){
+                	showRestStep2();
+                    showA();
+            	}
+            	else{
+                    showRestStep2();
+                    showA();
+
+            	}
+            });
+        	
+        	
+      	  
+      	 
+      	}
         function step3(){
         	FlashService.Success('Reservation successfuly created.',false);
               geocodeAddress();
@@ -504,7 +563,8 @@
         	vm.order = createOrder();
         	RestaurantService.Order(vm.rest.restaurantId, vm.order)
             .then(function (response) {
-            	if(response.data===null){
+            	alert(response.status)
+            	if(response.status===204){
                 	FlashService.Success('Reservation successfuly finished.',false);
             	}
             	else{
@@ -517,6 +577,20 @@
             	vm.restModeStep4 = false;
             	vm.allReservationsMode = false;
             	vm.allInvitationsMode = false;
+            });
+        }
+        
+        function loadAllFinished(){
+        	RestaurantService.getFinished(vm.user.id)
+            .then(function (response) {
+            	if(response.status===204){
+                	FlashService.Success('Your history of visits is empty.',false);
+            	}
+            	else{
+            		vm.allFinished=response.data;
+            		alert(vm.allFinished.length);
+            		showFinished();
+            	}
             });
         }
         
@@ -672,17 +746,17 @@
             var scope = this;
 
             vm.head = {
-                    a: "Name",
-                    b: "Date",
-                    c: "From",
-                    d: "To",
-                    e: "Friends",
-                    f: "Orders"
+                    id: "Name",
+                    reservationDateTime: "Date",
+                    time: "From",
+                    length: "To",
+                    friends: "Friends",
+                    orders: "Orders"
                   
                 };
                         
             vm.sort = {
-                column: 'a',
+                column: 'id',
                 descending: false
             };
 
@@ -692,6 +766,40 @@
             
             vm.changeSorting = function(column) {
                 var sort = vm.sort;
+                if (sort.column == column) {
+                    sort.descending = !sort.descending;
+                } else {
+                    sort.column = column;
+                    sort.descending = false;
+                }
+            };
+        
+        }
+        
+        vm.SortableTableFin=SortableTableFin;
+        function SortableTableFin() {
+
+            vm.head3 = {
+                    id: "Name",
+                    reservationDateTime: "Date",
+                    time: "From",
+                    length: "To",
+                    friends: "Friends",
+                    orders: "Orders"
+                  
+                };
+                        
+            vm.sort3 = {
+                column: 'id',
+                descending: false
+            };
+
+            vm.selectedCls3 = function(column) {
+                return column == vm.sort3.column && 'sort-' + vm.sort3.descending;
+            };
+            
+            vm.changeSorting3 = function(column) {
+                var sort = vm.sort3;
                 if (sort.column == column) {
                     sort.descending = !sort.descending;
                 } else {
