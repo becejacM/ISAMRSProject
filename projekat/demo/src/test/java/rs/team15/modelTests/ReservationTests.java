@@ -29,7 +29,7 @@ public class ReservationTests {
 		Set<TableR> tables = new HashSet<TableR>();
 		Restaurant u = new Restaurant(Long.parseLong("22"),"kkk",Integer.parseInt("8"),Integer.parseInt("21"), menuItems, regions);
 		
-		Region r = new Region("region255","FC1501",u,Integer.parseInt("2"),tables);
+		Region r = new Region("region255","FC1501",u,Integer.parseInt("2"));
 		Set<TableR> s = new HashSet<TableR>(0);
 
 		TableR t = new TableR(Double.parseDouble("100"),Double.parseDouble("100"),Double.parseDouble("200"),Double.parseDouble("50"),5);

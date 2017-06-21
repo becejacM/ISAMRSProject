@@ -27,6 +27,7 @@ public class TableServiceImplementation implements TableService{
 		// TODO Auto-generated method stub
 		TableR tt =  tableRepository.findByTableInRestaurantNo(t.getTableInRestaurantNo());
 		return tableRepository.save(tt);
+	}
 	public List<TableR> findTablesByRegId(Region id){
 		return tableRepository.findByRegion(id);
 	}
