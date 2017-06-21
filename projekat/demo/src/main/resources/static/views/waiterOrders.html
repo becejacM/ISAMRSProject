@@ -29,6 +29,73 @@
 	</nav>
 
 <div>
-Ovde idu porudzbine koje je uzeo ovaj konobar
-Mogucnost unosa i izmene porudzbine i zavrsavanje porudzbine i kreiranje racuna
+<button class="btn btn-primary" aria-label="See orders" ng-click="vm.seeOrders()">
+          <md-icon aria-label="See orders" class="material-icons">See orders</md-icon>
+        </button>
+        <button class="btn btn-primary" aria-label="Create new" ng-click="vm.createNewOrder()">
+          <md-icon aria-label="Create new" class="material-icons">Create new order</md-icon>
+        </button>
+        
+</div>
+
+
+ <div ng-show="vm.createNewMode">
+ Choose meal and set the amount, then click add
+<form name="form" ng-submit="vm.addOneItem()" role="form">
+	        <table>
+	        <tr><td><div class="form-group" >
+	        <label for="order">Meal</label>
+	        <select name="order" id="order" class="form-control" ng-model="vm.orderItem.menuItem" required
+	        	ng-options="item as item.name for item in vm.allMenuItems">	
+			</select></div></td>
+			<td><div class="form-group">
+	            <label for="amount">Amount</label>
+	            <input type="number" name="amount" id="amount" class="form-control" ng-model="vm.orderItem.amount" required />
+	        </div></td>
+	        <td><label for=""></label>
+	        <div class="form-actions">
+	            <button type="submit" ng-disabled="form.$invalid || vm.dataLoading" class="btn btn-primary">Add</button>
+	        </div></td></tr></table>
+</form>
+
+<div class="container">            
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Order Item</th>
+        <th>Price</th>
+        <th>Amount</th>
+        <th>Total price</th>
+        
+      </tr>
+    </thead>
+    <tbody ng-repeat="i in vm.items">
+        <tr><td>{{i.menuItem.name}}</td><td>{{i.menuItem.price}}</td><td>{{i.amount}}</td><td>{{i.price}}</td>
+    </tbody>
+  </table>
+</div>
+
+<button class="btn btn-primary" ng-disabled="vm.addedMode" ng-click="vm.save()">Save</button>
+</div>
+
+<div ng-show="vm.seeAllMode">
+<div class="container">            
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Order no.</th>
+        <th>Price</th>
+        <th>Status</th>
+        <th>Edit</th>
+        <th>Remove</th>
+      </tr>
+    </thead>
+    <tbody ng-repeat="o in vm.orders">
+        <tr><td>{{o.orderNumber}}</td><td>{{o.totalPrice}}</td><td>{{o.status}}</td>
+        <td><button class="btn btn-primary" ng-click="vm.edit(o.orderNumber)">Edit</button></td>
+        <td><button class="btn btn-primary" ng-click="vm.remove(o.orderNumber)">Remove</button></td>
+    </tbody>
+  </table>
+</div>
+
 </div>

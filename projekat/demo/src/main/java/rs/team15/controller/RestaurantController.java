@@ -10,6 +10,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
+import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,8 +25,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import rs.team15.model.ClientOrder;
 import rs.team15.model.Guest;
 import rs.team15.model.MenuItem;
+import rs.team15.model.OrderItem;
 import rs.team15.model.Region;
 import rs.team15.model.Reservation;
 import rs.team15.model.Restaurant;
@@ -40,6 +43,7 @@ import rs.team15.repository.TableRepository;
 
 import rs.team15.repository.RestaurantRepository;
 import rs.team15.service.MenuItemService;
+import rs.team15.service.OrderService;
 import rs.team15.service.RegionService;
 import rs.team15.service.RestaurantService;
 import rs.team15.service.SystemManagerService;
@@ -55,6 +59,8 @@ public class RestaurantController {
 	@Autowired
 	private RestaurantService restaurantService;
 	
+	@Autowired
+	private OrderService orderService;
 
 	@Autowired
 	private UserService userService;
@@ -291,6 +297,7 @@ public class RestaurantController {
 			System.out.println("regioooon ");
 			Region sto = region.next();
 			//for (Iterator<TableR> item = sto.getTables().iterator(); item.hasNext();) {
+			//for (Iterator<TableR> item = tableService.findTablesByRegId(sto).iterator(); item.hasNext();) {
 				System.out.println("stoooo ");
 			for (Iterator<TableR> item = tableService.findTablesByRegId(sto).iterator(); item.hasNext();) {
 			    TableR t = item.next();
@@ -466,5 +473,84 @@ public class RestaurantController {
 		TableR updated = restaurantService.update2(table);
 		logger.info("< update table");
 		return new ResponseEntity<TableR>(updated, HttpStatus.OK);
+	}
+	
+	@RequestMapping(
+            value    = "api/orders/addOne/{id:.+}",
+            method   = RequestMethod.POST,
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE
+		)
+	public ResponseEntity<OrderItem> addOneItem(@RequestBody OrderItem item, @PathVariable Integer id) {
+		ClientOrder o = orderService.find(id);
+		item.setPrice(item.getMenuItem().getPrice() * item.getAmount());
+		item.setOrder(o);
+		//order.getOrderItems().add(item);
+		//order.setTotalPrice(order.getTotalPrice() + item.getPrice());
+		OrderItem created = orderService.addNew(item);
+		
+		//orderService.update(order);
+		logger.info("< create item {}", item.getOiid());
+		return new ResponseEntity<OrderItem>(created, HttpStatus.CREATED);
+	}
+	
+	@RequestMapping(
+            value    = "api/orders/addOrder",
+            method   = RequestMethod.POST,
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE
+		)
+	public ResponseEntity<ClientOrder> addOrder(@RequestBody ClientOrder order) {
+		//logger.info("< create order {}", items.size());
+		//Order order = new Order();
+		//order.setOrderItems(items);
+		//double sum = 0;
+		/*for(OrderItem i : items){
+			sum += i.getPrice();
+		}*/
+		logger.info("< create order - rest: {}", order.getEmployee().getRestaurant().getName());
+		Restaurant r = order.getEmployee().getRestaurant();
+		order.setRestaurant(r);
+		order.setTotalPrice(0);
+		order.setStatus("waiting");  
+		ClientOrder created = orderService.create(order);
+		/*for (Iterator<OrderItem> i = items.iterator(); i.hasNext();) {
+			OrderItem oi = i.next();
+			oi.setOrder(order);
+			OrderItem updated = orderService.update(oi);
+		}*/
+		//logger.info("< create table {}", table.getRegion().getRegId());
+		return new ResponseEntity<ClientOrder>(created, HttpStatus.CREATED);
+	}
+	
+	@RequestMapping(
+            value    = "api/orders/saveOrder/{id:.+}",
+            method   = RequestMethod.PUT,
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE
+		)
+	public ResponseEntity<ClientOrder> saveOrder(@RequestBody Set<OrderItem> items, @PathVariable Integer id) {
+		ClientOrder o = orderService.find(id);
+		o.setItems(items);
+		logger.info("< items num {}", items.size());
+		double sum = 0;
+		for(OrderItem i : items){
+			sum += i.getPrice();
+		}
+		o.setTotalPrice(sum);
+		ClientOrder created = orderService.update(o);
+		
+		return new ResponseEntity<ClientOrder>(created, HttpStatus.OK);
+	}
+	
+	@RequestMapping(
+            value    = "/api/orders/getAll/{id:.+}",
+            method   = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE
+			)
+	public ResponseEntity<Collection<ClientOrder>> getAllOrders(@PathVariable String id) {
+		Collection<ClientOrder> orders = orderService.findByEmployee(id);
+		logger.info("< get orders");
+		return new ResponseEntity<Collection<ClientOrder>>(orders, HttpStatus.OK);
 	}
 }

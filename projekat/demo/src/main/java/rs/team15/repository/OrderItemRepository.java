@@ -13,4 +13,6 @@ public interface OrderItemRepository extends JpaRepository<OrderItem, Long> {
     Collection<OrderItem> findByRestaurantIdAndStateAndMenuItem_Type(Integer restaurantId, String state, String type);
 
     Collection<OrderItem> findByStateAndOrder_Table_Region_RegId(String state, Long regionId);
+
+    OrderItem save(OrderItem orderItem);
 }
