@@ -356,6 +356,10 @@ public class RestaurantController {
 		)
 	public ResponseEntity<Collection<Restaurant>> getByNameOrType(@PathVariable String name,@PathVariable String type) {
 		logger.info("> get r name:{}", name);
+		if(name.equals("a") && type.equals("a")){
+			Collection<Restaurant> r = restaurantService.findAll();
+			return new ResponseEntity<Collection<Restaurant>>(r, HttpStatus.OK);
+		}
 		Collection<Restaurant> r = restaurantService.findByNameOrType(name, type);
 	
 		logger.info("< get r name:{}", name);

@@ -78,6 +78,7 @@
 
         	   if (file) {
         	       reader.readAsDataURL(file); //reads the data as a URL
+        	       vm.changePicMode2=true;
         	   } else {
         	       preview.src = "";
         	   }
@@ -85,9 +86,9 @@
         	   
         	}
         
-        //za upload .... ne radi
         function upload(){
         	vm.changePicMode = false;
+        	vm.changePicMode2 = false;
         	UserService.Upload(vm.user)
             .then(function (response) {
           		  vm.user = response.data;
