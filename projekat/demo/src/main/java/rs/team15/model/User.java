@@ -61,7 +61,17 @@ public class User implements Serializable{
 
     private String message;
     
-    @OneToMany(mappedBy = "userid", fetch = FetchType.LAZY)
+    private int brojPoseta=0;
+    
+    public int getBrojPoseta() {
+		return brojPoseta;
+	}
+
+	public void setBrojPoseta(int brojPoseta) {
+		this.brojPoseta = brojPoseta;
+	}
+
+	@OneToMany(mappedBy = "userid", fetch = FetchType.LAZY)
     private Set <Reservation> reservations = new HashSet <Reservation>(0);
     
 	@JsonIgnore

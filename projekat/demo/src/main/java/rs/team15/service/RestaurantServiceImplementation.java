@@ -49,7 +49,7 @@ public class RestaurantServiceImplementation implements RestaurantService{
 	@Override
 	public Collection<Restaurant> findByNameOrType(String name, String type) {
 		// TODO Auto-generated method stub
-		return restaurantRepository.findRestaurantByNameContainsOrTypeStartsWithAllIgnoreCase(name,type);
+		return restaurantRepository.findByNameOrType(name,type);
 	}
 
 	@Override

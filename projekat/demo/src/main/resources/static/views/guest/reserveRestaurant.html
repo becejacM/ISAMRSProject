@@ -30,6 +30,7 @@
     
     
 <div id="levi">
+	<div ng-show="vm.buttons">
 	<button  class="button" aria-label="All friends" ng-click="vm.showRests()">
           <md-icon aria-label="All rests" class="material-icons">Search restautants</md-icon>
     </button>
@@ -42,13 +43,25 @@
     <button  class="button" aria-label="All finished" ng-click="vm.finished()">
           <md-icon aria-label="All finished" class="material-icons">History</md-icon>
     </button>
+    </div>
     <div ng-show="vm.allInvitationsMode">
-    <table ng-repeat="rr in vm.allInvitations" >
-        <tr><td><img id="thumbnail" src={{rr.sender.image}}></td><td>{{rr.sender.firstName}}</td><td>{{rr.reservation.id}}</td>
+    <table id="myTable" class="table table-striped table-bordered" cellspacing="0" width="100%" ng:controller="vm.SortableTableI">
+    <thead>
+    <tr>
+            <th ng:repeat="(i,th) in vm.head4" ng:class="vm.selectedCls4(i)" ng:click="vm.changeSorting4(i)">{{th}}</th>
+        </tr>
+        </thead>
+    <tbody>
+        <tr ng-repeat="rr in vm.allInvitations|orderBy:vm.sort4.column:vm.sort4.descending">
+       
+        <td><img id="thumbnail" src={{rr.sender.image}}></td>
+        <td>{{rr.sender.firstName}}</td>
+        <td>{{rr.reservation.id}}</td>
         <td>{{rr.reservation.reservationDateTime}}</td>
-        <td>{{rr.reservation.time}}</td><td>{{rr.reservation.length}}</td>
+        <td>{{rr.reservation.time}}</td>
+        <td>{{rr.reservation.length}}</td>
         <td><button class="button" ng-click="vm.accept(rr.fid)">ACCEPT</button></td>
-        <td><button class="button" ng-click="vm.reject(rr.fid)">REJECT</button></td></tr>
+        <td><button class="button" ng-click="vm.reject(rr.fid)">REJECT</button></td></tr></tbody>
         
     </table>
     </div>
@@ -66,8 +79,7 @@
         <td>{{r.reservationDateTime}}</td><td>{{r.time}}</td><td>{{r.length}}</td>
         <td><table ng-repeat="s in vm.friends[r.reservationId]" ><tr><td>{{ s.receiver.firstName }}</td></tr></table></td>
        <td><table ng-repeat="ss in vm.makedMeals[r.reservationId]" ><tr><td>{{ ss.name }}</td></tr></table></td>
-       <td><button class="button" ng-click="vm.cancel(r.reservationId)">Cancel</button></td>
-       <td><button class="button" ng-click="vm.callF(r)">Call friends</button></td></tr>
+       </tr>
         </tbody>
     </table>
     </div>
@@ -79,22 +91,26 @@
         </tr>
         </thead>
     <tbody>
-        <tr ng-repeat="r in vm.allReservations|orderBy:vm.sort.column:vm.sort.descending" ng-init='vm.getCalledFriends(r.reservationId)'><td>{{r.id}}</td>
+        <tr ng-repeat="r in vm.allReservations|orderBy:vm.sort.column:vm.sort.descending" ng-init='vm.getCalledFriends(r.reservationId)'>
+        <td>{{r.id}}</td>
         <td>{{r.reservationDateTime}}</td><td>{{r.time}}</td><td>{{r.length}}</td>
         <td><table ng-repeat="s in vm.friends[r.reservationId]" ><tr><td>{{ s.receiver.firstName }}</td></tr></table></td>
        <td><table ng-repeat="ss in vm.makedMeals[r.reservationId]" ><tr><td>{{ ss.name }}</td></tr></table></td>
-       <td><button class="button" ng-click="vm.cancel(r.reservationId)">Cancel</button></td>
-       <td><button class="button" ng-click="vm.callF(r)">Call friends</button></td></tr>
+       <td><button class="button2" ng-click="vm.cancel(r.reservationId)">Cancel</button></td>
+       <td><button class="button2" ng-click="vm.callF(r)">Call friends</button></td>
+       <td><button class="button2" ng-click="vm.addM(r)">Add meal</button></td></tr>
+       <tr ng-repeat="r in vm.allAcceptInvitations" ng-init='vm.getCalledFriends(r.reservation.reservationId)'>
+        <td>{{r.reservation.id}}</td>
+        <td>{{r.reservation.reservationDateTime}}</td>
+        <td>{{r.reservation.time}}</td>
+        <td>{{r.reservation.length}}</td>
+        <td><table ng-repeat="s in vm.friends[r.reservation.reservationId]" ><tr><td>{{ s.sender.firstName }}</td></tr></table></td>
+       <td><button class="button" ng-click="vm.cancel(r.reservation.reservationId)">Cancel</button></td></tr>
+        
         </tbody>
     </table>
     
-    <table ng-repeat="r in vm.allAcceptInvitations" ng-init='vm.getCalledFriends(r.reservation.reservationId)'>
-        <tr><td>{{r.reservation.id}}&nbsp;&nbsp;&nbsp;<td>{{r.reservation.reservationDateTime}}&nbsp;&nbsp;&nbsp;</td><td>{{r.reservation.time}}
-        &nbsp;&nbsp;&nbsp;</td><td>{{r.reservation.length}}</td>
-        <td>&nbsp;&nbsp;&nbsp;<table ng-repeat="s in vm.friends[r.reservation.reservationId]" ><tr><td>{{ s.sender.firstName }}</td></tr></table></td>
-       <td><button class="button" ng-click="vm.cancel(r.reservation.reservationId)">Cancel</button></td></tr>
-        
-    </table>
+    
     </div>
     
     
@@ -162,13 +178,13 @@
 	<form ng-submit="vm.find()" role="form">
 <div class="form-group">
             <label for="parametar">Restaurant name</label>
-            <input type="text" name="parametar" id="parametar" class="form-control" ng-model="vm.parametar.par" />
+            <input type="text" name="parametar" id="parametar" class="form-control" ng-model="vm.parametar" />
             
 			</div>
         
         <div class="form-group" >
             <label for="parametar">Restaurant type</label>
-            <input type="text" name="parametar2" id="parametar2" class="form-control"ng-model="vm.parametar.par2" />
+            <input type="text" name="parametar2" id="parametar2" class="form-control" ng-model="vm.parametar2" />
             
 			<div class="form-actions">
             <button type="submit"  class="button">Find</button>
@@ -205,6 +221,54 @@
 <canvas id="c1"></canvas><br/>
 <button class="button"  ng-click="vm.step3()">NEXT</button>
 </div>
+
+<div ng-show="vm.callFMode">
+<br/>Restaurant name: {{vm.currReservation.id}}<br/>
+<br/>Start: {{vm.currReservation.reservationDateTime}}  {{vm.currReservation.time}}<br/>
+<br/>Finish:{{vm.currReservation.reservationDateTime}}  {{vm.currReservation.length}}<br/>
+<table ng-repeat="user in vm.allUsers">
+
+        <tr><td><img id="thumbnail" src={{user.image}}></td><td>{{user.firstName}}</td><td> &nbsp;&nbsp;{{user.lastName}}</td>
+       <td><button class="button" ng-click="vm.call(user.email)">CALL</button></td></tr>
+     </table>
+<form ng-submit="vm.findUsers()" role="form">
+<div class="form-group" ng-class="{ 'has-error': form.parametar.$dirty && form.parametar.$error.required && form.parametar.$error.maxlength && form.parametar.$error.minlength }">
+            <label for="parametar">First name</label>
+            <input type="text" name="parametar" id="parametar" class="form-control" ng-minlength="3" ng-maxlength="10" ng-model="vm.parametar.par" required />
+            
+			<span ng-show="form.parametar.$dirty && form.parametar.$error.required" class="help-block">parametar is required</span>
+            <span class="error" ng-show="form.parametar.$error.minlength">parametar must be min 3 characters!</span>
+      <span class="error" ng-show="form.parametar.$error.maxlength">parametar must be max 10 characters!</span>
+			<div class="form-actions">
+            <button type="submit" ng-disabled="form.$invalid || vm.dataLoading" class="button">Find</button>
+        </div></div>
+</form>
+<button class="button"  ng-click="vm.showReservations()">BACK</button>
+</div>
+
+
+<div ng-show="vm.addMealMode">
+<br/>Restaurant name: {{vm.currReservation.id}}<br/>
+<br/>Start: {{vm.currReservation.reservationDateTime}}  {{vm.currReservation.time}}<br/>
+<br/>Finish:{{vm.currReservation.reservationDateTime}}  {{vm.currReservation.length}}<br/>
+<table ng-repeat="r in vm.allMI">
+        <tr><td><img id="thumbnail" src={{r.image}}></td><td>{{r.name}}</td><td>{{r.price}}</td><td>{{r.info}}</td>
+       <td><button class="button" ng-click="vm.addOrder(r)">Add to order</button></td>        
+    </table>
+    <h1>Your order:</h1>
+    <table ng-repeat="r in vm.orderItems">
+        <tr><td><img id="thumbnail" src={{r.image}}></td><td>{{r.name}}</td><td>{{r.price}}</td><td>{{r.info}}</td><td>{{r.count}}</td>
+       <td><button class="button" ng-click="vm.removeOrder(r)">Remove from order</button></td>        </tr>
+    </table>
+    <button class="button"  ng-click="vm.finish()">Finish</button><br/>
+    
+<button class="button"  ng-click="vm.showReservations()">BACK</button>
+</div>
+
+
+
+
+
 </div>
 
 </div>

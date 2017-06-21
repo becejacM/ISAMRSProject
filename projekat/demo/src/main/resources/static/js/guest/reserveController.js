@@ -45,6 +45,7 @@
         vm.rest = null;
         vm.step1par = null;
         vm.parametar = null;
+        vm.parametar2=null;
         vm.currReservation = null;
         vm.realUser = {};
         vm.allUsers = [];
@@ -92,6 +93,10 @@
         vm.restModeStep4 = false;
         vm.showRestStep4 = showRestStep4;
         
+        vm.callFMode=false;
+        vm.addMealMode=false;
+
+        vm.noMode = noMode;
         
         vm.step1 = step1;
         vm.step2 = step2;
@@ -119,6 +124,8 @@
         
         vm.callF = callF;
         vm.showFinished = showFinished;
+        
+        vm.buttons = true;
         (function initController() {
         	loadAllRests();
             loadCurrentUser();
@@ -137,21 +144,45 @@
         	vm.allReservationsMode = false;
         	vm.allInvitationsMode = false;
         	vm.allFinishedMode = false;
+            vm.callFMode=false;
+            vm.addMealMode=false;
+        }
+        
+        function noMode(){
+        	vm.allRestsMode = false;
+        	vm.restModeStep1 = false;
+        	vm.restModeStep2 = false;
+        	vm.restModeStep3 = false;
+        	vm.restModeStep4 = false;
+        	vm.allReservationsMode = false;
+        	vm.allInvitationsMode = false;
+        	vm.allFinishedMode = false;
+            vm.callFMode=false;
+            vm.addMealMode=false;
         }
         
         function showInvitations(){
         	FlashService.clearFlashMessageP();
         	RestaurantService.showInvitations(vm.user.email)
             .then(function (rests) {
-                vm.allInvitations = rests.data;
-                vm.allRestsMode = false;
-            	vm.restModeStep1 = false;
-            	vm.restModeStep2 = false;
-            	vm.restModeStep3 = false;
-            	vm.restModeStep4 = false;
-            	vm.allReservationsMode = false;
-            	vm.allInvitationsMode = true;
-            	vm.allFinishedMode = false;
+            	if(rests.status===204){
+            		FlashService.Error('You don\'t have any invitations.',false);
+                	noMode();
+            	}
+            	else{
+            		vm.allInvitations = rests.data;
+                    vm.allRestsMode = false;
+                	vm.restModeStep1 = false;
+                	vm.restModeStep2 = false;
+                	vm.restModeStep3 = false;
+                	vm.restModeStep4 = false;
+                	vm.allReservationsMode = false;
+                	vm.allInvitationsMode = true;
+                	vm.allFinishedMode = false;
+                    vm.callFMode=false;
+                    vm.addMealMode=false;
+            	}
+                
             });
         }
         
@@ -165,6 +196,8 @@
         	vm.allReservationsMode = false;
         	vm.allInvitationsMode = false;
         	vm.allFinishedMode = true;
+            vm.callFMode=false;
+            vm.addMealMode=false;
 
         }
         
@@ -182,6 +215,8 @@
         	vm.allReservationsMode = false;
         	vm.allInvitationsMode = false;
         	vm.allFinishedMode = false;
+            vm.callFMode=false;
+            vm.addMealMode=false;
         }
         
         function showRestStep2(){
@@ -193,6 +228,8 @@
         	vm.allReservationsMode = false;
         	vm.allInvitationsMode = false;
         	vm.allFinishedMode = false;
+            vm.callFMode=false;
+            vm.addMealMode=false;
         }
         function showRestStep3(){
         	vm.allRestsMode = false;
@@ -203,9 +240,12 @@
         	vm.allReservationsMode = false;
         	vm.allInvitationsMode = false;
         	vm.allFinishedMode = false;
+            vm.callFMode=false;
+            vm.addMealMode=false;
         }
         
         function showRestStep4(){
+        	FlashService.clearFlashMessageP();
         	vm.allRestsMode = false;
         	vm.restModeStep1 = false;
         	vm.restModeStep2 = false;
@@ -214,6 +254,8 @@
         	vm.allReservationsMode = false;
         	vm.allInvitationsMode = false;
         	vm.allFinishedMode = false;
+            vm.callFMode=false;
+            vm.addMealMode=false;
         }
         
         vm.v = null;
@@ -265,6 +307,10 @@
             	vm.restModeStep2 = false;
             	vm.restModeStep3 = false;
                 vm.allReservationsMode = true;
+                vm.allInvitationsMode=false;
+                vm.allFinishedMode=false;
+                vm.callFMode=false;
+                vm.addMealMode=false;
             });
         	
         	
@@ -316,6 +362,8 @@
         
         function step1(id){
         	FlashService.clearFlashMessageP();
+        	vm.buttons=false;
+
         	RestaurantService.GetById(id)
             .then(function (response) {
                 vm.rest = response.data;
@@ -379,6 +427,7 @@
         
         function showA(){
         	FlashService.clearFlashMessageP();
+        	
         	var canvas = new fabric.Canvas('c1');
         	canvas.setDimensions({width:800, height:500});
         	canvas.border = 2;
@@ -402,23 +451,8 @@
     				top: vm.regions[j].datay, 
     				angle: 0
     			});
-    			group.on('selected', function() {
-    				
-    				//alert(t);
-    				/*RestaurantService.Reserve(vm.c,vm.step1par.vreme,vm.step1par.trajanje, vm.rest.name, t, vm.user.email)
-    	            .then(function (response) {
-    	            	
-    	                FlashService.Success('Reservation successfuly created.',false);
-
-    	                loadAllRests();
-    	            	vm.allRestsMode = false;
-    	            	vm.restModeStep1 = false;
-    	            	vm.restModeStep2 = false;
-    	            	vm.restModeStep3 = true;
-    	            });*/
-    			});
     			canvas.add(group);
-        		}
+        	}
         	canvas.on({
         	    'object:selected': onObjectSelected
         	    
@@ -430,15 +464,21 @@
         			  alert("no");
         		  else {
         			  var id = e.target.get('id');
+
         			  RestaurantService.Reserve(vm.c,vm.step1par.vreme,vm.step1par.trajanje, vm.rest.name, id, vm.user.email)
       	            .then(function (response) {
+
       	            	if(response.status===204){
       	                	FlashService.Error('You can\'t create this reservation.',false);
+
+      	                	step22();
       	            	}
       	            	else{
       	            		vm.currReservation = response.data;
           	            	//alert(vm.currReservation.reservationId);
-              			  step22();
+              			
+            			  step22();
+
       	            	}
       	            	
 
@@ -459,7 +499,7 @@
             .then(function (response) {
                 vm.regions = response.data;
             	if(vm.regions.length===0){
-                	FlashService.Error('This restaurant has no table for this date.',false);
+                	FlashService.Error('This restaurant don\'t have any tables for this date.',false);
                 	//showRestStep2();
                     //showA();
             	}
@@ -485,6 +525,8 @@
         	RestaurantService.GetAllAvailableTables(vm.c,vm.step1par.vreme,vm.step1par.trajanje, vm.rest.name)
             .then(function (response) {
                 vm.regions = response.data;
+                showRestStep2();
+                showA();
             	if(vm.regions.length===0){
                 	showRestStep2();
                     showA();
@@ -512,15 +554,24 @@
         }
         
         function callF(r){
-        	alert("call f "+r.reservationId);
-        	//geocodeAddress();
-        	//loadAllRests();
         	vm.currReservation = r;
-        	//vm.rest.name=r.id;
-        	//vm.step1par.vreme=r.time;
-        	//vm.step1par.trajanje=r.length;
         	
-          	showRestStep3();
+          	noMode();
+            vm.callFMode=true;
+        }
+        vm.addM = addM;
+        function addM(r){
+
+        	vm.currReservation = r;
+        	RestaurantService.GetById(vm.currReservation.id)
+            .then(function (response) {
+                vm.rest = response.data;
+                geocodeAddress();
+            });
+        	loadAllMI();
+          	noMode();
+            vm.addMealMode=true;
+            
         }
         function step4(){
         	loadAllMI();
@@ -530,7 +581,13 @@
         function loadAllMI(){
         	RestaurantService.LoadAllMeals(vm.rest.restaurantId)
             .then(function (response) {
-            	vm.allMI = response.data;
+            	if(response.status===204){
+            		finish();
+                	FlashService.Error('This restaurant don\'t have any meals. Reservation successfuly finished.',false);
+            	}
+            	else{
+                	vm.allMI = response.data;
+            	}
             	
             });
         }
@@ -563,13 +620,7 @@
         	vm.order = createOrder();
         	RestaurantService.Order(vm.rest.restaurantId, vm.order)
             .then(function (response) {
-            	alert(response.status)
-            	if(response.status===204){
-                	FlashService.Success('Reservation successfuly finished.',false);
-            	}
-            	else{
-                	FlashService.Success('You successfuly create order and reservation successfuly finished.',false);
-            	}
+            	
             	vm.allRestsMode = false;
             	vm.restModeStep1 = false;
             	vm.restModeStep2 = false;
@@ -577,6 +628,7 @@
             	vm.restModeStep4 = false;
             	vm.allReservationsMode = false;
             	vm.allInvitationsMode = false;
+            	$window.location.reload();
             });
         }
         
@@ -584,7 +636,8 @@
         	RestaurantService.getFinished(vm.user.id)
             .then(function (response) {
             	if(response.status===204){
-                	FlashService.Success('Your history of visits is empty.',false);
+                	FlashService.Error('Your history of visits is empty.',false);
+                	noMode();
             	}
             	else{
             		vm.allFinished=response.data;
@@ -642,9 +695,14 @@
                 });
         }
         
-        
         function find() {
-        	RestaurantService.find(vm.parametar.par, vm.parametar.par2)
+        	if(!vm.parametar){
+        		vm.parametar="a";
+        	}
+        	if(!vm.parametar2){
+        		vm.parametar2="a";
+        	}
+        	RestaurantService.find(vm.parametar, vm.parametar2)
             .then(function (response) {
             	vm.allRests = response.data;
             });
@@ -676,7 +734,15 @@
         function call(email){
         	RestaurantService.callFriend(email, vm.user.email, vm.currReservation.reservationId)
             .then(function (response) {
-            	FlashService.Success('Friend successfuly called.',false);
+            	if(response.status==204){
+                	FlashService.Error('This friend is allready added on this reservation.',false);
+            	}
+            	else if(response.status==403){
+                	FlashService.Error('This reservation has no more chairs for your friends.',false);
+            	}
+            	else{
+                	FlashService.Success('Friend successfuly called.',false);
+            	}
             });
         }
         vm.getCalledFriends = getCalledFriends;
@@ -800,6 +866,42 @@
             
             vm.changeSorting3 = function(column) {
                 var sort = vm.sort3;
+                if (sort.column == column) {
+                    sort.descending = !sort.descending;
+                } else {
+                    sort.column = column;
+                    sort.descending = false;
+                }
+            };
+        
+        }
+        
+        vm.SortableTableI=SortableTableI;
+        function SortableTableI() {
+
+            vm.head4 = {
+            		image: "Image",
+            		firstName: "firstName",
+                    id: "Name",
+                    reservationDateTime: "Date",
+                    time: "From",
+                    length: "To",
+                    friends: "Friends",
+                    orders: "Orders"
+                  
+                };
+                        
+            vm.sort4 = {
+                column: 'id',
+                descending: false
+            };
+
+            vm.selectedCls4 = function(column) {
+                return column == vm.sort4.column && 'sort-' + vm.sort4.descending;
+            };
+            
+            vm.changeSorting4 = function(column) {
+                var sort = vm.sort4;
                 if (sort.column == column) {
                     sort.descending = !sort.descending;
                 } else {

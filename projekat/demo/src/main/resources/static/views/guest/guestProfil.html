@@ -8,19 +8,19 @@
 			</div>
 			
 			<div id="guestProfil" class="navbar-header">
-				<button class="btn btn-default navbar-btn" background-color= "Transparent"  ng-click="vm.home()">ABOUT US</button>
+				<button class="button" background-color= "Transparent"  ng-click="vm.home()">ABOUT US</button>
 			</div>
 			<div id="guestProfil1" class="navbar-header">
-				<button class="btn btn-default navbar-btn" background-color= "Transparent"  ng-click="">MY PROFILE</button>
+				<button class="button" background-color= "Transparent"  ng-click="">MY PROFILE</button>
 			</div>
 			<div id="guestProfil2" class="navbar-header">
-				<button class="btn btn-default navbar-btn" background-color= "Transparent"  ng-click="vm.restaurants()">RESTAURANTS</button>
+				<button class="button" background-color= "Transparent"  ng-click="vm.restaurants()">RESTAURANTS</button>
 			</div>
 			<div id="guestProfil3" class="navbar-header">
-				<button class="btn btn-default navbar-btn" background-color= "Transparent"  ng-click="vm.friends()">FRIENDS</button>
+				<button class="button" background-color= "Transparent"  ng-click="vm.friends()">FRIENDS</button>
 			</div>
 			<div id="guestProfil3" class="navbar-header">
-				<button class="btn btn-default navbar-btn" background-color= "Transparent"  ng-click="vm.logout()">LOGOUT</button>
+				<button class="button" background-color= "Transparent"  ng-click="vm.logout()">LOGOUT</button>
 			</div>
 				
 		</div>
@@ -37,13 +37,13 @@
 		<tr><th>First name</th><td>&nbsp&nbsp{{vm.user.firstName}}</td></tr>
 		<tr><th>Last name</th><td>&nbsp&nbsp{{vm.user.lastName}}</td></tr>
 		<tr><th>Email</th><td>&nbsp&nbsp{{vm.user.email}}</td></tr>
-		<tr><th>Number of visits</th><td>&nbsp&nbsp</td></tr>
+		<tr><th>Number of visits</th><td>&nbsp&nbsp{{vm.user.brojPoseta}}</td></tr>
 		</table>
 		</div>
-		<button ng-hide="vm.editMode" class="button" aria-label="Edit profile" ng-click="vm.editProfile()">
+		<button ng-hide="vm.editMode||vm.changePicMode" class="button" aria-label="Edit profile" ng-click="vm.editProfile()">
           <md-icon aria-label="Edit profile" class="material-icons">EDIT</md-icon>
         </button>
-        <button ng-hide="vm.changePicMode" class="button" aria-label="Edit picture" ng-click="vm.editPicture()">
+        <button ng-hide="vm.changePicMode||vm.editMode" class="button" aria-label="Edit picture" ng-click="vm.editPicture()">
           <md-icon aria-label="Edit picture" class="material-icons">CHANGE PICTURE</md-icon>
         </button>
         
@@ -84,9 +84,9 @@
                 class="img-responsive img-circle center-block" alt="Ovo je avatar">
 					<input type="file" id="avatarFile"/>
 									</div>
-									<div class="form-actions"> <button class="btn btn-success"
-								type="submit" value="Change" >Change</div>
-								<button class="button" aria-label="Edit picture" ng-click="vm.upload()">Save</button></form>
+									<div class="form-actions"> <button class="button"
+								type="submit" value="Change" >Preview</div>
+								<button ng-show="vm.changePicMode2" class="button" aria-label="Edit picture" ng-click="vm.upload()">Save</button></form>
 				
           
     </div>

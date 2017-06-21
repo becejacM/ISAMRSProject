@@ -86,7 +86,7 @@ public class ReservationController {
 		r.setUid(u);
 		r.setId(rest.getName());
 		r.setStatus("reserved");*/
-		
+		/*Metoda za rezervaciju stola ++*/
 		Reservation rr = reservationService.create(datum, vreme, trajanje, id, idStola, idUser);
 		if(rr==null){
 			return new ResponseEntity<Reservation>(rr, HttpStatus.NO_CONTENT);
@@ -207,11 +207,18 @@ public class ReservationController {
 			User u1 = userService.findByEmail(parametar);
 			User u = userService.findByEmail(email);
 			Reservation r = reservationService.findByResId(Long.parseLong(rsid));
+			TableR t = r.getTid();
+			Collection<FriendInvitation> fifi = guestService.getByReservation_rsid(r.getReservationId());
+			if(t.getNumOfChairs()<=fifi.size()){
+				return new ResponseEntity<FriendInvitation>(new FriendInvitation(), HttpStatus.FORBIDDEN);
+			}
 			logger.info("> find guests "+u1.getId());
 			logger.info("> find guests "+u.getId());
 			logger.info(r.getLength().toString());
 			FriendInvitation g = guestService.addFriendInvite(u.getId(), u1.getId(),r);
-			
+			if(g==null){
+				return new ResponseEntity<FriendInvitation>(g, HttpStatus.NO_CONTENT);
+			}
 			return new ResponseEntity<FriendInvitation>(g, HttpStatus.OK);
 	}
 	
@@ -225,6 +232,9 @@ public class ReservationController {
 			User u = userService.findByEmail(email);
 			
 			Collection<FriendInvitation> invitations = guestService.findFI(u.getId());
+			if(invitations.size()==0){
+				return new ResponseEntity<Collection<FriendInvitation>>(invitations, HttpStatus.NO_CONTENT);
+			}
 			
 			return new ResponseEntity<Collection<FriendInvitation>>(invitations, HttpStatus.OK);
 	}
@@ -300,6 +310,7 @@ public class ReservationController {
 	public ResponseEntity<Collection<MenuItem>> getMI(@PathVariable String rid) {
 		logger.info("> get mi");
 		Collection<MenuItem> mi = menuItemService.findByRes(Long.parseLong(rid));
+		
 		logger.info("< get mi");
 		return new ResponseEntity<Collection<MenuItem>>(mi, HttpStatus.OK);
 	}
@@ -329,14 +340,18 @@ public class ReservationController {
 			logger.info("nuuuuuuuuuuuuuuuuulllllllllllllll");
 			return new ResponseEntity<ClientOrder>(order, HttpStatus.NO_CONTENT);
 		}
+		
 		ClientOrder co = reservationService.addOrder(order);
 		
 			
 		for (OrderItem oi : order.getItems()) {
 			logger.info(oi.getMenuItem().getName());
 			OrderItem i = oi;
-            i.setOrder(co);
             i.setMenuItem(menuItemService.findOne(i.getMenuItem().getMenuItemId()));
+			double s = i.getAmount()*i.getMenuItem().getPrice();
+			String ss = String.valueOf(s);
+			i.setAmount(Integer.parseInt(ss));
+            i.setOrder(co);
             i.setRestaurantId(Long.parseLong(rid));
             OrderItem nItem = reservationService.addOrderItem(i);
 		}
