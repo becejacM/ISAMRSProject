@@ -290,9 +290,9 @@ public class RestaurantController {
 		for (Iterator<Region> region = r.getRegions().iterator(); region.hasNext();) {
 			System.out.println("regioooon ");
 			Region sto = region.next();
-			for (Iterator<TableR> item = sto.getTables().iterator(); item.hasNext();) {
+			//for (Iterator<TableR> item = sto.getTables().iterator(); item.hasNext();) {
 				System.out.println("stoooo ");
-			//for (Iterator<TableR> item = tableService.findTablesByRegId(sto).iterator(); item.hasNext();) {
+			for (Iterator<TableR> item = tableService.findTablesByRegId(sto).iterator(); item.hasNext();) {
 			    TableR t = item.next();
 			    available = true;
 			    for (Iterator<Reservation> res = t.getReservations().iterator(); res.hasNext();) {

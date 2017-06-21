@@ -70,7 +70,7 @@ public class ReservationController {
             produces = MediaType.APPLICATION_JSON_VALUE
 		)
 	public ResponseEntity<Reservation> reserve(@PathVariable String datum,@PathVariable String vreme,@PathVariable String trajanje,@PathVariable String id,@PathVariable String idStola, @PathVariable String idUser) throws ParseException {
-		Reservation r = new Reservation();
+		/*Reservation r = new Reservation();
 		Restaurant rest = restaurantService.findById(id);
 		logger.info(idStola);
 		TableR t = tableService.findByrno(Integer.parseInt(idStola));
@@ -85,10 +85,13 @@ public class ReservationController {
 		r.setTid(t);
 		r.setUid(u);
 		r.setId(rest.getName());
-		r.setStatus("reserved");
+		r.setStatus("reserved");*/
 		
-		Reservation rr = reservationService.create(r);
-		return new ResponseEntity<Reservation>(r, HttpStatus.OK);
+		Reservation rr = reservationService.create(datum, vreme, trajanje, id, idStola, idUser);
+		if(rr==null){
+			return new ResponseEntity<Reservation>(rr, HttpStatus.NO_CONTENT);
+		}
+		return new ResponseEntity<Reservation>(rr, HttpStatus.OK);
 	}
 
 	@RequestMapping(
@@ -302,13 +305,33 @@ public class ReservationController {
 	}
     
     @RequestMapping(
+            value    = "/api/reservations/getFinished/{id:.+}",
+            method   = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE
+			)
+	public ResponseEntity<Collection<Reservation>> getFinished(@PathVariable String id) {
+		logger.info("> get finished");
+		Collection<Reservation> mi = reservationService.findByStatusAndUserId("finished", Long.parseLong(id));
+		if(mi.isEmpty()){
+			return new ResponseEntity<Collection<Reservation>>(mi, HttpStatus.NO_CONTENT);
+		}
+		logger.info("< get finished");
+		return new ResponseEntity<Collection<Reservation>>(mi, HttpStatus.OK);
+	}
+    @RequestMapping(
             value    = "/api/orders/create/{rid:.+}",
             method   = RequestMethod.POST,
             produces = MediaType.APPLICATION_JSON_VALUE
 			)
 	public ResponseEntity<ClientOrder> createOrder(@RequestBody ClientOrder order,@PathVariable String rid) {
 		logger.info("> create order");
+		if(order.getItems().size()==0){
+			logger.info("nuuuuuuuuuuuuuuuuulllllllllllllll");
+			return new ResponseEntity<ClientOrder>(order, HttpStatus.NO_CONTENT);
+		}
 		ClientOrder co = reservationService.addOrder(order);
+		
+			
 		for (OrderItem oi : order.getItems()) {
 			logger.info(oi.getMenuItem().getName());
 			OrderItem i = oi;

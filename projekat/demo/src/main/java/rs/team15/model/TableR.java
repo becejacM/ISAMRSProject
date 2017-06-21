@@ -55,7 +55,28 @@ public class TableR {
     @OneToMany(mappedBy = "table", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<ClientOrder> orders = new HashSet<ClientOrder>(0);
 
-    public TableR() {
+    /*@Version
+	private Long version;
+    
+    public Long getVersion() {
+		return version;
+	}
+
+	public void setVersion(Long version) {
+		this.version = version;
+	}*/
+	
+	private int brRezervacija;
+	
+    public int getBrRezervacija() {
+		return brRezervacija;
+	}
+
+	public void setBrRezervacija(int brRezervacija) {
+		this.brRezervacija = brRezervacija;
+	}
+
+	public TableR() {
     }
     
 

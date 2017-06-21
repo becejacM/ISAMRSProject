@@ -22,6 +22,7 @@
         service.GetAllAcceptRest = GetAllAcceptRest;
         service.LoadAllMeals = LoadAllMeals;
         service.Order = Order;
+        service.getFinished = getFinished;
         
         service.GetAllRests = GetAllRests;
         service.GetById = GetById;
@@ -138,6 +139,13 @@
         
         function getMakedMeals(reservationId){
         	return $http.get('api/reservations/getMakedMeals/' + reservationId)
+            .then(function(response) {
+                return response;
+            }); 
+        }
+        
+        function getFinished(id){
+        	return $http.get('api/reservations/getFinished/' + id)
             .then(function(response) {
                 return response;
             }); 

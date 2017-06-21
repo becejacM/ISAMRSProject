@@ -10,16 +10,16 @@
 			<div id="guestProfil" class="navbar-header">
 				<button class="btn btn-default navbar-btn" background-color= "Transparent"  ng-click="vm.home()">ABOUT US</button>
 			</div>
-			<div id="guestProfil2" class="navbar-header">
+			<div id="guestProfil1" class="navbar-header">
 				<button class="btn btn-default navbar-btn" background-color= "Transparent"  ng-click="">MY PROFILE</button>
 			</div>
-			<div id="guestProfil3" class="navbar-header">
+			<div id="guestProfil2" class="navbar-header">
 				<button class="btn btn-default navbar-btn" background-color= "Transparent"  ng-click="vm.restaurants()">RESTAURANTS</button>
 			</div>
-			<div id="guestProfil4" class="navbar-header">
+			<div id="guestProfil3" class="navbar-header">
 				<button class="btn btn-default navbar-btn" background-color= "Transparent"  ng-click="vm.friends()">FRIENDS</button>
 			</div>
-			<div id="guestProfil5" class="navbar-header">
+			<div id="guestProfil3" class="navbar-header">
 				<button class="btn btn-default navbar-btn" background-color= "Transparent"  ng-click="vm.logout()">LOGOUT</button>
 			</div>
 				
@@ -40,10 +40,10 @@
 		<tr><th>Number of visits</th><td>&nbsp&nbsp</td></tr>
 		</table>
 		</div>
-		<button ng-hide="vm.editMode" class="btn btn-primary" aria-label="Edit profile" ng-click="vm.editProfile()">
+		<button ng-hide="vm.editMode" class="button" aria-label="Edit profile" ng-click="vm.editProfile()">
           <md-icon aria-label="Edit profile" class="material-icons">EDIT</md-icon>
         </button>
-        <button ng-hide="vm.changePicMode" class="btn btn-primary" aria-label="Edit picture" ng-click="vm.editPicture()">
+        <button ng-hide="vm.changePicMode" class="button" aria-label="Edit picture" ng-click="vm.editPicture()">
           <md-icon aria-label="Edit picture" class="material-icons">CHANGE PICTURE</md-icon>
         </button>
         
@@ -68,7 +68,7 @@
         </div>
                 
         <div class="form-actions">
-            <button type="submit" ng-disabled="form.$invalid || vm.dataLoading" class="btn btn-primary">Save</button>
+            <button type="submit" ng-disabled="form.$invalid || vm.dataLoading" class="button">Save</button>
         </div>
         
               
@@ -86,7 +86,7 @@
 									</div>
 									<div class="form-actions"> <button class="btn btn-success"
 								type="submit" value="Change" >Change</div>
-								<button class="btn btn-primary" aria-label="Edit picture" ng-click="vm.upload()">Save</button></form>
+								<button class="button" aria-label="Edit picture" ng-click="vm.upload()">Save</button></form>
 				
           
     </div>
