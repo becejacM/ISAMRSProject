@@ -51,6 +51,11 @@
         service.EditDrink = EditDrink;
         //service.GetRegion = GetRegion;
         service.CreateRegion = CreateRegion;
+        
+        service.AddOneItem = AddOneItem;
+        service.AddOrder = AddOrder;
+        service.SaveOrder = SaveOrder;
+        service.LoadAllOrders = LoadAllOrders;
 
         return service;
 
@@ -345,7 +350,35 @@
                 return response;
             });              
 
-     }
+        }
+        
+        function AddOneItem(item, id){
+        	return $http.post('/api/orders/addOne/' + id, item)
+            .then(function(response) {
+                return response;
+            }); 
+        }
+        
+        function AddOrder(order){
+        	return $http.post('/api/orders/addOrder', order)
+            .then(function(response) {
+                return response;
+            }); 
+        }
+        
+        function SaveOrder(order, id){
+        	return $http.put('/api/orders/saveOrder/' + id, order)
+            .then(function(response) {
+                return response;
+            }); 
+        }
+        
+        function LoadAllOrders(email){
+        	return $http.get('/api/orders/getAll/' + email)
+        	.then(function(response){
+        		return response;
+        	});
+        }
     }
     
 
