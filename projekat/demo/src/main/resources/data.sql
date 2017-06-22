@@ -11,9 +11,11 @@ INSERT INTO app_users (id, email, first_name, last_name, password, image, role, 
 INSERT INTO app_users (id, email, first_name, last_name, password, image, role, verified, login, message, token, broj_poseta) VALUES(4, 'waiter@gmail.com', 'waiter', 'waiter', '12345', 'pictures/user.png', 'waiter', 'no', 'no', null, null, 0);
 INSERT INTO app_users (id, email, first_name, last_name, password, image, role, verified, login, message, token, broj_poseta) VALUES(5, 'cook@gmail.com', 'cook', 'cook', '12345', 'pictures/user.png', 'cook', 'no', 'no', null, null, 0);
 INSERT INTO app_users (id, email, first_name, last_name, password, image, role, verified, login, message, token, broj_poseta) VALUES(6, 'bartender@gmail.com', 'bartender', 'bartender', '12345', 'pictures/user.png', 'bartender', 'no', 'no', null, null, 0);
-INSERT INTO app_users (id, email, first_name, last_name, password, image, role, verified, login, message, token, broj_poseta) VALUES(7, 'guest1@gmail.com', 'guest1', 'guest1', '12345', 'pictures/user.png', 'guest', 'yes', 'no', null, null, 0);
+INSERT INTO app_users (id, email, first_name, last_name, password, image, role, verified, login, message, token, broj_poseta) VALUES(7, 'guest1@gmail.com', 'guest1', 'guest1', '12345', 'pictures/user.png', 'guest', 'yes', 'no', null, 'Z3Vlc3QxQGdtYWlsLmNvbToxMjM0', 0);
 INSERT INTO app_users (id, email, first_name, last_name, password, image, role, verified, login, message, token, broj_poseta) VALUES(8, 'guest2@gmail.com', 'guest2', 'guest2', '12345', 'pictures/user.png', 'guest', 'yes', 'no', null, null, 0);
 INSERT INTO app_users (id, email, first_name, last_name, password, image, role, verified, login, message, token, broj_poseta) VALUES(9, 'guest3@gmail.com', 'guest3', 'guest3', '12345', 'pictures/user.png', 'guest', 'yes', 'no', null, null, 0);
+INSERT INTO app_users (id, email, first_name, last_name, password, image, role, verified, login, message, token, broj_poseta) VALUES(10, 'guest33@gmail.com', 'guest33', 'guest33', '12345', 'pictures/user.png', 'guest', 'yes', 'no', null, null, 0);
+INSERT INTO app_users (id, email, first_name, last_name, password, image, role, verified, login, message, token, broj_poseta) VALUES(11, 'guest34@gmail.com', 'guest34', 'guest34', '12345', 'pictures/user.png', 'guest', 'yes', 'no', null, null, 0);
 
 -- ADDING SYSTEM MANAGER
 
@@ -58,12 +60,15 @@ INSERT INTO bartenders (b_id) VALUES (6);
 INSERT INTO guests (g_id) VALUES (7);
 INSERT INTO guests (g_id) VALUES (8);
 INSERT INTO guests (g_id) VALUES (9);
+INSERT INTO guests (g_id) VALUES (10);
+INSERT INTO guests (g_id) VALUES (11);
 
 -- ADDING FRIENSHIPS
 
 INSERT INTO FRIENDSHIPS(FID, STATUS, SECOND, FIRST) values (1,'accept',7,8);
 INSERT INTO FRIENDSHIPS(FID, STATUS, SECOND, FIRST) values (2,'pending',9,8);
 INSERT INTO FRIENDSHIPS(FID, STATUS, SECOND, FIRST) values (3,'accept',7,9);
+INSERT INTO FRIENDSHIPS(FID, STATUS, SECOND, FIRST) values (4,'pending',7,11);
 
 
 
@@ -96,4 +101,14 @@ insert into reservations(rsid,date_of,length,name_rest,status,time_of,rid,tid,ui
 
 insert into friendinvitations(fid,status,second,resid,first) values (1,'pending',8,1,7);
 insert into friendinvitations(fid,status,second,resid,first) values (2,'accept',9,1,7);
+insert into friendinvitations(fid,status,second,resid,first) values (3,'pending',9,2,7);
 
+-- ADDING CLIENT_ORDERS
+
+insert into client_orders(oid, client_id, date_of, deadline, order_number, status, total_price, version, eid, rsid, rid, table_id) values (1,7,'2017-06-22 21:46:55.682', null, 1, 'created',0.0,0,null,2,1,null);
+insert into client_orders(oid, client_id, date_of, deadline, order_number, status, total_price, version, eid, rsid, rid, table_id) values (2,7,'2017-06-22 21:47:55.682', null, 2, 'created',0.0,0,null,3,1,null);
+
+-- ADDING ORDER_ITEMS
+
+insert into order_items(oiid,amount,item_number,price,restaurant_id,state,oi_table_id,version,miid,oid) values(1,1,1,300.0,1,'created',null,0,3,1);
+insert into order_items(oiid,amount,item_number,price,restaurant_id,state,oi_table_id,version,miid,oid) values(2,1,1,300.0,1,'created',null,0,3,2);

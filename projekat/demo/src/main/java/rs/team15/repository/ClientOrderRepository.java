@@ -28,5 +28,6 @@ public interface ClientOrderRepository extends JpaRepository<ClientOrder, Long> 
 	
 	@Query ("SELECT o FROM ClientOrder o WHERE o.restaurant.name = ?1")
 	Collection<ClientOrder> findByRestaurant(String restaurant);
+	
 
 }
