@@ -371,20 +371,23 @@ public class ReservationController {
 			logger.info("nuuuuuuuuuuuuuuuuulllllllllllllll");
 			return new ResponseEntity<ClientOrder>(order, HttpStatus.NO_CONTENT);
 		}
-		
-		ClientOrder co = reservationService.addOrder(order);
-		
-			
+		Restaurant r = restaurantService.findOne(Long.parseLong(rid));
+		order.setRestaurant(r);
+		ClientOrder co = orderService.create(order);
+		double t = 0;
 		for (OrderItem oi : order.getItems()) {
 			logger.info(oi.getMenuItem().getName());
 			OrderItem i = oi;
             i.setMenuItem(menuItemService.findOne(i.getMenuItem().getMenuItemId()));
 			i.setVersion(0L);
 			//i.setAmount(i.getAmount());
+			i.setPrice(i.getAmount()*i.getMenuItem().getPrice());
+			t+=i.getPrice();
             i.setOrder(co);
             i.setRestaurantId(Long.parseLong(rid));
-            OrderItem nItem = orderItemRepository.save(i);
+            OrderItem nItem = orderService.addNew(i);
 		}
+		co.setTotalPrice(t);
 		logger.info("< create order");
 		return new ResponseEntity<ClientOrder>(co, HttpStatus.OK);
 	}

@@ -583,7 +583,7 @@
             .then(function (response) {
             	if(response.status===204){
             		finish();
-                	FlashService.Error('This restaurant don\'t have any meals. Reservation successfuly finished.',false);
+                	FlashService.Error('This restaurant doesn\'t have any meals. Reservation successfuly finished.',false);
             	}
             	else{
                 	vm.allMI = response.data;
