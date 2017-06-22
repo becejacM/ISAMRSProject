@@ -1,12 +1,14 @@
 package rs.team15.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
 
 @Entity
 @Table(name = "menu_items")
-@JsonIgnoreProperties(value = {"restaurant"})
+//@JsonIgnoreProperties(value = {"restaurant"})
 public class MenuItem {
 
     @Id
@@ -29,6 +31,7 @@ public class MenuItem {
     @Column(name = "image")
     private String image;
 
+    //@JsonManagedReference
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "rid")
     private Restaurant restaurant;
@@ -91,10 +94,12 @@ public class MenuItem {
         this.image = image;
     }
 
+    //@JsonBackReference
     public Restaurant getRestaurant() {
         return restaurant;
     }
 
+    //@JsonManagedReference
     public void setRestaurant(Restaurant restaurant) {
         this.restaurant = restaurant;
     }

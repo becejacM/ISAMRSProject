@@ -29,11 +29,14 @@
 	</nav>
 
 <div>
-<button class="btn btn-primary" aria-label="See orders" ng-click="vm.seeOrders()">
+		<button class="btn btn-primary" aria-label="See orders" ng-click="vm.seeOrders()">
           <md-icon aria-label="See orders" class="material-icons">See orders</md-icon>
         </button>
         <button class="btn btn-primary" aria-label="Create new" ng-click="vm.createNewOrder()">
           <md-icon aria-label="Create new" class="material-icons">Create new order</md-icon>
+        </button>
+        <button class="btn btn-primary" aria-label="Make bills" ng-click="vm.makeBills()">
+          <md-icon aria-label="Make bills" class="material-icons">Make bills</md-icon>
         </button>
         
 </div>
@@ -87,15 +90,117 @@
         <th>Price</th>
         <th>Status</th>
         <th>Edit</th>
-        <th>Remove</th>
       </tr>
     </thead>
     <tbody ng-repeat="o in vm.orders">
         <tr><td>{{o.orderNumber}}</td><td>{{o.totalPrice}}</td><td>{{o.status}}</td>
         <td><button class="btn btn-primary" ng-click="vm.edit(o.orderNumber)">Edit</button></td>
-        <td><button class="btn btn-primary" ng-click="vm.remove(o.orderNumber)">Remove</button></td>
+    </tbody>
+  </table>
+</div>
+</div>
+
+<div ng-show="vm.billsMode">
+<div class="container">            
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Order no.</th>
+        <th>Price</th>
+        <th>Status</th>
+        <th>Make the bill</th>
+      </tr>
+    </thead>
+    <tbody ng-repeat="o in vm.finished">
+        <tr><td>{{o.orderNumber}}</td><td>{{o.totalPrice}}</td><td>{{o.status}}</td>
+        <td><button class="btn btn-primary" ng-click="vm.makeTheBill(o)">Make the bill</button></td>
     </tbody>
   </table>
 </div>
 
 </div>
+
+
+
+
+<div ng-show="vm.editMode"> 
+<form name="form" ng-submit="vm.editOrder(vm.currentOrder)" role="form">           
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Order Item</th>
+        <th>Amount</th>
+        <th>Delete</th>
+      </tr>
+    </thead>
+    <tbody >
+        <tr ng-repeat="i in vm.currentOrder.items"><td>{{i.menuItem.name}}</td>
+			<td><div class="form-group">
+	            <input type="number" name="amount" id="amount" class="form-control" ng-model="i.amount" required />
+	        </div></td>
+	        <td><button class="btn btn-primary" ng-click="vm.deleteItem(i)">Delete</button></td>
+	    </tr>	    
+    </tbody>
+  </table>
+  </form>
+  
+  <form name="form1" ng-submit="vm.addNewItem()" role="form">
+	        <table class="table">
+	        <tbody>
+	        <tr><td><div class="form-group" >
+	        <label for="order">Meal</label>
+	        <select name="order" id="order" class="form-control" ng-model="vm.orderItem.menuItem" required
+	        	ng-options="item as item.name for item in vm.allMenuItems">	
+			</select></div></td>
+			<td><div class="form-group">
+	            <label for="amount">Amount</label>
+	            <input type="number" name="amount" id="amount" class="form-control" ng-model="vm.orderItem.amount" required />
+	        </div></td>
+	        <td><label for=""></label>
+	        <div class="form-actions">
+	            <button type="submit" ng-disabled="form1.$invalid || vm.dataLoading" class="btn btn-primary">Add</button>
+	        </div></td></tr></tbody></table>
+ </form>
+  
+  <button class="btn btn-primary" ng-disabled="form.$invalid" ng-click="vm.saveEditedItems()">Save</button>
+  <a ng-click="vm.cancel()" class="btn btn-link">Cancel</a>
+</div>
+
+<div ng-show="vm.showBillMode">
+<div class="container">
+	<h2>BILL</h2>         
+  <table class="table">
+    <thead>
+    </thead>
+    <tbody>
+	<tr><td>Restaurant: </td><td>{{vm.currentBill.employee.restaurant.name}}</td></tr>
+	<tr><td>Waiter: </td><td>{{vm.currentBill.employee.firstName}} {{vm.currentBill.employee.lastName}}</td></tr>
+	<tr><td>Date: </td><td>{{vm.currentDate}}</td></tr>
+    </tbody>
+  </table>
+  <h2>Your order: </h2>
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Item</th>
+        <th>Price</th>
+        <th>Amount</th>
+        <th>Total</th>
+      </tr>
+    </thead>
+    <tbody >
+        <tr ng-repeat="i in vm.currentBill.order.items">
+        <td>{{i.menuItem.name}}</td>
+		<td>{{i.menuItem.price}}</td>
+		<td>{{i.amount}}</td>
+		<td>{{i.price}}</td>
+	    </tr>
+	    <tr><td></td><td></td><td>Total price: </td><td>{{vm.currentBill.totalPrice}}</td>	    
+    </tbody>
+  </table>
+  <h2>We hope you enjoyed your meal here. Have a great day!</h2>
+</div>
+
+<button class="btn btn-primary" ng-click="vm.finishBill()">Finish bill</button>
+</div>
+

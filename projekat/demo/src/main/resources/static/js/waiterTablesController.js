@@ -91,28 +91,28 @@
         	}
         
         function home(){
-        	AuthenticationService.SetCredentials(vm.user.email, vm.user.password, "waiterHome");
+        	AuthenticationService.SetCredentials(vm.user.email, vm.user.password, "waiterHome", vm.user.token);
         	$location.path('/waiterHome');
         	
         }
 
         function profile(){
         	
-        	AuthenticationService.SetCredentials(vm.user.email, vm.user.password, "waiterProfile");
+        	AuthenticationService.SetCredentials(vm.user.email, vm.user.password, "waiterProfile", vm.user.token);
         	$location.path('/waiterProfile');
         }
         
         function schedule(){
-        	AuthenticationService.SetCredentials(vm.user.email, vm.user.password, "waiterSchedule");
+        	AuthenticationService.SetCredentials(vm.user.email, vm.user.password, "waiterSchedule", vm.user.token);
 
         	$location.path('/waiterSchedule');
         }
         function orders(){
-        	AuthenticationService.SetCredentials(vm.user.email, vm.user.password, "waiterOrders");
+        	AuthenticationService.SetCredentials(vm.user.email, vm.user.password, "waiterOrders", vm.user.token);
         	$location.path('/waiterOrders');
         }
         function tables(){
-        	AuthenticationService.SetCredentials(vm.user.email, vm.user.password, "waiterTables");
+        	AuthenticationService.SetCredentials(vm.user.email, vm.user.password, "waiterTables", vm.user.token);
         	$location.path('/waiterTables');
         }
         function logout(){

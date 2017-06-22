@@ -2,7 +2,9 @@ package rs.team15.model;
 
 
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.*;
@@ -21,11 +23,11 @@ public class OrderItem implements Serializable{
     @Column(name = "state")
     private String state; 
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
+    @ManyToOne()
     @JoinColumn(name = "oid")
     private ClientOrder order; 
 
-    @OneToOne(cascade = CascadeType.MERGE)
+    @OneToOne()
     @JoinColumn(name = "miid")
     private MenuItem menuItem; 
 
@@ -37,7 +39,7 @@ public class OrderItem implements Serializable{
 
     @Version
     @Column(name = "version")
-    private Integer version = 0;
+    private Long version ;
 
     @Column(name = "restaurant_id")
     private Long restaurantId; 
@@ -45,6 +47,9 @@ public class OrderItem implements Serializable{
 
     @Column(name = "oi_table_id")
     private Integer tableId;
+    
+    @Column(name = "item_number")
+    private Integer itemNumber;
 
     public OrderItem(){
     	
@@ -73,22 +78,21 @@ public class OrderItem implements Serializable{
         this.state = state;
     }
 
-    @JsonProperty
+    @JsonBackReference
     public ClientOrder getOrder() {
         return order;
     }
 
-    @JsonIgnore
+    //@JsonIgnore
     public void setOrder(ClientOrder order) {
         this.order = order;
     }
 
-    @JsonProperty
+    //@JsonProperty
     public MenuItem getMenuItem() {
         return menuItem;
     }
 
-    @JsonIgnore
     public void setMenuItem(MenuItem menuItem) {
         this.menuItem = menuItem;
     }
@@ -101,11 +105,11 @@ public class OrderItem implements Serializable{
         this.amount = amount;
     }
 
-    public Integer getVersion() {
+    public Long getVersion() {
         return version;
     }
 
-    public void setVersion(Integer version) {
+    public void setVersion(Long version) {
         this.version = version;
     }
 
@@ -140,9 +144,19 @@ public class OrderItem implements Serializable{
 	public void setPrice(double price) {
 		this.price = price;
 	}
+	
+	
+
+	public Integer getItemNumber() {
+		return itemNumber;
+	}
+
+	public void setItemNumber(Integer itemNumber) {
+		this.itemNumber = itemNumber;
+	}
 
 	public OrderItem(Long oiid, String state, ClientOrder order, MenuItem menuItem, Integer amount, double price,
-			Integer version, Long restaurantId, Integer tableId) {
+			Long version, Long restaurantId, Integer tableId) {
 		super();
 		this.oiid = oiid;
 		this.state = state;

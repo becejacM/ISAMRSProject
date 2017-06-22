@@ -2,6 +2,7 @@ package rs.team15.service;
 
 import java.util.Collection;
 
+import rs.team15.model.Bill;
 import rs.team15.model.ClientOrder;
 import rs.team15.model.OrderItem;
 
@@ -19,4 +20,12 @@ public interface OrderService {
 	
 	Collection<ClientOrder> findByRestaurant(String restaurant);
 
+	OrderItem findItem(Integer id);
+	
+	OrderItem updateItem(OrderItem item);
+	
+	OrderItem delete(OrderItem item);
+	
+	Bill createBill(Bill bill);
+	
 }

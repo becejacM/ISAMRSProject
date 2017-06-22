@@ -34,28 +34,28 @@
         })();
         
         function home(){
-        	AuthenticationService.SetCredentials(vm.user.email, vm.user.password, "cookHome");
+        	AuthenticationService.SetCredentials(vm.user.email, vm.user.password, "cookHome", vm.user.token);
         	$location.path('/cookHome');
         	
         }
 
         function profile(){
         	
-        	AuthenticationService.SetCredentials(vm.user.email, vm.user.password, "cookProfile");
+        	AuthenticationService.SetCredentials(vm.user.email, vm.user.password, "cookProfile", vm.user.token);
         	$location.path('/cookProfile');
         }
         
         function schedule(){
-        	AuthenticationService.SetCredentials(vm.user.email, vm.user.password, "cookSchedule");
+        	AuthenticationService.SetCredentials(vm.user.email, vm.user.password, "cookSchedule", vm.user.token);
 
         	$location.path('/cookSchedule');
         }
         function orders(){
-        	AuthenticationService.SetCredentials(vm.user.email, vm.user.password, "cookOrders");
+        	AuthenticationService.SetCredentials(vm.user.email, vm.user.password, "cookOrders", vm.user.token);
         	$location.path('/cookOrders');
         }
         function tables(){
-        	AuthenticationService.SetCredentials(vm.user.email, vm.user.password, "cookTables");
+        	AuthenticationService.SetCredentials(vm.user.email, vm.user.password, "cookTables", vm.user.token);
         	$location.path('/cookTables');
         }
         function logout(){
