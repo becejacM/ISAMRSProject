@@ -1,7 +1,8 @@
 package rs.team15.controller;
 
 import java.awt.Menu;
-import java.sql.Date;
+//import java.sql.Date;
+import java.util.Date;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -25,7 +26,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import rs.team15.model.Bill;
 import rs.team15.model.ClientOrder;
+import rs.team15.model.Employee;
 import rs.team15.model.Guest;
 import rs.team15.model.MenuItem;
 import rs.team15.model.OrderItem;
@@ -38,7 +41,7 @@ import rs.team15.model.SystemManager;
 
 import rs.team15.model.TableR;
 import rs.team15.model.User;
-
+import rs.team15.model.Waiter;
 import rs.team15.repository.TableRepository;
 
 import rs.team15.repository.RestaurantRepository;
@@ -125,7 +128,7 @@ public class RestaurantController {
 		logger.info("< get r email:{}", id);
 		return new ResponseEntity<Collection<String>>(ret, HttpStatus.OK);
 	}
-	@RequestMapping(value = "/api/restaurants/{email}",
+	@RequestMapping(value = "/api/restaurants/{email:.+}",
             method = RequestMethod.POST,
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
@@ -149,6 +152,7 @@ public class RestaurantController {
     public ResponseEntity <MenuItem> CreateDish(@RequestBody MenuItem menuItem,@PathVariable("name") String name) {
 		logger.info("< create dishhhhhhhhhhhh "+name);
         Restaurant res = restaurantService.findById(name);
+        menuItem.setRestaurant(res);
         menuItem.setImage("image");
         menuItem.setDeleted(false);
         menuItem.setType("dish");
@@ -219,6 +223,7 @@ public class RestaurantController {
 	    public ResponseEntity <MenuItem> CreateDrink(@RequestBody MenuItem menuItem,@PathVariable("name") String name) {
 			logger.info("< create dishhhhhhhhhhhh "+name);
 	        Restaurant res = restaurantService.findById(name);
+	        menuItem.setRestaurant(res);
 	        menuItem.setImage("image");
 	        menuItem.setDeleted(false);
 	        menuItem.setType("drink");
@@ -487,8 +492,10 @@ public class RestaurantController {
 		)
 	public ResponseEntity<OrderItem> addOneItem(@RequestBody OrderItem item, @PathVariable Integer id) {
 		ClientOrder o = orderService.find(id);
+		logger.info("< got order {} ", id);
 		item.setPrice(item.getMenuItem().getPrice() * item.getAmount());
 		item.setOrder(o);
+		item.setState("waiting");
 		//order.getOrderItems().add(item);
 		//order.setTotalPrice(order.getTotalPrice() + item.getPrice());
 		OrderItem created = orderService.addNew(item);
@@ -554,7 +561,274 @@ public class RestaurantController {
 			)
 	public ResponseEntity<Collection<ClientOrder>> getAllOrders(@PathVariable String id) {
 		Collection<ClientOrder> orders = orderService.findByEmployee(id);
+		Collection<ClientOrder> forWaiters = new ArrayList<ClientOrder>();
+		for(ClientOrder o : orders){
+			if(o.getStatus().equals("waiting")){
+				forWaiters.add(o);
+			}
+		}
 		logger.info("< get orders");
-		return new ResponseEntity<Collection<ClientOrder>>(orders, HttpStatus.OK);
+		return new ResponseEntity<Collection<ClientOrder>>(forWaiters, HttpStatus.OK);
+	}
+	
+	@RequestMapping(
+            value    = "/api/orders/getAll2/{id:.+}",
+            method   = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE
+			)
+	public ResponseEntity<Collection<OrderItem>> getAllDishes(@PathVariable String id) {
+		Collection<ClientOrder> orders = orderService.findByRestaurant(id);
+		Collection<OrderItem> dishes = new ArrayList<OrderItem>();
+		for(ClientOrder o : orders){
+			for(OrderItem i : o.getItems()){
+				if(i.getMenuItem().getType().equals("dish") && i.getState().equals("waiting")){
+					logger.info("<added order: {}", o.getOrderNumber());
+					dishes.add(i);
+				}
+			}
+
+			
+		}
+		
+		return new ResponseEntity<Collection<OrderItem>>(dishes, HttpStatus.OK);
+	}
+	
+	@RequestMapping(
+            value    = "/api/orders/getAll3/{id:.+}",
+            method   = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE
+			)
+	public ResponseEntity<Collection<OrderItem>> getAllDrinks(@PathVariable String id) {
+		Collection<ClientOrder> orders = orderService.findByRestaurant(id);
+		Collection<OrderItem> drinks = new ArrayList<OrderItem>();
+		for(ClientOrder o : orders){
+			for(OrderItem i : o.getItems()){
+				if(i.getMenuItem().getType().equals("drink") && i.getState().equals("waiting")){
+					logger.info("<added order: {}", o.getOrderNumber());
+					drinks.add(i);
+				}
+			}
+
+			
+		}
+		
+		return new ResponseEntity<Collection<OrderItem>>(drinks, HttpStatus.OK);
+	}
+	
+	@RequestMapping(
+            value    = "/api/orders/take/{id:.+}",
+            method   = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE
+			)
+	public ResponseEntity<OrderItem> take(@PathVariable Integer id) {
+		OrderItem item = orderService.findItem(id);
+		OrderItem r = item;
+		item.setState("in progress");
+		//item.getOrder().setStatus("in progress");
+		logger.info("< take item: {}", item.getItemNumber());
+		OrderItem updated = orderService.updateItem(item);
+		logger.info("< taken: {}", updated.getMenuItem().getName());
+		ClientOrder order = item.getOrder();
+		order.setStatus("in progress");
+		logger.info("< size before: {}", order.getItems().size());
+		order.getItems().remove(r);
+		logger.info("< size after: {}", order.getItems().size());
+		order.getItems().add(updated);
+		logger.info("< size afterrrrr: {}", order.getItems().size());
+		ClientOrder up = orderService.update(order);
+		return new ResponseEntity<OrderItem>(updated, HttpStatus.OK);
+	}
+	
+	@RequestMapping(
+            value    = "/api/orders/getTaken/{id:.+}",
+            method   = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE
+			)
+	public ResponseEntity<Collection<OrderItem>> getTakenDishes(@PathVariable String id) {
+		Collection<ClientOrder> orders = orderService.findByRestaurant(id);
+		Collection<OrderItem> taken = new ArrayList<OrderItem>();
+		for(ClientOrder o : orders){
+			for(OrderItem i : o.getItems()){
+				if(i.getMenuItem().getType().equals("dish") && i.getState().equals("in progress")){
+					logger.info("<added order: {}", o.getOrderNumber());
+					taken.add(i);
+				}
+			}	
+		}
+		return new ResponseEntity<Collection<OrderItem>>(taken, HttpStatus.OK);
+	}
+	
+	@RequestMapping(
+            value    = "/api/orders/getTaken2/{id:.+}",
+            method   = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE
+			)
+	public ResponseEntity<Collection<OrderItem>> getTakenDrinks(@PathVariable String id) {
+		Collection<ClientOrder> orders = orderService.findByRestaurant(id);
+		Collection<OrderItem> taken = new ArrayList<OrderItem>();
+		for(ClientOrder o : orders){
+			for(OrderItem i : o.getItems()){
+				if(i.getMenuItem().getType().equals("drink") && i.getState().equals("in progress")){
+					logger.info("<added order: {}", o.getOrderNumber());
+					taken.add(i);
+				}
+			}	
+		}
+		return new ResponseEntity<Collection<OrderItem>>(taken, HttpStatus.OK);
+	}
+	
+	@RequestMapping(
+            value    = "/api/orders/finish/{id:.+}",
+            method   = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE
+			)
+	public ResponseEntity<OrderItem> finish(@PathVariable Integer id) {
+		OrderItem item = orderService.findItem(id);
+		OrderItem r = item;
+		item.setState("finished");
+		logger.info("< finish item: {}", item.getItemNumber());
+		OrderItem updated = orderService.updateItem(item);
+		logger.info("< finished: {}", updated.getMenuItem().getName());
+		ClientOrder order = item.getOrder();
+		boolean check = false;
+		for(OrderItem i : order.getItems()){
+			if(!i.getState().equals("finished")){
+				check = true;
+				break;
+			}
+		}
+		if(check == false){
+			order.setStatus("finished");
+		}
+		//order.setStatus("in progress");
+		logger.info("< size before: {}", order.getItems().size());
+		order.getItems().remove(r);
+		logger.info("< size after: {}", order.getItems().size());
+		order.getItems().add(updated);
+		logger.info("< size afterrrrr: {}", order.getItems().size());
+		ClientOrder up = orderService.update(order);
+		return new ResponseEntity<OrderItem>(updated, HttpStatus.OK);
+	}
+	
+	@RequestMapping(
+            value    = "/api/orders/getFinished/{id:.+}",
+            method   = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE
+			)
+	public ResponseEntity<Collection<ClientOrder>> getFinishedOrders(@PathVariable String id) {
+		Collection<ClientOrder> orders = orderService.findByEmployee(id);
+		Collection<ClientOrder> forWaiters = new ArrayList<ClientOrder>();
+		for(ClientOrder o : orders){
+			if(o.getStatus().equals("finished")){
+				forWaiters.add(o);
+			}
+		}
+		logger.info("< get finished orders");
+		return new ResponseEntity<Collection<ClientOrder>>(forWaiters, HttpStatus.OK);
+	}
+	
+	@RequestMapping(
+            value    = "/api/orders/getOrder/{id:.+}",
+            method   = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE
+			)
+	public ResponseEntity<ClientOrder> getOrder(@PathVariable Integer id) {
+		ClientOrder order = orderService.find(id);
+		logger.info("< get order {}", order.getItems().size());
+		return new ResponseEntity<ClientOrder>(order, HttpStatus.OK);
+	}
+	
+	@RequestMapping(
+            value    = "/api/orders/getMenuItems/{name:.+}",
+            method   = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE
+			)
+	public ResponseEntity<Collection<MenuItem>> getMenuItems(@PathVariable String name) {
+		Collection<MenuItem> items = menuItemService.findAll();
+		Collection<MenuItem> items2 = new ArrayList<MenuItem>();
+		for(MenuItem m : items){
+			if(m.getRestaurant().getName().equals(name)){
+				items2.add(m);
+			}
+		}
+		logger.info("< get menu items {}", items2.size());
+		return new ResponseEntity<Collection<MenuItem>>(items2, HttpStatus.OK);
+	}
+	
+	@RequestMapping(
+            value    = "api/orders/deleteItem/{id:.+}",
+            method   = RequestMethod.PUT,
+            //consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE
+		)
+	public ResponseEntity<OrderItem> deleteItem(@PathVariable Integer id) {
+		OrderItem item = orderService.findItem(id);
+		logger.info("< deleting item {}", item.getItemNumber());
+		
+		OrderItem deleted = orderService.delete(item);
+		
+		return new ResponseEntity<OrderItem>(deleted, HttpStatus.OK);
+	}
+	
+	@RequestMapping(
+            value    = "api/orders/saveEditedOrder/{id:.+}",
+            method   = RequestMethod.PUT,
+            produces = MediaType.APPLICATION_JSON_VALUE
+		)
+	public ResponseEntity<ClientOrder> saveEdited(@PathVariable Integer id) {
+		ClientOrder order = orderService.find(id);
+		logger.info("< editing order num {}", order.getOrderNumber());
+		Collection<OrderItem> items = order.getItems();
+		double sum = 0;
+		for(OrderItem i : items){
+			sum += i.getPrice();
+		}
+		order.setTotalPrice(sum);
+		logger.info("< total sum {}", order.getTotalPrice());
+		
+		ClientOrder created = orderService.update(order);
+		
+		return new ResponseEntity<ClientOrder>(created, HttpStatus.OK);
+	}
+	
+	@RequestMapping(
+            value    = "api/orders/saveEditedItem/{id:.+}/{amount:.+}",
+            method   = RequestMethod.PUT,
+            produces = MediaType.APPLICATION_JSON_VALUE
+		)
+	public ResponseEntity<OrderItem> saveEditedItem(@PathVariable Integer id, @PathVariable Integer amount) {
+		OrderItem item = orderService.findItem(id);
+		item.setAmount(amount);
+		item.setPrice(item.getMenuItem().getPrice() * item.getAmount());
+		logger.info("< editing item num {}", item.getItemNumber());
+		
+		//logger.info("< total sum {}", order.getTotalPrice());
+		
+		OrderItem created = orderService.updateItem(item);
+		
+		return new ResponseEntity<OrderItem>(created, HttpStatus.OK);
+	}
+	
+	@RequestMapping(
+            value    = "api/orders/makeBill/{email:.+}",
+            method   = RequestMethod.POST,
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE
+		)
+	public ResponseEntity<Bill> makeBill(@RequestBody ClientOrder order, @PathVariable String email) {
+		Employee e = (Employee) userService.findByEmail(email);
+		logger.info("< create bill: {}", e.getEmail());
+		Bill bill = new Bill();
+		bill.setDate(new Date());
+		logger.info("< create bill: {}", bill.getDate());
+		bill.setEmployee(e);
+		order.setStatus("done");
+		ClientOrder o = orderService.update(order);
+		bill.setOrder(o);
+		bill.setTotalPrice(order.getTotalPrice());
+		logger.info("< create bill: {}", bill.getTotalPrice());
+		logger.info("< create bill: {} {}", bill.getEmployee().getFirstName());
+		Bill created = orderService.createBill(bill);
+		return new ResponseEntity<Bill>(created, HttpStatus.CREATED);
 	}
 }

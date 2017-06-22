@@ -1,6 +1,7 @@
 package rs.team15.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.hibernate.annotations.Fetch;
@@ -44,7 +45,7 @@ public class ClientOrder implements Serializable{
     private Set<OrderItem> items = new HashSet<OrderItem>(0);
 
 
-    @ManyToOne(cascade = CascadeType.MERGE)
+    @ManyToOne()
     @JoinColumn(name = "eid")
 	private Employee employee;
     
@@ -60,6 +61,10 @@ public class ClientOrder implements Serializable{
 
     @Column(name = "status")
     private String status;
+    
+    @Version
+    @Column(name = "version")
+    private Long version ;
 
     public ClientOrder(){
     }
@@ -78,12 +83,23 @@ public class ClientOrder implements Serializable{
 		this.status = status;
 	}*/
 
+    
 
 	public Long getOrderId() {
         return oid;
     }
 
-    public void setOrderId(Long orderId) {
+    public Long getVersion() {
+		return version;
+	}
+
+
+	public void setVersion(Long version) {
+		this.version = version;
+	}
+
+
+	public void setOrderId(Long orderId) {
         this.oid = orderId;
     }
 
@@ -119,6 +135,7 @@ public class ClientOrder implements Serializable{
         this.status = status;
     }
 
+    @JsonManagedReference
     //@JsonIgnore
     public Set<OrderItem> getItems() {
         return items;
@@ -179,6 +196,8 @@ public class ClientOrder implements Serializable{
 	public void setRestaurant(Restaurant restaurant) {
 		this.restaurant = restaurant;
 	}
+	
+	
 
 
 	@Override

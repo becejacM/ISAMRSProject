@@ -7,8 +7,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import rs.team15.model.Bill;
 import rs.team15.model.ClientOrder;
 import rs.team15.model.OrderItem;
+import rs.team15.repository.BillRepository;
 import rs.team15.repository.ClientOrderRepository;
 import rs.team15.repository.OrderItemRepository;
 
@@ -20,6 +22,9 @@ public class OrderServiceImplementation implements OrderService {
 	
 	@Autowired
 	OrderItemRepository orderItemRepository;
+	
+	@Autowired
+	BillRepository billRepository;
 	
 	private Logger logger = LoggerFactory.getLogger(this.getClass());
 
@@ -40,7 +45,16 @@ public class OrderServiceImplementation implements OrderService {
 
 	@Override
 	public OrderItem addNew(OrderItem item) {
-		
+		OrderItem oi = orderItemRepository.findOne();
+		int i = 1;
+		if(oi == null){
+			item.setItemNumber(i);
+		}
+		else {
+			i = oi.getItemNumber() + 1;
+			logger.info("<< number: {}", i);
+			item.setItemNumber(i);
+		}
 		return orderItemRepository.save(item);
 	}
 
@@ -62,6 +76,27 @@ public class OrderServiceImplementation implements OrderService {
 	@Override
 	public Collection<ClientOrder> findByRestaurant(String restaurant) {
 		return orderRepository.findByRestaurant(restaurant);
+	}
+
+	@Override
+	public OrderItem findItem(Integer id) {
+		return orderItemRepository.findByItemNumber(id);
+	}
+
+	@Override
+	public OrderItem updateItem(OrderItem item) {
+		return orderItemRepository.save(item);
+	}
+
+	@Override
+	public OrderItem delete(OrderItem item) {
+		orderItemRepository.delete(item);
+		return item;
+	}
+
+	@Override
+	public Bill createBill(Bill bill) {
+		return billRepository.save(bill);
 	}
 
 }

@@ -40,12 +40,12 @@ public class Employee extends User {
 	protected String firstTime;
 	
 
-	@OneToOne(cascade = CascadeType.ALL)
+	@OneToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "rid")
 	private Restaurant restaurant;
 	
 	//@JsonIgnore
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "regid")
     private Region region;
 
@@ -136,18 +136,22 @@ public class Employee extends User {
 		this.firstTime = firstTime;
 	}
 
+	//@JsonIgnore
 	public Restaurant getRestaurant() {
 		return restaurant;
 	}
 
+	@JsonProperty
 	public void setRestaurant(Restaurant restaurant) {
 		this.restaurant = restaurant;
 	}
 
+	@JsonIgnore
 	public Region getRegion() {
 		return region;
 	}
 
+	@JsonProperty
 	public void setRegion(Region region) {
 		this.region = region;
 	}

@@ -35,28 +35,28 @@
         })();
         
         function home(){
-        	AuthenticationService.SetCredentials(vm.user.email, vm.user.password, "bartenderHome");
+        	AuthenticationService.SetCredentials(vm.user.email, vm.user.password, "bartenderHome", vm.user.token);
         	$location.path('/bartenderHome');
         	
         }
 
         function profile(){
         	
-        	AuthenticationService.SetCredentials(vm.user.email, vm.user.password, "bartenderProfile");
+        	AuthenticationService.SetCredentials(vm.user.email, vm.user.password, "bartenderProfile", vm.user.token);
         	$location.path('/bartenderProfile');
         }
         
         function schedule(){
-        	AuthenticationService.SetCredentials(vm.user.email, vm.user.password, "bartenderSchedule");
+        	AuthenticationService.SetCredentials(vm.user.email, vm.user.password, "bartenderSchedule", vm.user.token);
 
         	$location.path('/bartenderSchedule');
         }
         function orders(){
-        	AuthenticationService.SetCredentials(vm.user.email, vm.user.password, "bartenderOrders");
+        	AuthenticationService.SetCredentials(vm.user.email, vm.user.password, "bartenderOrders", vm.user.token);
         	$location.path('/bartenderOrders');
         }
         function tables(){
-        	AuthenticationService.SetCredentials(vm.user.email, vm.user.password, "bartenderTables");
+        	AuthenticationService.SetCredentials(vm.user.email, vm.user.password, "bartenderTables", vm.user.token);
         	$location.path('/bartenderTables');
         }
         function logout(){

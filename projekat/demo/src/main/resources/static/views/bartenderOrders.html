@@ -27,7 +27,48 @@
 				
 		</div>
 	</nav>
-<div >
-Ovde idu porudzbine koje je uzeo ovaj sanker
+	
+<h2>Pending orders:</h2>
+<div ng-show="vm.seeAllMode">
+<div class="container">            
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Order no.</th>
+        <th>Item</th>
+        <th>Amount</th>
+        <th>Status</th>
+        <th>Take</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody ng-repeat="i in vm.orders">
+        <tr><td>{{i.order.orderNumber}}</td><td>{{i.menuItem.name}}</td><td>{{i.amount}}</td><td>{{i.state}}</td>
+        <td><button class="btn btn-primary" ng-click="vm.take(i)">Take</button></td>
+    </tbody>
+  </table>
+</div>
+</div>
+
+<h2>Taken orders:</h2>
+<div ng-show="vm.takenMode">
+<div class="container">            
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Order no.</th>
+        <th>Item</th>
+        <th>Amount</th>
+        <th>Status</th>
+        <th>Finish</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody ng-repeat="i in vm.taken">
+        <tr><td>{{i.order.orderNumber}}</td><td>{{i.menuItem.name}}</td><td>{{i.amount}}</td><td>{{i.state}}</td>
+        <td><button class="btn btn-primary" ng-click="vm.finish(i)">Finish</button></td>
+    </tbody>
+  </table>
+</div>
 
 </div>
