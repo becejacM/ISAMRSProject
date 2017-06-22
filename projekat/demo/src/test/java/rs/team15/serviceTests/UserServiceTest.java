@@ -41,7 +41,7 @@ public class UserServiceTest {
 		//User u = new User(Long.parseLong("2"),"milana.becejac@gmail.com","Milana","Becejac","pass");
 		//userService.create(u);
 		User find = userService.findOne("milana.becejac@gmail.com");
-		assertEquals(find.getFirstName(), "miki");
+		assertEquals(find.getFirstName(), "milanaaa");
 	}
 	
 	@Test

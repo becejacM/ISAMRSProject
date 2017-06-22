@@ -405,9 +405,9 @@ public class UserController {
             method   = RequestMethod.POST,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public ResponseEntity<User> authenticate(@RequestParam(value="email") String email, @RequestParam(value="password") String password, final HttpServletRequest request) {
+    public ResponseEntity<User> authenticate(@RequestParam(value="email") String email, @RequestParam(value="password") String password) {
 		/*Metoda koja proverava da li je korisnik registrovan*/
-		logger.info("> log user");
+		logger.info("> log user "+email+"  "+password);
 		User u = userService.findByEmailAndPassword(email, password);
         if(u==null){
         	return new ResponseEntity<User>(u, HttpStatus.NO_CONTENT);
@@ -439,7 +439,7 @@ public class UserController {
     )
     public ResponseEntity<User> update(@RequestBody User user) {
 		/*Metoda koja menja podatke korisnika*/
-		logger.info("> update user");
+		logger.info("> update user "+user.getEmail());
 		user.setVerified("yes");
         User updated = userService.update(user);
         logger.info("< update user "+user.isVerified());
