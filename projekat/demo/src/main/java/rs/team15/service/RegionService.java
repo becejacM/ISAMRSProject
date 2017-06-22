@@ -6,4 +6,6 @@ public interface RegionService {
 	Region create(Region region);
 	
 	Region findByRegno();
+	
+	Region findById(Integer id);
 }

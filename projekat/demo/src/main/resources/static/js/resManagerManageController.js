@@ -32,6 +32,7 @@
         vm.resManagerProfil = resManagerProfil;
         vm.setMenu = setMenu;
         vm.addRegion = addRegion;
+        vm.calendarShift = calendarShift;
         
         vm.show = show;
         vm.addTable = addTable;
@@ -76,6 +77,11 @@
         function addRegion(){
         	AuthenticationService.SetCredentials(vm.user.email, vm.user.password, "addRegion");
         	$location.path('/addRegion');
+        }
+        
+        function calendarShift(){
+        	AuthenticationService.SetCredentials(vm.user.email, vm.user.password, "calendarShift");
+        	$location.path('/calendarShift');
         }
         
         function loadRegions(){

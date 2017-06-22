@@ -7,5 +7,7 @@ import rs.team15.model.Employee;
 public interface EmployeeRepository extends JpaRepository<Employee, Long>{
 	
 	Employee findByEmail(String id);
+	
+	Employee findById(Long id);
 
 }

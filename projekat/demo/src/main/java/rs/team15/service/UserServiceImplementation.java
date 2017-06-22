@@ -5,6 +5,7 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.util.Collection;
+import java.util.List;
 
 import javax.imageio.ImageIO;
 
@@ -134,6 +135,10 @@ public class UserServiceImplementation implements UserService{
 		} 
 		
 		
+	}
+	
+	public List<User> findByUserRole(){
+		return userRepository.findByRole();
 	}
 
 	

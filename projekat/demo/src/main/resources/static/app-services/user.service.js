@@ -31,6 +31,7 @@
         service.accept = accept;
         service.deleteF = deleteF;
         service.reject = reject;
+        service.GetAllWorkers = GetAllWorkers;
 
         return service;
 
@@ -42,27 +43,35 @@
             }); 
         }
         
-        function CreateCook(user) {
+        function GetAllWorkers(restaurant) {
+            //return $http.get('/api/users').then(handleSuccess, handleError('Error getting all users'));
+        	return $http.get('/api/workers/'+ restaurant)
+            .then(function(response) {
+                return response;
+            }); 
+        }
+        
+        function CreateCook(user,name) {
         	console.log("create");
-            return $http.post('/api/users/createCook', user)
+            return $http.post('/api/users/createCook/'+name, user)
             .then(function (response) {
                 return response;
             });               
 
         }
         
-        function CreateWaiter(user) {
+        function CreateWaiter(user,name) {
         	console.log("create");
-            return $http.post('/api/users/createWaiter', user)
+            return $http.post('/api/users/createWaiter/'+name, user)
             .then(function (response) {
                 return response;
             });               
 
         }
         
-        function CreateBartender(user) {
+        function CreateBartender(user,name) {
         	console.log("create");
-            return $http.post('/api/users/createBartender', user)
+            return $http.post('/api/users/createBartender/'+name, user)
             .then(function (response) {
                 return response;
             });               

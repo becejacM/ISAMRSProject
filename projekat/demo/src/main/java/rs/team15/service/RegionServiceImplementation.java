@@ -21,4 +21,9 @@ public class RegionServiceImplementation implements RegionService{
 	public Region findByRegno() {
 		return regionRepository.findOne();
 	}
+	
+	@Override
+	public Region findById(Integer id){
+		return regionRepository.findByRegNo(id);
+	}
 }

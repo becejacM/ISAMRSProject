@@ -1,7 +1,9 @@
 package rs.team15.controller;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -30,6 +32,7 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import ch.qos.logback.core.Context;
 import rs.team15.model.Bartender;
 import rs.team15.model.Cook;
+import rs.team15.model.Employee;
 import rs.team15.model.Guest;
 import rs.team15.model.Region;
 import rs.team15.model.Restaurant;
@@ -93,22 +96,19 @@ public class UserController {
 	@Autowired
 	private Environment env;
 	
-	@RequestMapping(value = "/api/users/createCook",
+	@RequestMapping(value = "/api/users/createCook/{name:.+}",
             method = RequestMethod.POST,
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
 	
-    public ResponseEntity<User> registerCook(@RequestBody Cook employee) {
-		//Restaurant rest = restaurantService.findById("sdf");
-		Restaurant r = new Restaurant();
-		Region reg = new Region();
+    public ResponseEntity<User> registerCook(@RequestBody Cook employee,@PathVariable String name) {
+		Restaurant rest = restaurantService.findById(name);
 		employee.setImage("pictures/user.png");
-		employee.setRestaurant(r);
+		employee.setRestaurant(rest);
 		employee.setLogin("no");
 		employee.setVerified("no");
 		employee.setFirstTime("yes");
-		employee.setRegion(reg);
 		User u = userService.findOne(employee.getEmail());
 		if(u!=null){
 			u.setMessage("User with that email allready exists");
@@ -125,22 +125,19 @@ public class UserController {
 		return new ResponseEntity<User>(created, HttpStatus.CREATED);
 	}
 	
-	@RequestMapping(value = "/api/users/createWaiter",
+	@RequestMapping(value = "/api/users/createWaiter/{name:.+}",
             method = RequestMethod.POST,
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
 	
-    public ResponseEntity<User> registerWaiter(@RequestBody Waiter employee) {
-        //Restaurant rest = (Restaurant)restaurantService.findById("sdf");
-        Restaurant r = new Restaurant();
-        Region reg = new Region();
+    public ResponseEntity<User> registerWaiter(@RequestBody Waiter employee,@PathVariable String name) {
+        Restaurant rest = (Restaurant)restaurantService.findById(name);
 		employee.setImage("pictures/user.png");
-		employee.setRestaurant(r);
+		employee.setRestaurant(rest);
 		employee.setLogin("no");
 		employee.setVerified("no");
 		employee.setFirstTime("yes");
-		employee.setRegion(reg);
 		User u = userService.findOne(employee.getEmail());
 		if(u!=null){
 			u.setMessage("User with that email allready exists");
@@ -157,22 +154,19 @@ public class UserController {
 		return new ResponseEntity<User>(created, HttpStatus.CREATED);
 	}
 	
-	@RequestMapping(value = "/api/users/createBartender",
+	@RequestMapping(value = "/api/users/createBartender/{name:.+}",
             method = RequestMethod.POST,
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
 	
-    public ResponseEntity<User> registerBartender(@RequestBody Bartender employee) {
-        //Restaurant rest = (Restaurant)restaurantService.findById("sdf");
-		Restaurant r = new Restaurant();
-		Region reg = new Region();
+    public ResponseEntity<User> registerBartender(@RequestBody Bartender employee,@PathVariable String name) {
+        Restaurant rest = (Restaurant)restaurantService.findById(name);
 		employee.setImage("pictures/user.png");
-		employee.setRestaurant(r);
+		employee.setRestaurant(rest);
 		employee.setLogin("no");
 		employee.setVerified("no");
 		employee.setFirstTime("yes");
-		employee.setRegion(reg);
 		User u = userService.findOne(employee.getEmail());
 		if(u!=null){
 			u.setMessage("User with that email allready exists");
@@ -200,6 +194,27 @@ public class UserController {
 		Collection<User> users = userService.findAll();
 		logger.info("< get users");
 		return new ResponseEntity<Collection<User>>(users, HttpStatus.OK);
+	}
+	
+	@RequestMapping(
+            value    = "/api/workers/{name}",
+            method   = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE
+	)
+	public ResponseEntity<List<User>> getWorkers(@PathVariable String name) {
+		/*Metoda koja vraca sve korisnike*/
+		logger.info("> workeeeeeerrrrrrrrrrrrrrrrrrrrrrrsssssssssssssss");
+		List<User> users = new ArrayList<User>();
+		List<User> allUsers = userService.findByUserRole();
+		for(int i = 0; i < allUsers.size(); i++){
+			Employee emp = employeeService.getEmployee(allUsers.get(i).getId());
+			if(emp.getRestaurant().getName().equals(name)){
+				users.add(allUsers.get(i));
+			}
+		}
+		logger.info("workerrrrrrrsssssssssssss" + users.get(0));
+		logger.info("< get users");
+		return new ResponseEntity<List<User>>(users, HttpStatus.OK);
 	}
 
 	@RequestMapping(
