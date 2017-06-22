@@ -150,6 +150,9 @@ public class GuestController {
     public ResponseEntity<Collection<User>> loadReq(@PathVariable Long id) {
     	logger.info("> get req "+id);
     	Collection<User> guests = guestService.findReq(id);
+    	if(guests.size()==0){
+        	return new ResponseEntity<Collection<User>>(guests, HttpStatus.NO_CONTENT);
+    	}
     	logger.info("< get req");
     	return new ResponseEntity<Collection<User>>(guests, HttpStatus.OK);
     }

@@ -46,7 +46,6 @@
         function SetCredentials(email, password, path, token) {
             //var authdata = Base64.encode(email + ':' + password);
         	var authdata = token;
-        	alert(authdata);
             $rootScope.globals = {
                 currentUser: {
                     email: email,

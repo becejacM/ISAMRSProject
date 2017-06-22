@@ -105,6 +105,17 @@
         function loadReq(){
           	UserService.loadReq(vm.user.id)
             .then(function (response) {
+            	if(response.status===204){
+            		FlashService.Error('You don\'t have friend requests', false);
+            		vm.reqMode = false;
+                	vm.allFriendsMode = false;
+                    vm.myFriendsMode = false;
+            	}
+            	else{
+            		vm.reqMode = true;
+                	vm.allFriendsMode = false;
+                    vm.myFriendsMode = false;
+            	}
                 vm.allReq = response.data;
             });
         }
@@ -136,12 +147,9 @@
         
         function showReq() {
 
-        	loadReq();
         	FlashService.clearFlashMessageP();
-
-        	vm.reqMode = true;
-        	vm.allFriendsMode = false;
-            vm.myFriendsMode = false;
+        	loadReq();
+        	
             
         }
 
@@ -186,6 +194,68 @@
             .then(function () {
                 loadAllUsers();
             });
+        }
+        
+        vm.SortableTableReq=SortableTableReq;
+        function SortableTableReq() {
+
+            vm.head = {
+                    img: "Image",
+                    firstName: "First name",
+                    lastName: "Last name"
+                  
+                };
+                        
+            vm.sort = {
+                column: 'firstName',
+                descending: false
+            };
+
+            vm.selectedCls = function(column) {
+                return column == vm.sort.column && 'sort-' + vm.sort.descending;
+            };
+            
+            vm.changeSorting = function(column) {
+                var sort = vm.sort;
+                if (sort.column == column) {
+                    sort.descending = !sort.descending;
+                } else {
+                    sort.column = column;
+                    sort.descending = false;
+                }
+            };
+        
+        }
+        
+        vm.SortableTableF=SortableTableF;
+        function SortableTableF() {
+
+            vm.head2 = {
+                    img: "Image",
+                    firstName: "First name",
+                    lastName: "Last name"
+                  
+                };
+                        
+            vm.sort2 = {
+                column: 'firstName',
+                descending: false
+            };
+
+            vm.selectedCls2 = function(column) {
+                return column == vm.sort2.column && 'sort-' + vm.sort2.descending;
+            };
+            
+            vm.changeSorting2 = function(column) {
+                var sort = vm.sort2;
+                if (sort.column == column) {
+                    sort.descending = !sort.descending;
+                } else {
+                    sort.column = column;
+                    sort.descending = false;
+                }
+            };
+        
         }
     }
 

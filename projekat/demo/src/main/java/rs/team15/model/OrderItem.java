@@ -39,9 +39,18 @@ public class OrderItem implements Serializable{
 
     @Version
     @Column(name = "version")
-    private Long version ;
 
-    @Column(name = "restaurant_id")
+    private long version ;
+
+    public long getVersion() {
+		return version;
+	}
+
+	public void setVersion(long version) {
+		this.version = version;
+	}
+
+	@Column(name = "restaurant_id")
     private Long restaurantId; 
 
 
@@ -52,7 +61,7 @@ public class OrderItem implements Serializable{
     private Integer itemNumber;
 
     public OrderItem(){
-    	
+    	//this.version=0;
     }
     
     /*public OrderItem(String state, MenuItem menuItem, Integer amount) {
@@ -105,13 +114,13 @@ public class OrderItem implements Serializable{
         this.amount = amount;
     }
 
-    public Long getVersion() {
+    /*public Integer getVersion() {
         return version;
     }
 
     public void setVersion(Long version) {
         this.version = version;
-    }
+    }*/
 
     public Long getRestaurantId() {
         return restaurantId;
@@ -156,7 +165,8 @@ public class OrderItem implements Serializable{
 	}
 
 	public OrderItem(Long oiid, String state, ClientOrder order, MenuItem menuItem, Integer amount, double price,
-			Long version, Long restaurantId, Integer tableId) {
+			long version, Long restaurantId, Integer tableId) {
+
 		super();
 		this.oiid = oiid;
 		this.state = state;
@@ -164,7 +174,7 @@ public class OrderItem implements Serializable{
 		this.menuItem = menuItem;
 		this.amount = amount;
 		this.price = price;
-		this.version = version;
+		//this.version = 0;
 		this.restaurantId = restaurantId;
 		this.tableId = tableId;
 	}

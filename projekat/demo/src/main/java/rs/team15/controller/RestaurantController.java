@@ -301,9 +301,10 @@ public class RestaurantController {
 		for (Iterator<Region> region = r.getRegions().iterator(); region.hasNext();) {
 			System.out.println("regioooon ");
 			Region sto = region.next();
-			for (Iterator<TableR> item = tableService.findTablesByRegId(sto).iterator(); item.hasNext();) {
-				System.out.println("stoooo ");
+			//for (Iterator<TableR> item = sto.getTables().iterator(); item.hasNext();) {
 			//for (Iterator<TableR> item = tableService.findTablesByRegId(sto).iterator(); item.hasNext();) {
+				System.out.println("stoooo ");
+			for (Iterator<TableR> item = tableService.findTablesByRegId(sto).iterator(); item.hasNext();) {
 			    TableR t = item.next();
 			    available = true;
 			    for (Iterator<Reservation> res = t.getReservations().iterator(); res.hasNext();) {
@@ -313,7 +314,7 @@ public class RestaurantController {
 					java.util.Date dateDo = format.parse(reservation.getReservationDateTime()+" "+reservation.getLength());
 					dateOd.setMinutes(dateOd.getMinutes()-1);
 					dateDo.setMinutes(dateDo.getMinutes()+1);
-					logger.info(dateOd.toString()+"  mmmmmmmmmmmmmmmmmm "+reservation.getId());
+					logger.info(dateOd.toString()+"  mmmmmmmmmmmmmmmmmm "+reservation.getNameRest());
 					logger.info(dateDo.toString());
 					if(reservation.getStatus().equals("reserved")){
 						if((date.after(dateOd) && date.before(dateDo))||(date2.after(dateOd) && date2.before(dateDo)) ){
@@ -367,6 +368,10 @@ public class RestaurantController {
 		)
 	public ResponseEntity<Collection<Restaurant>> getByNameOrType(@PathVariable String name,@PathVariable String type) {
 		logger.info("> get r name:{}", name);
+		if(name.equals("a") && type.equals("a")){
+			Collection<Restaurant> r = restaurantService.findAll();
+			return new ResponseEntity<Collection<Restaurant>>(r, HttpStatus.OK);
+		}
 		Collection<Restaurant> r = restaurantService.findByNameOrType(name, type);
 	
 		logger.info("< get r name:{}", name);
