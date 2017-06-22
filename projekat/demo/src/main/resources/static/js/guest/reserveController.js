@@ -771,6 +771,24 @@
             });
 
         }
+        
+        vm.getCalledFriendsf = getCalledFriendsf;
+        
+        function getCalledFriendsf(reservationId)
+        {
+        	vm.friends = [];
+        	RestaurantService.getCalledFriendsf(reservationId)
+            .then(function (response) {
+            	vm.friends[reservationId]= response.data;
+            	/*angular.forEach(vm.friends, function(value, key){
+              	     alert(key + ': ' + value);
+              	     angular.forEach(value, function(value, key){
+                  	     alert(key + ': ' + value);
+                  	});
+              	});*/
+            });
+        	
+        }
         vm.SortableTableRest=SortableTableRest;
         function SortableTableRest() {
 

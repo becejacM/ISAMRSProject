@@ -15,6 +15,7 @@
         service.cancel = cancel;
         service.callFriend = callFriend;
         service.getCalledFriends = getCalledFriends;
+        service.getCalledFriendsf = getCalledFriendsf;
         service.getMakedMeals = getMakedMeals;
         service.showInvitations=showInvitations;
         service.accept = accept;
@@ -155,6 +156,13 @@
         
         function getCalledFriends(reservationId){
         	return $http.get('api/reservations/getCalledFriends/' + reservationId)
+            .then(function(response) {
+                return response;
+            }); 
+        }
+        
+        function getCalledFriendsf(reservationId){
+        	return $http.get('api/reservations/getCalledFriendsf/' + reservationId)
             .then(function(response) {
                 return response;
             }); 
