@@ -464,20 +464,20 @@
         			  alert("no");
         		  else {
         			  var id = e.target.get('id');
-
+	            		var o = canvas.getActiveObject();
         			  RestaurantService.Reserve(vm.c,vm.step1par.vreme,vm.step1par.trajanje, vm.rest.name, id, vm.user.email)
       	            .then(function (response) {
 
       	            	if(response.status===204){
       	                	FlashService.Error('You can\'t create this reservation.',false);
 
-      	                	step22();
+      	                	//step22();
       	            	}
       	            	else{
       	            		vm.currReservation = response.data;
+      	            		canvas.remove(o);
           	            	//alert(vm.currReservation.reservationId);
-              			
-            			  step22();
+            			  //step22();
 
       	            	}
       	            	
@@ -563,7 +563,7 @@
         function addM(r){
 
         	vm.currReservation = r;
-        	RestaurantService.GetById(vm.currReservation.id)
+        	RestaurantService.GetById(vm.currReservation.nameRest)
             .then(function (response) {
                 vm.rest = response.data;
                 geocodeAddress();

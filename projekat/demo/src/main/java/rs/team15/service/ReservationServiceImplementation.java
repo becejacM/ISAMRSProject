@@ -87,7 +87,7 @@ public class ReservationServiceImplementation implements ReservationService{
 			r.setTime(vreme);
 			r.setLength(trajanje);
 			
-			r.setId(rest.getName());
+			r.setNameRest(rest.getName());
 			r.setStatus("reserved");
 			
 			
@@ -121,7 +121,7 @@ public class ReservationServiceImplementation implements ReservationService{
 							java.util.Date dateDo = format.parse(reservation.getReservationDateTime()+" "+reservation.getLength());
 							dateOd.setMinutes(dateOd.getMinutes()-1);
 							dateDo.setMinutes(dateDo.getMinutes()+1);
-							logger.info(dateOd.toString()+"  mmmmmmmmmmmmmmmmmm "+reservation.getId());
+							logger.info(dateOd.toString()+"  mmmmmmmmmmmmmmmmmm "+reservation.getNameRest());
 							logger.info(dateDo.toString());
 							if(reservation.getStatus().equals("reserved")){
 								if((date.after(dateOd) && date.before(dateDo))||(date2.after(dateOd) && date2.before(dateDo)) ){

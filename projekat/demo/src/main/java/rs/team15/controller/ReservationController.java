@@ -34,8 +34,10 @@ import rs.team15.model.Reservation;
 import rs.team15.model.Restaurant;
 import rs.team15.model.TableR;
 import rs.team15.model.User;
+import rs.team15.repository.OrderItemRepository;
 import rs.team15.service.GuestService;
 import rs.team15.service.MenuItemService;
+import rs.team15.service.OrderService;
 import rs.team15.service.ReservationService;
 import rs.team15.service.RestaurantService;
 import rs.team15.service.TableService;
@@ -63,6 +65,12 @@ public class ReservationController {
 	
 	@Autowired
 	private MenuItemService menuItemService;
+	
+	@Autowired
+	private OrderService orderService;
+	
+	@Autowired
+	private OrderItemRepository orderItemRepository;
 	
 	@RequestMapping(
             value    = "/api/reservations/reserve/{datum:.+}/{vreme:.+}/{trajanje:.+}/{id:.+}/{idStola:.+}/{idUser:.+}",
@@ -155,10 +163,10 @@ public class ReservationController {
 			guestService.findFIAcceptForDelete("accept", Long.parseLong(id), res.getReservationId());
 			return new ResponseEntity<Reservation>(res, HttpStatus.OK);
 		}
-		logger.info("> cancel res  "+res.getId());
+		logger.info("> cancel res  "+res.getNameRest());
 		Collection<FriendInvitation> ff = guestService.findFISendForDelete(Long.parseLong(id), res.getReservationId());
 		Reservation r = reservationService.cancel(res);
-		logger.info("> cancel res  "+r.getId());
+		logger.info("> cancel res  "+r.getNameRest());
 		logger.info("< cancel res "+res.getReservationDateTime());
 		return new ResponseEntity<Reservation>(res, HttpStatus.OK);
 	}
@@ -348,12 +356,11 @@ public class ReservationController {
 			logger.info(oi.getMenuItem().getName());
 			OrderItem i = oi;
             i.setMenuItem(menuItemService.findOne(i.getMenuItem().getMenuItemId()));
-			double s = i.getAmount()*i.getMenuItem().getPrice();
-			String ss = String.valueOf(s);
-			i.setAmount(Integer.parseInt(ss));
+			i.setVersion(0L);
+			//i.setAmount(i.getAmount());
             i.setOrder(co);
             i.setRestaurantId(Long.parseLong(rid));
-            OrderItem nItem = reservationService.addOrderItem(i);
+            OrderItem nItem = orderItemRepository.save(i);
 		}
 		logger.info("< create order");
 		return new ResponseEntity<ClientOrder>(co, HttpStatus.OK);

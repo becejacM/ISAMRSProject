@@ -56,7 +56,7 @@
        
         <td><img id="thumbnail" src={{rr.sender.image}}></td>
         <td>{{rr.sender.firstName}}</td>
-        <td>{{rr.reservation.id}}</td>
+        <td>{{rr.reservation.nameRest}}</td>
         <td>{{rr.reservation.reservationDateTime}}</td>
         <td>{{rr.reservation.time}}</td>
         <td>{{rr.reservation.length}}</td>
@@ -75,7 +75,7 @@
         </thead>
     <tbody>
         <tr ng-repeat="r in vm.allFinished|orderBy:vm.sort3.column:vm.sort3.descending" ng-init='vm.getCalledFriends(r.reservationId)'>
-        <td>{{r.id}}</td>
+        <td>{{r.nameRest}}</td>
         <td>{{r.reservationDateTime}}</td><td>{{r.time}}</td><td>{{r.length}}</td>
         <td><table ng-repeat="s in vm.friends[r.reservationId]" ><tr><td>{{ s.receiver.firstName }}</td></tr></table></td>
        <td><table ng-repeat="ss in vm.makedMeals[r.reservationId]" ><tr><td>{{ ss.name }}</td></tr></table></td>
@@ -92,7 +92,7 @@
         </thead>
     <tbody>
         <tr ng-repeat="r in vm.allReservations|orderBy:vm.sort.column:vm.sort.descending" ng-init='vm.getCalledFriends(r.reservationId)'>
-        <td>{{r.id}}</td>
+        <td>{{r.nameRest}}</td>
         <td>{{r.reservationDateTime}}</td><td>{{r.time}}</td><td>{{r.length}}</td>
         <td><table ng-repeat="s in vm.friends[r.reservationId]" ><tr><td>{{ s.receiver.firstName }}</td></tr></table></td>
        <td><table ng-repeat="ss in vm.makedMeals[r.reservationId]" ><tr><td>{{ ss.name }}</td></tr></table></td>
@@ -100,7 +100,7 @@
        <td><button class="button2" ng-click="vm.callF(r)">Call friends</button></td>
        <td><button class="button2" ng-click="vm.addM(r)">Add meal</button></td></tr>
        <tr ng-repeat="r in vm.allAcceptInvitations" ng-init='vm.getCalledFriends(r.reservation.reservationId)'>
-        <td>{{r.reservation.id}}</td>
+        <td>{{r.reservation.nameRest}}</td>
         <td>{{r.reservation.reservationDateTime}}</td>
         <td>{{r.reservation.time}}</td>
         <td>{{r.reservation.length}}</td>
@@ -223,7 +223,7 @@
 </div>
 
 <div ng-show="vm.callFMode">
-<br/>Restaurant name: {{vm.currReservation.id}}<br/>
+<br/>Restaurant name: {{vm.currReservation.nameRest}}<br/>
 <br/>Start: {{vm.currReservation.reservationDateTime}}  {{vm.currReservation.time}}<br/>
 <br/>Finish:{{vm.currReservation.reservationDateTime}}  {{vm.currReservation.length}}<br/>
 <table ng-repeat="user in vm.allUsers">
@@ -248,7 +248,7 @@
 
 
 <div ng-show="vm.addMealMode">
-<br/>Restaurant name: {{vm.currReservation.id}}<br/>
+<br/>Restaurant name: {{vm.currReservation.nameRest}}<br/>
 <br/>Start: {{vm.currReservation.reservationDateTime}}  {{vm.currReservation.time}}<br/>
 <br/>Finish:{{vm.currReservation.reservationDateTime}}  {{vm.currReservation.length}}<br/>
 <table ng-repeat="r in vm.allMI">

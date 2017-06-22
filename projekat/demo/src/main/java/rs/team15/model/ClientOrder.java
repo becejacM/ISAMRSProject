@@ -1,6 +1,7 @@
 package rs.team15.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.hibernate.annotations.Fetch;
 
@@ -38,7 +39,8 @@ public class ClientOrder implements Serializable{
     @JoinColumn(name = "tableId")
     private TableR table;
 
-    @OneToMany(mappedBy = "order", fetch = FetchType.LAZY)
+    @JsonIgnoreProperties(value={"order"})
+    @OneToMany(mappedBy = "order", fetch = FetchType.LAZY, cascade = {CascadeType.MERGE , CascadeType.REMOVE})
     private Set<OrderItem> items = new HashSet<OrderItem>(0);
 
 
@@ -117,12 +119,12 @@ public class ClientOrder implements Serializable{
         this.status = status;
     }
 
-    @JsonIgnore
+    //@JsonIgnore
     public Set<OrderItem> getItems() {
         return items;
     }
 
-    //@JsonProperty
+    @JsonProperty
     public void setItems(Set<OrderItem> items) {
         this.items = items;
     }
