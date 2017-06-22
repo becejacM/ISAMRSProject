@@ -69,12 +69,14 @@ public class ReservationServiceImplementation implements ReservationService{
 			Reservation r = new Reservation();
 			Restaurant rest = restaurantRepository.findByName(id);
 			if(rest==null){
+				System.out.println("ovdeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");
 				return null;
 			}
 			logger.info(idStola);
 			
 			User u = userRepository.findByEmail(idUser);
 			if(u==null){
+				System.out.println("ovdeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee22222222222");
 				return null;
 			}
 			logger.info(u.getEmail());
@@ -94,6 +96,7 @@ public class ReservationServiceImplementation implements ReservationService{
 			TableR tt = tableRepository.findByTableInRestaurantNo(Integer.parseInt(idStola));
 			TableR t= tableRepository.findOne(tt.getTableId());
 			if(t==null){
+				System.out.println("ovdeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee33333333333333");
 				return null;
 			}
 			
@@ -125,6 +128,7 @@ public class ReservationServiceImplementation implements ReservationService{
 							logger.info(dateDo.toString());
 							if(reservation.getStatus().equals("reserved")){
 								if((date.after(dateOd) && date.before(dateDo))||(date2.after(dateOd) && date2.before(dateDo)) ){
+									System.out.println("ovdeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee4444444444444444444");
 							    	return null;
 								}
 							}
@@ -152,6 +156,8 @@ public class ReservationServiceImplementation implements ReservationService{
 		}
 		catch (Exception e) {
 			logger.info("fscfscsdcsdsd");
+			System.out.println("ovdeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee999999999999");
+
 			e.printStackTrace();
 			return null;
 		}

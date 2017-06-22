@@ -463,6 +463,7 @@
         		  if(e.target === null) 
         			  alert("no");
         		  else {
+        	        	FlashService.clearFlashMessageP();
         			  var id = e.target.get('id');
 	            		var o = canvas.getActiveObject();
         			  RestaurantService.Reserve(vm.c,vm.step1par.vreme,vm.step1par.trajanje, vm.rest.name, id, vm.user.email)

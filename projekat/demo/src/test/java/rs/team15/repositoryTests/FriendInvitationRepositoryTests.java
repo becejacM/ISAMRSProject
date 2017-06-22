@@ -39,65 +39,65 @@ public class FriendInvitationRepositoryTests {
 	
 	@Test
 	public void findRequestsTest(){
-		Collection<FriendInvitation> users = friendRepository.findRequests("pending", Long.parseLong("19"));
+		Collection<FriendInvitation> users = friendRepository.findRequests("pending", Long.parseLong("9"));
 		assertNotNull(users);
 	}
 	
 	@Test
 	public void findSendersTest(){
-		Collection<User> users = friendRepository.findSenders("accept", Long.parseLong("15"));
+		Collection<User> users = friendRepository.findSenders("accept", Long.parseLong("9"));
 		assertNotNull(users);
 	}
 	
 	@Test
 	public void findReceiversTest(){
-		Collection<User> users = friendRepository.findReceivers("pending", Long.parseLong("16"));
+		Collection<User> users = friendRepository.findReceivers("pending", Long.parseLong("7"));
 		assertNotNull(users);
 	}
 	
 	@Test
 	public void getFriendInvitationTest(){
-		FriendInvitation f = friendRepository.getFriendship("pending",Long.parseLong("16"), Long.parseLong("19"));
+		FriendInvitation f = friendRepository.getFriendship("pending",Long.parseLong("8"), Long.parseLong("7"));
 		assertNotNull(f);
 	}
 	
 	@Test
 	public void getFriendInvitationIAccpetTest(){
-		Collection<FriendInvitation> f = friendRepository.getFIAccept("accept",Long.parseLong("7"));
+		Collection<FriendInvitation> f = friendRepository.getFIAccept("accept",Long.parseLong("9"));
 		assertNotNull(f);
 	}
 	
 	@Test
 	public void getByResIdTest(){
-		Collection<FriendInvitation> f = friendRepository.getByReservation_rsid(Long.parseLong("80"));
+		Collection<FriendInvitation> f = friendRepository.getByReservation_rsid(Long.parseLong("1"));
 		assertNotNull(f);
 	}
 	
 	@Test
 	public void getIdTest(){
-		FriendInvitation f = friendRepository.getByFid(Long.parseLong("12"));
+		FriendInvitation f = friendRepository.getByFid(Long.parseLong("1"));
 		assertNotNull(f);
 	}
 	
 
 	@Test
 	public void getByReceiverIdAndReservationRsidAndStatusTest(){
-		FriendInvitation f = friendRepository.getByReceiverIdAndReservationRsidAndStatus(Long.parseLong("7"), Long.parseLong("80"), "accept");
+		FriendInvitation f = friendRepository.getByReceiverIdAndReservationRsidAndStatus(Long.parseLong("9"), Long.parseLong("1"), "accept");
 		assertNotNull(f);
 	}
 	
 	@Test
 	public void getBySenderIdAndReservationRsidTest(){
-		Collection<FriendInvitation> f = friendRepository.getBySenderIdAndReservationRsid(Long.parseLong("19"),Long.parseLong("80"));
+		Collection<FriendInvitation> f = friendRepository.getBySenderIdAndReservationRsid(Long.parseLong("7"),Long.parseLong("2"));
 		assertNotNull(f);
 	}
 	@Test
 	public void createF(){
 
-		User u = userService.findByEmail("milana.becejac@gmail.com");
+		User u = userService.findByEmail("guest1@gmail.com");
 		System.out.println(u.getEmail());
-		User u2 = userService.findByEmail("pipi@gmail.com");
-		Reservation r = reservationService.findByResId(Long.parseLong("58"));
+		User u2 = userService.findByEmail("guest2@gmail.com");
+		Reservation r = reservationService.findByResId(Long.parseLong("1"));
 		FriendInvitation f = new FriendInvitation(u, u2,r);
 		//friendRepository.save(f);
 		assertNotNull(f);

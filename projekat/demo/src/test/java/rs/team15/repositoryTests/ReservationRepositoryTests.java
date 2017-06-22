@@ -33,7 +33,7 @@ public class ReservationRepositoryTests {
 	
 	@Test
 	public void findByRestaurantTest(){
-		java.util.Collection<Reservation> res = resRepository.findByUserid_Id(Long.parseLong("2"));
+		java.util.Collection<Reservation> res = resRepository.findByRestaurant_Rid(Long.parseLong("1"));
 		assertNotNull(res);
 	}
 	
@@ -45,20 +45,20 @@ public class ReservationRepositoryTests {
 	
 	@Test
 	public void findByIdTest(){
-		Reservation res = resRepository.findByReserveID(Long.parseLong("80"));
+		Reservation res = resRepository.findByReserveID(Long.parseLong("1"));
 		assertNotNull(res);
 	}
 	
 	@Test
 	public void findByResIdTest(){
-		Reservation res = resRepository.findByRsid(Long.parseLong("80"));
+		Reservation res = resRepository.findByRsid(Long.parseLong("1"));
 		assertNotNull(res);
 	}
 	
 	
 	@Test
 	public void findByUserTest(){
-		java.util.Collection<Reservation> res = resRepository.findByUserid_Id(Long.parseLong("19"));
+		java.util.Collection<Reservation> res = resRepository.findByUserid_Id(Long.parseLong("7"));
 		assertNotNull(res);
 	}
 }

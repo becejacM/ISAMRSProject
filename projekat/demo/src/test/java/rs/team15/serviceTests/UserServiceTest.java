@@ -22,44 +22,44 @@ public class UserServiceTest {
 	
 	@Test
 	public void updateUserPass(){
-		User u2 = userService.findByEmail("milana.becejac@gmail.com");
-		u2.setFirstName("miki");
+		User u2 = userService.findByEmail("guest33@gmail.com");
+		u2.setFirstName("guestChanged");
 		userService.update(u2);
-		User find = userService.findOne("milana.becejac@gmail.com");
-		assertEquals(find.getFirstName(), "miki");
+		User find = userService.findOne("guest33@gmail.com");
+		assertEquals(find.getFirstName(), "guestChanged");
 	}
 	@Test
 	public void updateUserFail(){
-		User u2 = userService.findByEmail("milana.becejac@gmail.com");
+		User u2 = userService.findByEmail("guest33@gmail.com");
 		u2.setFirstName("miki");
 		userService.update(u2);
-		User find = userService.findOne("milana.becejac@gmail.com");
+		User find = userService.findOne("guest33@gmail.com");
 		assertEquals(find.getFirstName(), "Milana");
 	}
 	@Test
 	public void createUserService(){
 		//User u = new User(Long.parseLong("2"),"milana.becejac@gmail.com","Milana","Becejac","pass");
 		//userService.create(u);
-		User find = userService.findOne("milana.becejac@gmail.com");
-		assertEquals(find.getFirstName(), "milanaaa");
+		User find = userService.findOne("guest33@gmail.com");
+		assertEquals(find.getFirstName(), "guest3");
 	}
 	
 	@Test
 	public void findOne(){
-		User find = userService.findOne("milana.becejac@gmail.com");
-		assertEquals(find.getFirstName(), "miki");
+		User find = userService.findOne("guest33@gmail.com");
+		assertEquals(find.getFirstName(), "guest3");
 	}
 	
 	@Test
 	public void findByEmail(){
-		User find = userService.findByEmail("milana.becejac@gmail.com");
-		assertEquals(find.getFirstName(), "miki");
+		User find = userService.findByEmail("guest33@gmail.com");
+		assertEquals(find.getFirstName(), "guestChanged");
 	}
 	
 	@Test
 	public void findByEmailAndPassword(){
-		User find = userService.findByEmailAndPassword("milana.becejac@gmail.com","milana");
-		assertEquals(find.getFirstName(), "miki");
+		User find = userService.findByEmailAndPassword("guest33@gmail.com","12345");
+		assertEquals(find.getFirstName(), "guest3");
 	}
 	
 	@Test
@@ -70,7 +70,7 @@ public class UserServiceTest {
 	
 	@Test
 	public void findByToken(){
-		User find = userService.findByToken("bWlsYW5hLmJlY2VqYWNAZ21haWwuY29tOm1pbGFu");
-		assertEquals(find.getFirstName(), "miki");
+		User find = userService.findByToken("Z3Vlc3QxQGdtYWlsLmNvbToxMjM0");
+		assertEquals(find.getFirstName(), "guest1");
 	}
 }

@@ -44,12 +44,12 @@ public class UserControllerTest {
 	@Test
 	public void testGetUser() throws Exception {
 		
-		this.mvc.perform(get("/api/users/milana.becejac@gmail.com").contentType(MediaType.APPLICATION_JSON))
+		this.mvc.perform(get("/api/users/guest1@gmail.com").contentType(MediaType.APPLICATION_JSON))
         .andExpect(status().isOk())
-        .andExpect(jsonPath("$.email", is("milana.becejac@gmail.com")))
-        .andExpect(jsonPath("$.firstName", is("milanaaa")))
-        .andExpect(jsonPath("$.lastName", is("becejac")))
-        .andExpect(jsonPath("$.password", is("milana")));
+        .andExpect(jsonPath("$.email", is("guest1@gmail.com")))
+        .andExpect(jsonPath("$.firstName", is("guest1")))
+        .andExpect(jsonPath("$.lastName", is("guest1")))
+        .andExpect(jsonPath("$.password", is("12345")));
 	}
 	
 	@Test
@@ -63,12 +63,12 @@ public class UserControllerTest {
 	@Test
 	public void testUserExists() throws Exception {
 		
-		this.mvc.perform(get("/api/users/milana.becejac@gmail.com").contentType(MediaType.APPLICATION_JSON))
+		this.mvc.perform(get("/api/users/guest1@gmail.com").contentType(MediaType.APPLICATION_JSON))
         .andExpect(status().isOk())
-        .andExpect(jsonPath("$.email", is("milana.becejac@gmail.com")))
-        .andExpect(jsonPath("$.firstName", is("milanaaa")))
-        .andExpect(jsonPath("$.lastName", is("becejac")))
-        .andExpect(jsonPath("$.password", is("milana")));
+        .andExpect(jsonPath("$.email", is("guest1@gmail.com")))
+        .andExpect(jsonPath("$.firstName", is("guest1")))
+        .andExpect(jsonPath("$.lastName", is("guest1")))
+        .andExpect(jsonPath("$.password", is("12345")));
 	}
 	
 	@Test
@@ -76,7 +76,7 @@ public class UserControllerTest {
 		
 		User u = new User();
 		u.setFirstName("britney");
-		u.setEmail("guest2@gmail.com");
+		u.setEmail("guest33@gmail.com");
 		u.setLastName("spears");
 		u.setPassword("milana");
 		u.setRole("guest");
@@ -85,7 +85,27 @@ public class UserControllerTest {
 		System.out.println(s);
 		this.mvc.perform(put("/api/user/update/").contentType(MediaType.APPLICATION_JSON).content(asJsonString(u)))
         .andExpect(status().isOk())
-        .andExpect(jsonPath("$.email", is("guest2@gmail.com")))
+        .andExpect(jsonPath("$.email", is("guest33@gmail.com")))
+        .andExpect(jsonPath("$.firstName", is("britney")))
+        .andExpect(jsonPath("$.lastName", is("spears")))
+        .andExpect(jsonPath("$.password", is("milana")));
+	}
+	
+	@Test
+	public void testRegisterGuest() throws Exception {
+		
+		User u = new User();
+		u.setFirstName("britney");
+		u.setEmail("guest333@gmail.com");
+		u.setLastName("spears");
+		u.setPassword("milana");
+		u.setRole("guest");
+		u.setImage("https://i.scdn.co/image/7fa2bde8d2837784a847f8201686b257757a749f");
+		String s = asJsonString(u);
+		System.out.println(s);
+		this.mvc.perform(post("/api/users/register/").contentType(MediaType.APPLICATION_JSON).content(asJsonString(u)))
+        .andExpect(status().isCreated())
+        .andExpect(jsonPath("$.email", is("guest333@gmail.com")))
         .andExpect(jsonPath("$.firstName", is("britney")))
         .andExpect(jsonPath("$.lastName", is("spears")))
         .andExpect(jsonPath("$.password", is("milana")));
