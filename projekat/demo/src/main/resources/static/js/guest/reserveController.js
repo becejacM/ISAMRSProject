@@ -45,6 +45,7 @@
         vm.rest = null;
         vm.step1par = null;
         vm.parametar = null;
+        vm.parametar2=null;
         vm.currReservation = null;
         vm.realUser = {};
         vm.allUsers = [];
@@ -52,10 +53,13 @@
         vm.AllReservations = [];
         vm.AllInvitations = [];
         vm.AllAcceptInvitations = [];
+        vm.AllFinished=[];
         vm.regions = [];
         vm.tables = [];
         vm.AllMI = [];
         vm.orderItems = [];
+        vm.listOfTables=[];
+        
         vm.order = null;
         
         vm.logout = logout;
@@ -70,6 +74,9 @@
         
         vm.allInvitationsMode = false;
         vm.showInvitations = showInvitations;
+        
+        vm.allFinishedMode = false;
+        vm.showFinished = showFinished;
         
         vm.allRestsMode = false;
         vm.showRests = showRests;
@@ -86,6 +93,10 @@
         vm.restModeStep4 = false;
         vm.showRestStep4 = showRestStep4;
         
+        vm.callFMode=false;
+        vm.addMealMode=false;
+
+        vm.noMode = noMode;
         
         vm.step1 = step1;
         vm.step2 = step2;
@@ -106,13 +117,20 @@
         vm.accept = accept;
         vm.reject = reject;
         vm.loadAllMI = loadAllMI;
+        vm.loadAllFinished = loadAllFinished;
         vm.addOrder = addOrder;
         vm.removeOrder = removeOrder;
         vm.finish=finish;
+        
+        vm.callF = callF;
+        vm.showFinished = showFinished;
+        
+        vm.buttons = true;
         (function initController() {
         	loadAllRests();
             loadCurrentUser();
            
+            
         })();
         
         function showRests(){
@@ -125,21 +143,67 @@
         	vm.restModeStep4 = false;
         	vm.allReservationsMode = false;
         	vm.allInvitationsMode = false;
+        	vm.allFinishedMode = false;
+            vm.callFMode=false;
+            vm.addMealMode=false;
+        }
+        
+        function noMode(){
+        	vm.allRestsMode = false;
+        	vm.restModeStep1 = false;
+        	vm.restModeStep2 = false;
+        	vm.restModeStep3 = false;
+        	vm.restModeStep4 = false;
+        	vm.allReservationsMode = false;
+        	vm.allInvitationsMode = false;
+        	vm.allFinishedMode = false;
+            vm.callFMode=false;
+            vm.addMealMode=false;
         }
         
         function showInvitations(){
         	FlashService.clearFlashMessageP();
         	RestaurantService.showInvitations(vm.user.email)
             .then(function (rests) {
-                vm.allInvitations = rests.data;
-                vm.allRestsMode = false;
-            	vm.restModeStep1 = false;
-            	vm.restModeStep2 = false;
-            	vm.restModeStep3 = false;
-            	vm.restModeStep4 = false;
-            	vm.allReservationsMode = false;
-            	vm.allInvitationsMode = true;
+            	if(rests.status===204){
+            		FlashService.Error('You don\'t have any invitations.',false);
+                	noMode();
+            	}
+            	else{
+            		vm.allInvitations = rests.data;
+                    vm.allRestsMode = false;
+                	vm.restModeStep1 = false;
+                	vm.restModeStep2 = false;
+                	vm.restModeStep3 = false;
+                	vm.restModeStep4 = false;
+                	vm.allReservationsMode = false;
+                	vm.allInvitationsMode = true;
+                	vm.allFinishedMode = false;
+                    vm.callFMode=false;
+                    vm.addMealMode=false;
+            	}
+                
             });
+        }
+        
+        function showFinished(){
+        	FlashService.clearFlashMessageP();
+        	vm.allRestsMode = false;
+        	vm.restModeStep1 = false;
+        	vm.restModeStep2 = false;
+        	vm.restModeStep3 = false;
+        	vm.restModeStep4 = false;
+        	vm.allReservationsMode = false;
+        	vm.allInvitationsMode = false;
+        	vm.allFinishedMode = true;
+            vm.callFMode=false;
+            vm.addMealMode=false;
+
+        }
+        
+        vm.finished=finished;
+        function finished(){
+        	loadAllFinished();
         }
         
         function showRestStep1(){
@@ -150,6 +214,9 @@
         	vm.restModeStep4 = false;
         	vm.allReservationsMode = false;
         	vm.allInvitationsMode = false;
+        	vm.allFinishedMode = false;
+            vm.callFMode=false;
+            vm.addMealMode=false;
         }
         
         function showRestStep2(){
@@ -160,6 +227,9 @@
         	vm.restModeStep4 = false;
         	vm.allReservationsMode = false;
         	vm.allInvitationsMode = false;
+        	vm.allFinishedMode = false;
+            vm.callFMode=false;
+            vm.addMealMode=false;
         }
         function showRestStep3(){
         	vm.allRestsMode = false;
@@ -169,9 +239,13 @@
         	vm.restModeStep4 = false;
         	vm.allReservationsMode = false;
         	vm.allInvitationsMode = false;
+        	vm.allFinishedMode = false;
+            vm.callFMode=false;
+            vm.addMealMode=false;
         }
         
         function showRestStep4(){
+        	FlashService.clearFlashMessageP();
         	vm.allRestsMode = false;
         	vm.restModeStep1 = false;
         	vm.restModeStep2 = false;
@@ -179,6 +253,9 @@
         	vm.restModeStep4 = true;
         	vm.allReservationsMode = false;
         	vm.allInvitationsMode = false;
+        	vm.allFinishedMode = false;
+            vm.callFMode=false;
+            vm.addMealMode=false;
         }
         
         vm.v = null;
@@ -230,6 +307,10 @@
             	vm.restModeStep2 = false;
             	vm.restModeStep3 = false;
                 vm.allReservationsMode = true;
+                vm.allInvitationsMode=false;
+                vm.allFinishedMode=false;
+                vm.callFMode=false;
+                vm.addMealMode=false;
             });
         	
         	
@@ -281,6 +362,8 @@
         
         function step1(id){
         	FlashService.clearFlashMessageP();
+        	vm.buttons=false;
+
         	RestaurantService.GetById(id)
             .then(function (response) {
                 vm.rest = response.data;
@@ -344,6 +427,7 @@
         
         function showA(){
         	FlashService.clearFlashMessageP();
+        	
         	var canvas = new fabric.Canvas('c1');
         	canvas.setDimensions({width:800, height:500});
         	canvas.border = 2;
@@ -367,23 +451,8 @@
     				top: vm.regions[j].datay, 
     				angle: 0
     			});
-    			group.on('selected', function() {
-    				
-    				//alert(t);
-    				/*RestaurantService.Reserve(vm.c,vm.step1par.vreme,vm.step1par.trajanje, vm.rest.name, t, vm.user.email)
-    	            .then(function (response) {
-    	            	
-    	                FlashService.Success('Reservation successfuly created.',false);
-
-    	                loadAllRests();
-    	            	vm.allRestsMode = false;
-    	            	vm.restModeStep1 = false;
-    	            	vm.restModeStep2 = false;
-    	            	vm.restModeStep3 = true;
-    	            });*/
-    			});
     			canvas.add(group);
-        		}
+        	}
         	canvas.on({
         	    'object:selected': onObjectSelected
         	    
@@ -395,18 +464,24 @@
         			  alert("no");
         		  else {
         			  var id = e.target.get('id');
+	            		var o = canvas.getActiveObject();
         			  RestaurantService.Reserve(vm.c,vm.step1par.vreme,vm.step1par.trajanje, vm.rest.name, id, vm.user.email)
       	            .then(function (response) {
+
+      	            	if(response.status===204){
+      	                	FlashService.Error('You can\'t create this reservation.',false);
+
+      	                	//step22();
+      	            	}
+      	            	else{
+      	            		vm.currReservation = response.data;
+      	            		canvas.remove(o);
+          	            	//alert(vm.currReservation.reservationId);
+            			  //step22();
+
+      	            	}
       	            	
-      	            	vm.currReservation = response.data;
-      	            	//alert(vm.currReservation.reservationId);
-      	                FlashService.Success('Reservation successfuly created.',false);
-      	                geocodeAddress();
-      	                loadAllRests();
-      	            	vm.allRestsMode = false;
-      	            	vm.restModeStep1 = false;
-      	            	vm.restModeStep2 = false;
-      	            	vm.restModeStep3 = true;
+
       	            });
         		  }
         		  
@@ -422,30 +497,82 @@
         	vm.c =dt+"."+mn+"."+yy;
         	RestaurantService.GetAllAvailableTables(vm.c,vm.step1par.vreme,vm.step1par.trajanje, vm.rest.name)
             .then(function (response) {
-            	
                 vm.regions = response.data;
             	if(vm.regions.length===0){
-                	FlashService.Error('This restaurant has no table for this date.',false);
-                	//showRests();
+                	FlashService.Error('This restaurant don\'t have any tables for this date.',false);
+                	//showRestStep2();
+                    //showA();
             	}
             	else{
-            		
-                    showA();
                     showRestStep2();
+                    showA();
+
             	}
-                
             });
         	
         	
       	  
       	 
       	}
-        
-        
-        function step3(){
+        vm.step22=step22;
+        function step22() {
+        	var d=new Date(document.getElementById("dt").value);
+        	var dt=d.getDate();
+        	var mn=d.getMonth();
+        	mn++;
+        	var yy=d.getFullYear();
+        	vm.c =dt+"."+mn+"."+yy;
+        	RestaurantService.GetAllAvailableTables(vm.c,vm.step1par.vreme,vm.step1par.trajanje, vm.rest.name)
+            .then(function (response) {
+                vm.regions = response.data;
+                showRestStep2();
+                showA();
+            	if(vm.regions.length===0){
+                	showRestStep2();
+                    showA();
+            	}
+            	else{
+                    showRestStep2();
+                    showA();
+
+            	}
+            });
         	
+        	
+      	  
+      	 
+      	}
+        function step3(){
+        	FlashService.Success('Reservation successfuly created.',false);
+              geocodeAddress();
+              loadAllRests();
+          	vm.allReservationsMode = false;
+          	vm.allRestsMode = false;
+          	vm.restModeStep1 = false;
+          	vm.restModeStep2 = false;
+          	vm.restModeStep3 = true;
         }
         
+        function callF(r){
+        	vm.currReservation = r;
+        	
+          	noMode();
+            vm.callFMode=true;
+        }
+        vm.addM = addM;
+        function addM(r){
+
+        	vm.currReservation = r;
+        	RestaurantService.GetById(vm.currReservation.nameRest)
+            .then(function (response) {
+                vm.rest = response.data;
+                geocodeAddress();
+            });
+        	loadAllMI();
+          	noMode();
+            vm.addMealMode=true;
+            
+        }
         function step4(){
         	loadAllMI();
         	showRestStep4();
@@ -454,7 +581,13 @@
         function loadAllMI(){
         	RestaurantService.LoadAllMeals(vm.rest.restaurantId)
             .then(function (response) {
-            	vm.allMI = response.data;
+            	if(response.status===204){
+            		finish();
+                	FlashService.Error('This restaurant don\'t have any meals. Reservation successfuly finished.',false);
+            	}
+            	else{
+                	vm.allMI = response.data;
+            	}
             	
             });
         }
@@ -487,12 +620,7 @@
         	vm.order = createOrder();
         	RestaurantService.Order(vm.rest.restaurantId, vm.order)
             .then(function (response) {
-            	if(response.data===null){
-                	FlashService.Success('Reservation successfuly finished.',false);
-            	}
-            	else{
-                	FlashService.Success('You successfuly create order and reservation successfuly finished.',false);
-            	}
+            	
             	vm.allRestsMode = false;
             	vm.restModeStep1 = false;
             	vm.restModeStep2 = false;
@@ -500,6 +628,22 @@
             	vm.restModeStep4 = false;
             	vm.allReservationsMode = false;
             	vm.allInvitationsMode = false;
+            	$window.location.reload();
+            });
+        }
+        
+        function loadAllFinished(){
+        	RestaurantService.getFinished(vm.user.id)
+            .then(function (response) {
+            	if(response.status===204){
+                	FlashService.Error('Your history of visits is empty.',false);
+                	noMode();
+            	}
+            	else{
+            		vm.allFinished=response.data;
+            		alert(vm.allFinished.length);
+            		showFinished();
+            	}
             });
         }
         
@@ -527,17 +671,17 @@
         };
         function profil(){
         	
-        	AuthenticationService.SetCredentials(vm.user.email, vm.user.password, "guestProfil");
+        	AuthenticationService.SetCredentials(vm.user.email, vm.user.password, "guestProfil", vm.user.token);
         	$location.path('/guestProfil');
         }
         
         function home(){
-        	AuthenticationService.SetCredentials(vm.user.email, vm.user.password, "home");
+        	AuthenticationService.SetCredentials(vm.user.email, vm.user.password, "home", vm.user.token);
 
         	$location.path('/home');
         }
         function friends(){
-        	AuthenticationService.SetCredentials(vm.user.email, vm.user.password, "myFriends");
+        	AuthenticationService.SetCredentials(vm.user.email, vm.user.password, "myFriends", vm.user.token);
         	$location.path('/myFriends');
         }
         function logout(){
@@ -551,9 +695,14 @@
                 });
         }
         
-        
         function find() {
-        	RestaurantService.find(vm.parametar.par, vm.parametar.par2)
+        	if(!vm.parametar){
+        		vm.parametar="a";
+        	}
+        	if(!vm.parametar2){
+        		vm.parametar2="a";
+        	}
+        	RestaurantService.find(vm.parametar, vm.parametar2)
             .then(function (response) {
             	vm.allRests = response.data;
             });
@@ -573,7 +722,7 @@
         	RestaurantService.cancel(reservationId, vm.user.id)
             .then(function (response) {
             	if(angular.equals(response.data.status,"no")){
-            		alert("error");
+            		//alert("error");
                 	FlashService.Error('You can not cancel this reservation.',false);
             	}
             	else{
@@ -585,11 +734,20 @@
         function call(email){
         	RestaurantService.callFriend(email, vm.user.email, vm.currReservation.reservationId)
             .then(function (response) {
-            	FlashService.Success('Friend successfuly called.',false);
+            	if(response.status==204){
+                	FlashService.Error('This friend is allready added on this reservation.',false);
+            	}
+            	else if(response.status==403){
+                	FlashService.Error('This reservation has no more chairs for your friends.',false);
+            	}
+            	else{
+                	FlashService.Success('Friend successfuly called.',false);
+            	}
             });
         }
         vm.getCalledFriends = getCalledFriends;
         vm.friends = [];
+        vm.makedMeals = [];
         function getCalledFriends(reservationId)
         {
         	vm.friends = [];
@@ -604,7 +762,154 @@
               	});*/
             });
         	
-        	
+        	vm.makedMeals = [];
+        	RestaurantService.getMakedMeals(reservationId)
+            .then(function (response) {
+            	vm.makedMeals[reservationId]= response.data;
+            	
+
+            });
+
+        }
+        vm.SortableTableRest=SortableTableRest;
+        function SortableTableRest() {
+
+            vm.head2 = {
+                    image: "Image",
+                    name: "Name",
+                    type: "Type",
+                    startTime: "Start time",
+                    endTime: "EndTime",
+                    address: "Address",
+                    info: "Info"
+                  
+                };
+                        
+            
+            vm.sort2 = {
+                column: 'name',
+                descending: false
+            };
+
+            vm.selectedCls2 = function(column) {
+                return column == vm.sort2.column && 'sort-' + vm.sort2.descending;
+            };
+            
+            vm.changeSorting2 = function(column) {
+                var sort = vm.sort2;
+                if (sort.column == column) {
+                    sort.descending = !sort.descending;
+                } else {
+                    sort.column = column;
+                    sort.descending = false;
+                }
+            };
+        
+        }
+        
+        vm.SortableTableCtrl=SortableTableCtrl;
+        function SortableTableCtrl() {
+            var scope = this;
+
+            vm.head = {
+                    id: "Name",
+                    reservationDateTime: "Date",
+                    time: "From",
+                    length: "To",
+                    friends: "Friends",
+                    orders: "Orders"
+                  
+                };
+                        
+            vm.sort = {
+                column: 'id',
+                descending: false
+            };
+
+            vm.selectedCls = function(column) {
+                return column == vm.sort.column && 'sort-' + vm.sort.descending;
+            };
+            
+            vm.changeSorting = function(column) {
+                var sort = vm.sort;
+                if (sort.column == column) {
+                    sort.descending = !sort.descending;
+                } else {
+                    sort.column = column;
+                    sort.descending = false;
+                }
+            };
+        
+        }
+        
+        vm.SortableTableFin=SortableTableFin;
+        function SortableTableFin() {
+
+            vm.head3 = {
+                    id: "Name",
+                    reservationDateTime: "Date",
+                    time: "From",
+                    length: "To",
+                    friends: "Friends",
+                    orders: "Orders"
+                  
+                };
+                        
+            vm.sort3 = {
+                column: 'id',
+                descending: false
+            };
+
+            vm.selectedCls3 = function(column) {
+                return column == vm.sort3.column && 'sort-' + vm.sort3.descending;
+            };
+            
+            vm.changeSorting3 = function(column) {
+                var sort = vm.sort3;
+                if (sort.column == column) {
+                    sort.descending = !sort.descending;
+                } else {
+                    sort.column = column;
+                    sort.descending = false;
+                }
+            };
+        
+        }
+        
+        vm.SortableTableI=SortableTableI;
+        function SortableTableI() {
+
+            vm.head4 = {
+            		image: "Image",
+            		firstName: "firstName",
+                    id: "Name",
+                    reservationDateTime: "Date",
+                    time: "From",
+                    length: "To",
+                    friends: "Friends",
+                    orders: "Orders"
+                  
+                };
+                        
+            vm.sort4 = {
+                column: 'id',
+                descending: false
+            };
+
+            vm.selectedCls4 = function(column) {
+                return column == vm.sort4.column && 'sort-' + vm.sort4.descending;
+            };
+            
+            vm.changeSorting4 = function(column) {
+                var sort = vm.sort4;
+                if (sort.column == column) {
+                    sort.descending = !sort.descending;
+                } else {
+                    sort.column = column;
+                    sort.descending = false;
+                }
+            };
+        
         }
     }
 

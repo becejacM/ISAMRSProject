@@ -35,17 +35,17 @@
         })();
 
         function home(){
-        	AuthenticationService.SetCredentials(vm.user.email, vm.user.password, "home");
+        	AuthenticationService.SetCredentials(vm.user.email, vm.user.password, "home", vm.user.token);
         	$location.path('/home');
         	
         }
         
         function restaurants(){
-        	AuthenticationService.SetCredentials(vm.user.email, vm.user.password, "reserveRestaurant");
+        	AuthenticationService.SetCredentials(vm.user.email, vm.user.password, "reserveRestaurant", vm.user.token);
         	$location.path('/reserveRestaurant');
         }
         function friends(){
-        	AuthenticationService.SetCredentials(vm.user.email, vm.user.password, "myFriends");
+        	AuthenticationService.SetCredentials(vm.user.email, vm.user.password, "myFriends", vm.user.token);
         	$location.path('/myFriends');
         }
         function logout(){
@@ -78,6 +78,7 @@
 
         	   if (file) {
         	       reader.readAsDataURL(file); //reads the data as a URL
+        	       vm.changePicMode2=true;
         	   } else {
         	       preview.src = "";
         	   }
@@ -85,9 +86,9 @@
         	   
         	}
         
-        //za upload .... ne radi
         function upload(){
         	vm.changePicMode = false;
+        	vm.changePicMode2 = false;
         	UserService.Upload(vm.user)
             .then(function (response) {
           		  vm.user = response.data;

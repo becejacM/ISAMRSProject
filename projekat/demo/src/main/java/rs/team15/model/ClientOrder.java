@@ -1,6 +1,8 @@
 package rs.team15.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.hibernate.annotations.Fetch;
 
@@ -38,16 +40,31 @@ public class ClientOrder implements Serializable{
     @JoinColumn(name = "tableId")
     private TableR table;
 
+    @JsonIgnoreProperties(value={"order"})
     @OneToMany(mappedBy = "order", fetch = FetchType.LAZY, cascade = {CascadeType.MERGE , CascadeType.REMOVE})
     private Set<OrderItem> items = new HashSet<OrderItem>(0);
 
 
-    @JsonIgnore
-    @Column(name = "waiterId")
-    private Integer waiterId;
+    @ManyToOne()
+    @JoinColumn(name = "eid")
+	private Employee employee;
+    
+    @Column(name = "total_price")
+	private double totalPrice;
+    
+    @Column(name = "order_number")
+	private Integer orderNumber;
+    
+    @ManyToOne(cascade = CascadeType.MERGE)
+	@JoinColumn(name = "rid")
+	private Restaurant restaurant;
 
     @Column(name = "status")
     private String status;
+    
+    @Version
+    @Column(name = "version")
+    private Long version ;
 
     public ClientOrder(){
     }
@@ -66,12 +83,23 @@ public class ClientOrder implements Serializable{
 		this.status = status;
 	}*/
 
+    
 
 	public Long getOrderId() {
         return oid;
     }
 
-    public void setOrderId(Long orderId) {
+    public Long getVersion() {
+		return version;
+	}
+
+
+	public void setVersion(Long version) {
+		this.version = version;
+	}
+
+
+	public void setOrderId(Long orderId) {
         this.oid = orderId;
     }
 
@@ -107,7 +135,8 @@ public class ClientOrder implements Serializable{
         this.status = status;
     }
 
-    @JsonIgnore
+    @JsonManagedReference
+    //@JsonIgnore
     public Set<OrderItem> getItems() {
         return items;
     }
@@ -116,16 +145,62 @@ public class ClientOrder implements Serializable{
     public void setItems(Set<OrderItem> items) {
         this.items = items;
     }
+    
+    
 
-    public Integer getWaiterId() {
-        return waiterId;
-    }
+    public Long getOid() {
+		return oid;
+	}
 
-    public void setWaiterId(Integer waiterId) {
-        this.waiterId = waiterId;
-    }
 
-    @Override
+	public void setOid(Long oid) {
+		this.oid = oid;
+	}
+
+
+	public Employee getEmployee() {
+		return employee;
+	}
+
+
+	public void setEmployee(Employee employee) {
+		this.employee = employee;
+	}
+
+
+	public double getTotalPrice() {
+		return totalPrice;
+	}
+
+
+	public void setTotalPrice(double totalPrice) {
+		this.totalPrice = totalPrice;
+	}
+
+
+	public Integer getOrderNumber() {
+		return orderNumber;
+	}
+
+
+	public void setOrderNumber(Integer orderNumber) {
+		this.orderNumber = orderNumber;
+	}
+
+
+	public Restaurant getRestaurant() {
+		return restaurant;
+	}
+
+
+	public void setRestaurant(Restaurant restaurant) {
+		this.restaurant = restaurant;
+	}
+	
+	
+
+
+	@Override
     public String toString() {
         return "ClientOrder{" +
                 "orderId=" + oid +

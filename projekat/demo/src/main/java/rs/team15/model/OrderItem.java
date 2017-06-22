@@ -2,7 +2,10 @@ package rs.team15.model;
 
 
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.*;
 import javax.persistence.criteria.Fetch;
@@ -18,37 +21,47 @@ public class OrderItem implements Serializable{
     private Long oiid;
 
     @Column(name = "state")
-    private String state;
-
-    @JsonIgnore
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "order_id")
-    private ClientOrder order;
+    private String state; 
 
     @ManyToOne()
-    @JoinColumn(name = "menu_item_id")
-    private MenuItem menuItem;
+    @JoinColumn(name = "oid")
+    private ClientOrder order; 
+
+    @OneToOne()
+    @JoinColumn(name = "miid")
+    private MenuItem menuItem; 
 
     @Column(name = "amount")
-    private Integer amount;
+    private Integer amount; 
+    
+    @Column(name = "price")
+    private double price;
 
     @Version
     @Column(name = "version")
-    private Integer version = 0;
 
-    @Column(name = "restaurant_id")
-    private Long restaurantId;
+    private long version ;
 
-    @JsonIgnore
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "employee")
-    private Employee employee;
+    public long getVersion() {
+		return version;
+	}
+
+	public void setVersion(long version) {
+		this.version = version;
+	}
+
+	@Column(name = "restaurant_id")
+    private Long restaurantId; 
+
 
     @Column(name = "oi_table_id")
     private Integer tableId;
+    
+    @Column(name = "item_number")
+    private Integer itemNumber;
 
     public OrderItem(){
-    	
+    	//this.version=0;
     }
     
     /*public OrderItem(String state, MenuItem menuItem, Integer amount) {
@@ -74,14 +87,17 @@ public class OrderItem implements Serializable{
         this.state = state;
     }
 
+    @JsonBackReference
     public ClientOrder getOrder() {
         return order;
     }
 
+    //@JsonIgnore
     public void setOrder(ClientOrder order) {
         this.order = order;
     }
 
+    //@JsonProperty
     public MenuItem getMenuItem() {
         return menuItem;
     }
@@ -98,13 +114,13 @@ public class OrderItem implements Serializable{
         this.amount = amount;
     }
 
-    public Integer getVersion() {
+    /*public Integer getVersion() {
         return version;
     }
 
-    public void setVersion(Integer version) {
+    public void setVersion(Long version) {
         this.version = version;
-    }
+    }*/
 
     public Long getRestaurantId() {
         return restaurantId;
@@ -114,14 +130,6 @@ public class OrderItem implements Serializable{
         this.restaurantId = restaurantId;
     }
 
-    public Employee getEmployee() {
-        return employee;
-    }
-
-    public void setEmployee(Employee employee) {
-        this.employee = employee;
-    }
-
     public Integer getTableId() {
         return tableId;
     }
@@ -129,5 +137,47 @@ public class OrderItem implements Serializable{
     public void setTableId(Integer tableId) {
         this.tableId = tableId;
     }
+
+	public Long getOiid() {
+		return oiid;
+	}
+
+	public void setOiid(Long oiid) {
+		this.oiid = oiid;
+	}
+
+	public double getPrice() {
+		return price;
+	}
+
+	public void setPrice(double price) {
+		this.price = price;
+	}
+	
+	
+
+	public Integer getItemNumber() {
+		return itemNumber;
+	}
+
+	public void setItemNumber(Integer itemNumber) {
+		this.itemNumber = itemNumber;
+	}
+
+	public OrderItem(Long oiid, String state, ClientOrder order, MenuItem menuItem, Integer amount, double price,
+			long version, Long restaurantId, Integer tableId) {
+
+		super();
+		this.oiid = oiid;
+		this.state = state;
+		this.order = order;
+		this.menuItem = menuItem;
+		this.amount = amount;
+		this.price = price;
+		//this.version = 0;
+		this.restaurantId = restaurantId;
+		this.tableId = tableId;
+	}
+    
 }
 

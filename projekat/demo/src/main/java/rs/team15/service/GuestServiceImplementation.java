@@ -142,6 +142,10 @@ public class GuestServiceImplementation implements GuestService{
 		if(ff!=null){
 			return null;
 		}*/
+		FriendInvitation f = friendInvitationRepository.getByReceiverIdAndReservationRsidAndStatus(receiverId, r.getReservationId(), "pending");
+		if(f!=null){
+			return null;
+		}
 		FriendInvitation fs = new FriendInvitation();
         fs.setSender(guestRepository.findOne(senderId));
         fs.setReceiver(guestRepository.findOne(receiverId));

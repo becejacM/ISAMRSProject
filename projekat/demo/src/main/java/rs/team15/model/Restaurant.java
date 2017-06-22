@@ -1,7 +1,9 @@
 package rs.team15.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.*;
@@ -43,6 +45,7 @@ public class Restaurant implements Serializable {
     @JoinColumn(name = "sm_id")
     private SystemManager systemManager;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "restaurant", fetch = FetchType.LAZY)
     private Set <MenuItem> menuItemMenu = new HashSet <MenuItem>(0);
 
@@ -137,12 +140,12 @@ public class Restaurant implements Serializable {
         this.address = address;
     }
 
-    @JsonProperty
+    //@JsonProperty
     public Set <MenuItem> getMenuItemMenu() {
         return menuItemMenu;
     }
 
-    @JsonIgnore
+    //@JsonBackReference
     public void setMenuItemMenu(Set <MenuItem> menuItemMenu) {
         this.menuItemMenu = menuItemMenu;
     }

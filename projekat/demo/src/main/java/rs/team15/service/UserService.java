@@ -20,6 +20,8 @@ public interface UserService {
     
     User findByEmail(String email);
 
+    User findByToken(String token);
+
     User update(User user);
     
     void uploadUserImage(User user, String path);

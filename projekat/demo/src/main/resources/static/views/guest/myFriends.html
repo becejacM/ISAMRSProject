@@ -7,64 +7,83 @@
 			</div>
 			
 			<div id="guestProfil" class="navbar-header">
-				<button class="btn btn-default navbar-btn" background-color= "Transparent"  ng-click="vm.home()">ABOUT US</button>
+				<button class="button" background-color= "Transparent"  ng-click="vm.home()">ABOUT US</button>
 			</div>
 			<div id="guestProfil2" class="navbar-header">
-				<button class="btn btn-default navbar-btn" background-color= "Transparent"  ng-click="vm.profil()">MY PROFILE</button>
+				<button class="button" background-color= "Transparent"  ng-click="vm.profil()">MY PROFILE</button>
 			</div>
 			<div id="guestProfil3" class="navbar-header">
-				<button class="btn btn-default navbar-btn" background-color= "Transparent"  ng-click="vm.restaurants()">RESTAURANTS</button>
+				<button class="button" background-color= "Transparent"  ng-click="vm.restaurants()">RESTAURANTS</button>
 			</div>
 			<div id="guestProfil4" class="navbar-header">
-				<button class="btn btn-default navbar-btn" background-color= "Transparent"  ng-click="">FRIENDS</button>
+				<button class="button" background-color= "Transparent"  ng-click="">FRIENDS</button>
 			</div>
 			<div id="guestProfil5" class="navbar-header">
-				<button class="btn btn-default navbar-btn" background-color= "Transparent"  ng-click="vm.logout()">LOGOUT</button>
+				<button class="button" background-color= "Transparent"  ng-click="vm.logout()">LOGOUT</button>
 			</div>
 				
 		</div>
 	</nav>
 	
-	<button  class="btn btn-primary" aria-label="All friends" ng-click="vm.showAll()">
+	<button  class="button" aria-label="All friends" ng-click="vm.showAll()">
           <md-icon aria-label="All friends" class="material-icons">SEARCH GUESTS</md-icon>
         </button>
-        <button  class="btn btn-primary" aria-label="My friends" ng-click="vm.showFriends()">
+        <button  class="button" aria-label="My friends" ng-click="vm.showFriends()">
           <md-icon aria-label="My friends" class="material-icons">MY FRIENDS</md-icon>
         </button>
-        <button  class="btn btn-primary" aria-label="Friends requests" ng-click="vm.showReq()">
+        <button  class="button" aria-label="Friends requests" ng-click="vm.showReq()">
           <md-icon aria-label="Friend requests" class="material-icons">Friend requests</md-icon>
         </button>
      
 <div ng-show="vm.reqMode">
-	<h1>This is list of your friends requests</h1>
-	<ul>
-    <li ng-repeat="user in vm.allReq">
-        <img id="thumbnail" src={{user.image}}>{{user.firstName}} {{user.lastName}}
-        <button class="btn btn-primary" ng-click="vm.accept(user.id)">ACCEPT</button>
-        <button class="btn btn-primary" ng-click="vm.reject(user.id)">REJECT</button>
-    </li>
-</ul>
+	<h2>This is list of your friends requests</h2>
+	<table id="myTable" class="table table-striped table-bordered" cellspacing="0" width="100%" ng:controller="vm.SortableTableReq">
+    <thead>
+    <tr>
+            <th ng:repeat="(i,th) in vm.head" ng:class="vm.selectedCls(i)" ng:click="vm.changeSorting(i)">{{th}}</th>
+        </tr>
+        </thead>
+    <tbody>
+        <tr ng-repeat="user in vm.allReq|orderBy:vm.sort.column:vm.sort.descending">
+        <td><img id="thumbnail" src={{user.image}}></td>
+        <td>{{user.firstName}}</td>
+        <td> {{user.lastName}}</td>
+        <td><button class="button" ng-click="vm.accept(user.id)">ACCEPT</button></td>
+        <td><button class="button" ng-click="vm.reject(user.id)">REJECT</button></td>
+    </tr>
+    </tbody>
+    </table>
 </div>   
 <div ng-show="vm.myFriendsMode">
-<h1>This is list of your friends!</h1>
-<ul>
-    <li ng-repeat="user in vm.allFriendsIAccept">
-        <img id="thumbnail" src={{user.image}}>{{user.firstName}} {{user.lastName}}
-        <button class="btn btn-primary" ng-click="vm.deleteF(user.id)">DELETE</button>
-    </li>
-    
-    <li ng-repeat="user in vm.allFriendsIAdd">
-        <img id="thumbnail" src={{user.image}}>{{user.firstName}} {{user.lastName}}
-       	<button class="btn btn-primary" ng-click="vm.deleteF(user.id)">DELETE</button>
-        
-    </li>
-</ul>
+<h2>This is list of your friends!</h2>
+<table id="myTable" class="table table-striped table-bordered" cellspacing="0" width="100%" ng:controller="vm.SortableTableF">
+    <thead>
+    <tr>
+            <th ng:repeat="(i,th) in vm.head2" ng:class="vm.selectedCls2(i)" ng:click="vm.changeSorting2(i)">{{th}}</th>
+        </tr>
+        </thead>
+    <tbody>
+        <tr ng-repeat="user in vm.allFriendsIAccept|orderBy:vm.sort2.column:vm.sort2.descending">
+        <td><img id="thumbnail" src={{user.image}}></td>
+        <td>{{user.firstName}}</td>
+        <td> {{user.lastName}}</td>
+        <td><button class="button" ng-click="vm.deleteF(user.id)">DELETE</button></td>
+</tr>    
+        <tr ng-repeat="user in vm.allFriendsIAdd|orderBy:vm.sort2.column:vm.sort2.descending">
+
+        <td><img id="thumbnail" src={{user.image}}></td>
+        <td>{{user.firstName}} </td>
+        <td>{{user.lastName}}</td>
+       	<td><button class="button" ng-click="vm.deleteF(user.id)">DELETE</button></td>
+        </tr>
+        </tbody>
+        </table>
 </div>
 <div ng-show="vm.allFriendsMode">
 <table ng-repeat="user in vm.allUsers">
 
-        <tr><td><img id="thumbnail" src={{user.image}}></td><td>{{user.firstName}}</td><td> &nbsp;&nbsp;{{user.lastName}}</td>
-       <td><button class="btn btn-primary" ng-click="vm.add(user.id)">ADD</button></td></tr>
+        <tr><td><img id="thumbnail" src={{user.image}}></td><td>&nbsp;&nbsp;&nbsp;&nbsp;{{user.firstName}}</td><td> &nbsp;&nbsp;&nbsp;&nbsp;{{user.lastName}}</td>
+       <td>&nbsp;&nbsp;&nbsp;&nbsp;<button class="button" ng-click="vm.add(user.id)">ADD</button></td></tr>
      </table>
 <form ng-submit="vm.find()" role="form">
 <div class="form-group" ng-class="{ 'has-error': form.parametar.$dirty && form.parametar.$error.required && form.parametar.$error.maxlength && form.parametar.$error.minlength }">
@@ -75,7 +94,7 @@
             <span class="error" ng-show="form.parametar.$error.minlength">parametar must be min 3 characters!</span>
       <span class="error" ng-show="form.parametar.$error.maxlength">parametar must be max 10 characters!</span>
 			<div class="form-actions">
-            <button type="submit" ng-disabled="form.$invalid || vm.dataLoading" class="btn btn-primary">Find</button>
+            <button type="submit" ng-disabled="form.$invalid || vm.dataLoading" class="button">Find</button>
         </div>
 </form>
 </div>

@@ -1,6 +1,7 @@
 package rs.team15.model;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -60,7 +61,17 @@ public class User implements Serializable{
 
     private String message;
     
-    @OneToMany(mappedBy = "userid", fetch = FetchType.LAZY)
+    private int brojPoseta=0;
+    
+    public int getBrojPoseta() {
+		return brojPoseta;
+	}
+
+	public void setBrojPoseta(int brojPoseta) {
+		this.brojPoseta = brojPoseta;
+	}
+
+	@OneToMany(mappedBy = "userid", fetch = FetchType.LAZY)
     private Set <Reservation> reservations = new HashSet <Reservation>(0);
     
 	@JsonIgnore
@@ -73,6 +84,17 @@ public class User implements Serializable{
 		this.reservations = reservations;
 	}
 	
+	public String token;
+	
+	
+	public String getToken() {
+		return token;
+	}
+
+	public void setToken(String token) {
+		this.token = token;
+	}
+
 	public User(Long id, String email, String firstName, String lastName, String password){
     	this.id = id;
 		this.email = email;

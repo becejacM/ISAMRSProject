@@ -14,7 +14,7 @@ public interface RestaurantRepository extends JpaRepository <Restaurant, Long> {
     
     Restaurant findByRid(Long id);
 
-    Collection<Restaurant> findRestaurantByNameContainsOrTypeStartsWithAllIgnoreCase(String name, String type);
+    Collection<Restaurant> findByNameOrType(String name, String type);
     
     TableR save(TableR table);
     

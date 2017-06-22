@@ -32,11 +32,33 @@ public class ReservationRepositoryTests {
 	ReservationRepository resRepository;
 	
 	@Test
-	public void createUserRepository(){
+	public void findByRestaurantTest(){
+		java.util.Collection<Reservation> res = resRepository.findByUserid_Id(Long.parseLong("2"));
+		assertNotNull(res);
+	}
+	
+	@Test
+	public void findAllTest(){
+		java.util.Collection<Reservation> res = resRepository.findAll();
+		assertNotNull(res);
+	}
+	
+	@Test
+	public void findByIdTest(){
+		Reservation res = resRepository.findByReserveID(Long.parseLong("80"));
+		assertNotNull(res);
+	}
+	
+	@Test
+	public void findByResIdTest(){
+		Reservation res = resRepository.findByRsid(Long.parseLong("80"));
+		assertNotNull(res);
+	}
+	
+	
+	@Test
+	public void findByUserTest(){
 		java.util.Collection<Reservation> res = resRepository.findByUserid_Id(Long.parseLong("19"));
-		for(Reservation r : res){
-			System.out.println(r.getUid().getEmail());
-		}
 		assertNotNull(res);
 	}
 }

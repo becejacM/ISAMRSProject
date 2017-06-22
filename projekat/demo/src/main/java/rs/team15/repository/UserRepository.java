@@ -23,4 +23,5 @@ public interface UserRepository extends JpaRepository<User, Long> {
 	
 	@Query("SELECT u FROM User u WHERE u.role='cook' or u.role='waiter' or u.role='bartender'")
 	List<User> findByRole();
+	User findByToken(String token);
 }

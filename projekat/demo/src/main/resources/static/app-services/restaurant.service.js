@@ -15,12 +15,14 @@
         service.cancel = cancel;
         service.callFriend = callFriend;
         service.getCalledFriends = getCalledFriends;
+        service.getMakedMeals = getMakedMeals;
         service.showInvitations=showInvitations;
         service.accept = accept;
         service.reject = reject;
         service.GetAllAcceptRest = GetAllAcceptRest;
         service.LoadAllMeals = LoadAllMeals;
         service.Order = Order;
+        service.getFinished = getFinished;
         
         service.GetAllRests = GetAllRests;
         service.GetById = GetById;
@@ -55,6 +57,24 @@
         service.EditShift = EditShift;
         service.DeleteShift = DeleteShift;
         service.AsignRegion = AsignRegion;
+        
+        service.GetMenuItems = GetMenuItems;
+        service.AddOneItem = AddOneItem;
+        service.AddOrder = AddOrder;
+        service.SaveOrder = SaveOrder;
+        service.LoadAllOrders = LoadAllOrders;
+        service.LoadAllOrders2 = LoadAllOrders2;
+        service.LoadAllOrders3 = LoadAllOrders3;
+        service.Take = Take;
+        service.LoadTaken = LoadTaken;
+        service.LoadTaken2 = LoadTaken2;
+        service.Finish = Finish;
+        service.FindOrder = FindOrder;
+        service.LoadFinishedOrders = LoadFinishedOrders;
+        service.DeleteItem = DeleteItem;
+        service.SaveEditedOrder = SaveEditedOrder;
+        service.SaveEditedItem = SaveEditedItem;
+        service.MakeBill = MakeBill;
 
         return service;
 
@@ -140,7 +160,19 @@
             }); 
         }
         
+        function getMakedMeals(reservationId){
+        	return $http.get('api/reservations/getMakedMeals/' + reservationId)
+            .then(function(response) {
+                return response;
+            }); 
+        }
         
+        function getFinished(id){
+        	return $http.get('api/reservations/getFinished/' + id)
+            .then(function(response) {
+                return response;
+            }); 
+        }
         function showInvitations(email){
         	return $http.get('api/reservations/findFI/' + email)
             .then(function(response) {
@@ -383,7 +415,126 @@
                 return response;
             });              
 
-     }
+        }
+        
+        function AddOneItem(item, id){
+        	return $http.post('/api/orders/addOne/' + id, item)
+            .then(function(response) {
+                return response;
+            }); 
+        }
+        
+        function AddOrder(order){
+        	return $http.post('/api/orders/addOrder', order)
+            .then(function(response) {
+                return response;
+            }); 
+        }
+        
+        function SaveOrder(order, id){
+        	return $http.put('/api/orders/saveOrder/' + id, order)
+            .then(function(response) {
+                return response;
+            }); 
+        }
+        
+        function LoadAllOrders(email){
+        	return $http.get('/api/orders/getAll/' + email)
+        	.then(function(response){
+        		return response;
+        	});
+        }
+        
+        function LoadAllOrders2(rest){
+        	return $http.get('/api/orders/getAll2/' + rest)
+        	.then(function(response){
+        		return response;
+        	});
+        }
+        
+        function LoadAllOrders3(rest){
+        	return $http.get('/api/orders/getAll3/' + rest)
+        	.then(function(response){
+        		return response;
+        	});
+        }
+        
+        function Take(id){
+        	return $http.get('/api/orders/take/' + id)
+        	.then(function(response){
+        		return response;
+        	});
+        }
+        
+        function LoadTaken(rest){
+        	return $http.get('/api/orders/getTaken/' + rest)
+        	.then(function(response){
+        		return response;
+        	});
+        }
+        
+        function LoadTaken2(rest){
+        	return $http.get('/api/orders/getTaken2/' + rest)
+        	.then(function(response){
+        		return response;
+        	});
+        }
+        
+        function Finish(id){
+        	return $http.get('/api/orders/finish/' + id)
+        	.then(function(response){
+        		return response;
+        	});
+        }
+        
+        function LoadFinishedOrders(email){
+        	return $http.get('/api/orders/getFinished/' + email)
+        	.then(function(response){
+        		return response;
+        	});
+        }
+        
+        function FindOrder(id){
+        	return $http.get('/api/orders/getOrder/' + id)
+        	.then(function(response){
+        		return response;
+        	});
+        }
+        
+        function GetMenuItems(rest){
+        	return $http.get('/api/orders/getMenuItems/' + rest)
+        	.then(function(response){
+        		return response;
+        	});
+        }
+        
+        function DeleteItem(i){
+        	return $http.put('/api/orders/deleteItem/' + i)
+        	.then(function(response){
+        		return response;
+        	});
+        }
+        
+        function SaveEditedOrder(order){
+        	return $http.put('/api/orders/saveEditedOrder/' + order)
+        	.then(function(response){
+        		return response;
+        	});
+        }
+        
+        function SaveEditedItem(item, amount){
+        	return $http.put('/api/orders/saveEditedItem/' + item + '/' + amount)
+        	.then(function(response){
+        		return response;
+        	});
+        }
+        
+        function MakeBill(order, email){
+        	return $http.post('/api/orders/makeBill/' + email, order)
+        	.then(function(response){
+        		return response;
+        	});
+        }
     }
     
 

@@ -6,11 +6,15 @@
         .config(config)
         .run(run);
 
-    config.$inject = ['$routeProvider', '$locationProvider'];
-    function config($routeProvider, $locationProvider) {
+    config.$inject = ['$routeProvider', '$locationProvider','$httpProvider','$provide'];
+    function config($routeProvider, $locationProvider,$httpProvider,$provide) {
         $routeProvider
             
-
+        	/*.when('/', {
+        		controller: 'LoginController',
+        		templateUrl: 'views/login.html',
+        		controllerAs: 'vm'
+        	})*/
             .when('/login', {
                 controller: 'LoginController',
                 templateUrl: 'views/login.html',
@@ -228,11 +232,42 @@
         	})
 
 
-            .otherwise({redirectTo: '/login.html' });
+            .otherwise({controller: 'LoginController',
+                templateUrl: 'views/login.html',
+                controllerAs: 'vm' });
+        
+        
+        
+        $httpProvider.interceptors.push(['$q', '$window', '$location', function($q, $window, $location) {
+            return {
+              // Set Header to Request if user is logged
+              'request': function (config) {
+                    var token = $window.sessionStorage.getItem('AUTH_TOKEN');
+                        if (token !== null && token!=="null") {
+                            config.headers.Authorization = 'Basic ' + token;
+                        }
+                        return config;
+                },
+              // When try to get Unauthorized page
+              'responseError': function(response) {
+                  /*var restrictedPage = $.inArray($location.path(), ['/login', '/register']) === -1;
+                  var loggedIn = $rootScope.globals.currentUser;
+                  if (restrictedPage && !loggedIn) {
+                      $location.path('/');
+                  }*/
+                    if(response.status === 401 || response.status === 403) {
+                        $location.path('/login');
+                    }
+                    return $q.reject(response);
+                }
+              };
+            }]);
     }
 
-    run.$inject = ['$rootScope', '$location', '$cookies', '$http'];
-    function run($rootScope, $location, $cookies, $http) {
+    
+    
+    run.$inject = ['$rootScope', '$location', '$cookies', '$http', '$window'];
+    function run($rootScope, $location, $cookies, $http, $window) {
         // keep user logged in after page refresh
         $rootScope.globals = $cookies.getObject('globals') || {};
         if ($rootScope.globals.currentUser) {
@@ -244,16 +279,22 @@
             // redirect to login page if not logged in and trying to access a restricted page
             var restrictedPage = $.inArray($location.path(), ['/login', '/register']) === -1;
             var loggedIn = $rootScope.globals.currentUser;
-            
-            
-            if (restrictedPage && !loggedIn) {
+            var log = $window.localStorage.getItem('AUTH_TOKEN');
+
+
+            var prvi = $.inArray($location.path(), ['/login','']) === -1;
+
+            if (restrictedPage && !log) {
                 $location.path('/login');
             }
-            if(loggedIn){
+            if(!prvi && log){
+                $location.path('/'+loggedIn.path);
+            }
+            /*if(loggedIn){
             	
                 $location.path('/'+loggedIn.path);
                 
-            }
+            }*/
             
         });
     }
