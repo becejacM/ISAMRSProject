@@ -53,8 +53,8 @@ public class ReservationTests {
 	@Test
 	public void getSetNameRest(){
 		Reservation rest = new Reservation();
-		rest.setId("Caribic");
-		assertEquals(rest.getId(), "Caribic");
+		rest.setNameRest("Caribic");
+		assertEquals(rest.getNameRest(), "Caribic");
 	}
 	
 	@Test

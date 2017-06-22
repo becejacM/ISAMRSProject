@@ -25,12 +25,14 @@ public class Reservation {
     @Column(name = "nameRest")
     private String nameRest;
     
-    public String getId() {
+    
+
+	public String getNameRest() {
 		return nameRest;
 	}
 
-	public void setId(String id) {
-		this.nameRest = id;
+	public void setNameRest(String nameRest) {
+		this.nameRest = nameRest;
 	}
 
 	@Column(name = "date")
