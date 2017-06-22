@@ -34,7 +34,7 @@
 
         function resManagerProfil(){
         	
-        	AuthenticationService.SetCredentials(vm.user.email, vm.user.password, "ResManagerProfil");
+        	AuthenticationService.SetCredentials(vm.user.email, vm.user.password, "ResManagerProfil", vm.user.token);
         	$location.path('/ResManagerProfil');
         }
         
@@ -50,7 +50,7 @@
                 	}
                 	else if (response.data.email!==null) {
                     	FlashService.Success('Registration successful', true);
-                    	AuthenticationService.SetCredentials(vm.user.email, vm.user.password, "ResManagerHome");
+                    	AuthenticationService.SetCredentials(vm.user.email, vm.user.password, "ResManagerHome", vm.user.token);
                         $location.path('/ResManagerHome');
                     } else {
                         FlashService.Error(response.message);
@@ -68,7 +68,7 @@
                 	}
                 	else if (response.data.email!==null) {
                     	FlashService.Success('Registration successful', true);
-                    	AuthenticationService.SetCredentials(vm.user.email, vm.user.password, "ResManagerHome");
+                    	AuthenticationService.SetCredentials(vm.user.email, vm.user.password, "ResManagerHome", vm.user.token);
                         $location.path('/ResManagerHome');
                     } else {
                         FlashService.Error(response.message);
@@ -86,7 +86,7 @@
                 	}
                 	else if (response.data.email!==null) {
                     	FlashService.Success('Registration successful', true);
-                    	AuthenticationService.SetCredentials(vm.user.email, vm.user.password, "ResManagerHome");
+                    	AuthenticationService.SetCredentials(vm.user.email, vm.user.password, "ResManagerHome", vm.user.token);
                         $location.path('/ResManagerHome');
                     } else {
                         FlashService.Error(response.message);
@@ -98,11 +98,11 @@
         }
         
         function manage(){
-        	AuthenticationService.SetCredentials(vm.user.email, vm.user.password, "manage");
+        	AuthenticationService.SetCredentials(vm.user.email, vm.user.password, "manage", vm.user.token);
         	$location.path('/manage');
         }
         function registerSuplier(){
-        	AuthenticationService.SetCredentials(vm.user.email, vm.user.password, "registerSuplier");
+        	AuthenticationService.SetCredentials(vm.user.email, vm.user.password, "registerSuplier", vm.user.token);
         	$location.path('/registerSuplier');
         }
         function logout(){

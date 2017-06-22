@@ -82,7 +82,7 @@
             		  vm.user = response.data;  
               });
             alert("asdfghhj");
-            AuthenticationService.SetCredentials(vm.user.email, vm.user.password, "bartenderHome");
+            AuthenticationService.SetCredentials(vm.user.email, vm.user.password, "bartenderHome", vm.user.token);
     		$location.path('/bartenderHome');
         }
 

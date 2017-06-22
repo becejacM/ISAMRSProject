@@ -272,6 +272,29 @@ public class ReservationController {
 	}
 	
 	@RequestMapping(
+            value    = "/api/reservations/getCalledFriendsf/{id:.+}",
+            method   = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE
+)
+		public ResponseEntity<Collection<FriendInvitation>> getCalledFriendsf(@PathVariable String id) {
+			logger.info("> find invites "+id);
+			Collection<FriendInvitation> f = guestService.getByReservation_rsid(Long.parseLong(id));
+			Collection<FriendInvitation> unique = new ArrayList<FriendInvitation>();
+			for(FriendInvitation fr : f){
+				Boolean b = true;
+				for(FriendInvitation fr2 : unique){
+					if(fr.getSender().getId().equals(fr2.getSender().getId())){
+						b=false;
+					}
+				}
+				if(b){
+					unique.add(fr);
+				}
+			}
+			return new ResponseEntity<Collection<FriendInvitation>>(unique, HttpStatus.OK);
+	}
+	
+	@RequestMapping(
             value    = "/api/reservations/getMakedMeals/{id:.+}",
             method   = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE

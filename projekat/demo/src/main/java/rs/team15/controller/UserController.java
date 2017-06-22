@@ -127,6 +127,9 @@ public class UserController {
 			u1.setMessage("Size of first name or last name is incompatible");
 			return new ResponseEntity<User>(u1, HttpStatus.OK);
 		}
+		String token = generateToken(employee.getEmail() +":"+ employee.getPassword());
+		logger.info(token);
+		employee.setToken(token);
         User created = cookService.create(employee);
 		logger.info("< create user");
 		return new ResponseEntity<User>(created, HttpStatus.CREATED);
@@ -156,6 +159,9 @@ public class UserController {
 			u1.setMessage("Size of first name or last name is incompatible");
 			return new ResponseEntity<User>(u1, HttpStatus.OK);
 		}
+		String token = generateToken(employee.getEmail() +":"+ employee.getPassword());
+		logger.info(token);
+		employee.setToken(token);
         User created = waiterService.create(employee);
 		logger.info("< create user");
 		return new ResponseEntity<User>(created, HttpStatus.CREATED);
@@ -185,6 +191,9 @@ public class UserController {
 			u1.setMessage("Size of first name or last name is incompatible");
 			return new ResponseEntity<User>(u1, HttpStatus.OK);
 		}
+		String token = generateToken(employee.getEmail() +":"+ employee.getPassword());
+		logger.info(token);
+		employee.setToken(token);
         User created = bartenderService.create(employee);
 		logger.info("< create user");
 		return new ResponseEntity<User>(created, HttpStatus.CREATED);
@@ -381,7 +390,9 @@ public class UserController {
 			u1.setMessage("Size of first name or last name is incompatible");
 			return new ResponseEntity<User>(u1, HttpStatus.OK);
 		}
-		
+		String token = generateToken(manager.getEmail() +":"+ manager.getPassword());
+		logger.info(token);
+		manager.setToken(token);
 		User created = restaurantManagerService.create(manager);
 		logger.info("< create user");
 		return new ResponseEntity<User>(created, HttpStatus.CREATED);
@@ -410,7 +421,9 @@ public class UserController {
 			u1.setMessage("Size of first name or last name is incompatible");
 			return new ResponseEntity<User>(u1, HttpStatus.OK);
 		}
-		
+		String token = generateToken(manager.getEmail() +":"+ manager.getPassword());
+		logger.info(token);
+		manager.setToken(token);
 		User created = systemManagerService.create(manager);
 		logger.info("< create user");
 		return new ResponseEntity<User>(created, HttpStatus.CREATED);
@@ -435,9 +448,14 @@ public class UserController {
         String token = generateToken(u.getEmail() +":"+ u.getPassword());
 		logger.info(token);
 		u.setToken(token);
-		if(u.getRole().equals("guest")){
-	        userService.update(u);
-
+		if(u.getRole().equals("waiter") || u.getRole().equals("cook") || u.getRole().equals("bartender")){
+        	Employee e = (Employee)u;
+        	if(e.getFirstTime().equals("no")){
+    	    	userService.update(u);
+        	}
+		}
+		else{
+			userService.update(u);
 		}
         //request.setAttribute("loggeduser", u);
         
@@ -458,6 +476,9 @@ public class UserController {
 		/*Metoda koja menja podatke korisnika*/
 		logger.info("> update user "+user.getEmail());
 		user.setVerified("yes");
+		String token = generateToken(user.getEmail() +":"+ user.getPassword());
+		logger.info(token);
+		user.setToken(token);
         User updated = userService.update(user);
         logger.info("< update user "+user.isVerified());
         logger.info("hello" + updated.getEmail() + " " + updated.getPassword()+"  "+updated.isVerified());

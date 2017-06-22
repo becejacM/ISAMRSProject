@@ -392,6 +392,15 @@ public class RestaurantController {
 		java.util.Date date2 = format.parse(datum+" "+trajanje);
 		logger.info(date.toString());
 		logger.info(date2.toString());
+		if(date.after(date2)){
+			Collection<TableR> rt = new ArrayList<TableR>();
+			return new ResponseEntity<Collection<TableR>>(rt, HttpStatus.OK);
+		}
+		Date sad = new Date();
+		if(sad.after(date)){
+			Collection<TableR> rt = new ArrayList<TableR>();
+			return new ResponseEntity<Collection<TableR>>(rt, HttpStatus.OK);
+		}
 		Collection<TableR> ret = new ArrayList<TableR>();
 		Boolean available ;
 		for (Iterator<Region> region = r.getRegions().iterator(); region.hasNext();) {

@@ -99,7 +99,7 @@
        <td><button class="button2" ng-click="vm.cancel(r.reservationId)">Cancel</button></td>
        <td><button class="button2" ng-click="vm.callF(r)">Call friends</button></td>
        <td><button class="button2" ng-click="vm.addM(r)">Add meal</button></td></tr>
-       <tr ng-repeat="r in vm.allAcceptInvitations" ng-init='vm.getCalledFriends(r.reservation.reservationId)'>
+       <tr ng-repeat="r in vm.allAcceptInvitations" ng-init='vm.getCalledFriendsf(r.reservation.reservationId)'>
         <td>{{r.reservation.nameRest}}</td>
         <td>{{r.reservation.reservationDateTime}}</td>
         <td>{{r.reservation.time}}</td>
