@@ -2,7 +2,7 @@
     'use strict';
 
     angular
-        .module('app', ['ngRoute', 'ngCookies',])
+        .module('app', ['ngRoute', 'ngCookies','mwl.calendar', 'ui.bootstrap'])
         .config(config)
         .run(run);
 
@@ -224,6 +224,12 @@
             	templateUrl: 'views/addRegion.html',
             	controllerAs: 'vm'
         	})
+        	
+        	.when('/calendarShift',{
+            	controller: 'calendarShiftController',
+            	templateUrl: 'views/calendarShift.html',
+            	controllerAs: 'vm'
+        	})
 
 
             .otherwise({controller: 'LoginController',
@@ -263,7 +269,6 @@
     run.$inject = ['$rootScope', '$location', '$cookies', '$http', '$window'];
     function run($rootScope, $location, $cookies, $http, $window) {
         // keep user logged in after page refresh
-        
         $rootScope.globals = $cookies.getObject('globals') || {};
         if ($rootScope.globals.currentUser) {
             $http.defaults.headers.common['Authorization'] = 'Basic ' + $rootScope.globals.currentUser.authdata;
@@ -295,3 +300,4 @@
     }
 
 })();
+

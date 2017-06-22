@@ -1,6 +1,7 @@
 package rs.team15.service;
 
 import java.util.Collection;
+import java.util.List;
 
 import rs.team15.model.User;
 
@@ -27,5 +28,5 @@ public interface UserService {
     
     void createImageFromBase64String(String base64, String path);
     
-    
+    List<User> findByUserRole();
 }

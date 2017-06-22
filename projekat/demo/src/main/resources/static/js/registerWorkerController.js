@@ -41,7 +41,7 @@
         function registerWorker(){
         	alert("Usao u worker")
         	if(angular.equals(vm.employee.role, "cook")){
-        		UserService.CreateCook(vm.employee)
+        		UserService.CreateCook(vm.employee, vm.user.restaurant.name)
         		.then(function (response) {
                 	if(response.data.message){
                 		alert("miki");
@@ -59,7 +59,7 @@
                     }
                 });
         	}else if(angular.equals(vm.employee.role, "waiter")){
-        		UserService.CreateWaiter(vm.employee)
+        		UserService.CreateWaiter(vm.employee,vm.user.restaurant.name)
         		.then(function (response) {
                 	if(response.data.message){
                 		alert("miki");
@@ -77,7 +77,7 @@
                     }
                 });
         	}else if(angular.equals(vm.employee.role, "bartender")){
-        		UserService.CreateBartender(vm.employee)
+        		UserService.CreateBartender(vm.employee,vm.user.restaurant.name)
         		.then(function (response) {
                 	if(response.data.message){
                 		alert("miki");
