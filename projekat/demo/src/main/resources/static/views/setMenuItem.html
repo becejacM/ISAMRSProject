@@ -46,11 +46,15 @@
             <input type="number" name="price" id="price" class="form-control" ng-model="vm.dish.price" required />
             <span ng-show="form.price.$error.required" class="help-block">Dish price is required</span>
         </div>
-        <div class="form-group" ng-class="{ 'has-error': form.spec_type.$error.required }">
-            <label for="spec_type">Dish type</label>
-            <input type="text" name="spec_type" id="spec_type" class="form-control" ng-model="vm.dish.specType" required />
-            <span ng-show="form.spec_type.$error.required" class="help-block">Dish type is required</span>
-        </div>    
+        <div class="form-group" ng-class="{'has-error': form.role.$error.required}">
+		<label for="type">Type</label>
+        <select name="type" id="type" class="form-control" ng-model="vm.dish.specType" required >
+		  <option value="cooked">Cooked</option>
+		  <option value="fried">Fried</option>
+		  <option value="desert">Desert</option>
+		  <option value="salad">Salad</option>
+		</select>
+		</div>   
         <div class="form-actions">
             <button type="submit" ng-disabled="form.$invalid || vm.dataLoading" class="btn btn-primary">Save</button>
         </div>           

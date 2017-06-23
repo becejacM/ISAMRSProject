@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import rs.team15.model.ClientOrder;
+import rs.team15.model.Restaurant;
 
 
 public interface ClientOrderRepository extends JpaRepository<ClientOrder, Long> {
@@ -28,6 +29,10 @@ public interface ClientOrderRepository extends JpaRepository<ClientOrder, Long> 
 	
 	@Query ("SELECT o FROM ClientOrder o WHERE o.restaurant.name = ?1")
 	Collection<ClientOrder> findByRestaurant(String restaurant);
+
+	Collection<ClientOrder> findByStatusAndRestaurant(String status, Restaurant r);
 	
+	Collection<ClientOrder> findByReservation_RsidAndTable_Tid(Long resId, Long Tid);
+
 
 }

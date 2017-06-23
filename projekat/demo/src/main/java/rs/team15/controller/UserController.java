@@ -112,10 +112,12 @@ public class UserController {
     public ResponseEntity<User> registerCook(@RequestBody Cook employee,@PathVariable String name) {
 		Restaurant rest = restaurantService.findById(name);
 		employee.setImage("pictures/user.png");
+
 		employee.setRestaurant(rest);
 		employee.setLogin("no");
 		employee.setVerified("no");
 		employee.setFirstTime("yes");
+
 		User u = userService.findOne(employee.getEmail());
 		if(u!=null){
 			u.setMessage("User with that email allready exists");
@@ -144,10 +146,12 @@ public class UserController {
     public ResponseEntity<User> registerWaiter(@RequestBody Waiter employee,@PathVariable String name) {
         Restaurant rest = (Restaurant)restaurantService.findById(name);
 		employee.setImage("pictures/user.png");
+
 		employee.setRestaurant(rest);
 		employee.setLogin("no");
 		employee.setVerified("no");
 		employee.setFirstTime("yes");
+
 		User u = userService.findOne(employee.getEmail());
 		if(u!=null){
 			u.setMessage("User with that email allready exists");
@@ -176,10 +180,12 @@ public class UserController {
     public ResponseEntity<User> registerBartender(@RequestBody Bartender employee,@PathVariable String name) {
         Restaurant rest = (Restaurant)restaurantService.findById(name);
 		employee.setImage("pictures/user.png");
+
 		employee.setRestaurant(rest);
 		employee.setLogin("no");
 		employee.setVerified("no");
 		employee.setFirstTime("yes");
+
 		User u = userService.findOne(employee.getEmail());
 		if(u!=null){
 			u.setMessage("User with that email allready exists");

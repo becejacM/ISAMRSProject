@@ -61,7 +61,7 @@
         
         service.GetMenuItems = GetMenuItems;
         service.AddOneItem = AddOneItem;
-        service.AddOrder = AddOrder;
+        //service.AddOrder = AddOrder;
         service.SaveOrder = SaveOrder;
         service.LoadAllOrders = LoadAllOrders;
         service.LoadAllOrders2 = LoadAllOrders2;
@@ -76,6 +76,10 @@
         service.SaveEditedOrder = SaveEditedOrder;
         service.SaveEditedItem = SaveEditedItem;
         service.MakeBill = MakeBill;
+        service.AddGrade = AddGrade;
+        service.GetAvailableTables = GetAvailableTables;
+        service.GetPendingOrders = GetPendingOrders;
+        service.TakeOrder = TakeOrder;
 
         return service;
 
@@ -432,15 +436,15 @@
             }); 
         }
         
-        function AddOrder(order){
+        /*function AddOrder(order){
         	return $http.post('/api/orders/addOrder', order)
             .then(function(response) {
                 return response;
             }); 
-        }
+        }*/
         
-        function SaveOrder(order, id){
-        	return $http.put('/api/orders/saveOrder/' + id, order)
+        function SaveOrder(order, table){
+        	return $http.put('/api/orders/saveOrder/' + table, order)
             .then(function(response) {
                 return response;
             }); 
@@ -453,8 +457,8 @@
         	});
         }
         
-        function LoadAllOrders2(rest){
-        	return $http.get('/api/orders/getAll2/' + rest)
+        function LoadAllOrders2(rest, type){
+        	return $http.get('/api/orders/getAll2/' + rest + '/' + type)
         	.then(function(response){
         		return response;
         	});
@@ -538,11 +542,40 @@
         }
         
         function MakeBill(order, email){
-        	return $http.post('/api/orders/makeBill/' + email, order)
+        	return $http.get('/api/orders/makeBill/' + order + '/' + email)
         	.then(function(response){
         		return response;
         	});
         }
+        
+        function AddGrade(res){
+        	return $http.post('/api/grades/add', res)
+        	.then(function(response){
+        		return response;
+        	});
+        }
+        
+        function GetAvailableTables(email){
+        	return $http.get('/api/orders/getTables/' + email)
+        	.then(function(response){
+        		return response;
+        	});
+        }
+        
+        function GetPendingOrders(email){
+        	return $http.get('/api/orders/getPending/' + email)
+        	.then(function(response){
+        		return response;
+        	});
+        }
+        
+        function TakeOrder(email, o){
+        	return $http.put('/api/orders/takeOrder/' + email + '/' + o)
+        	.then(function(response){
+        		return response;
+        	});
+        }
+        
     }
     
 

@@ -30,6 +30,23 @@
         vm.registerWorker = registerWorker;
         vm.registerSuplier = registerSuplier;
         vm.resManagerProfil = resManagerProfil;
+        
+        vm.cookMode = false;
+        vm.check = check;
+        
+        function check(){
+        	if (vm.employee.role === 'cook'){
+        		alert(vm.employee.role);
+        		alert("cooook");
+        		vm.cookMode = true;
+        	}
+        	else{
+        		vm.cookMode = false;
+        		alert(vm.employee.role);
+        		alert("not cooook");
+        	}
+        	
+        }
 
 
         function resManagerProfil(){

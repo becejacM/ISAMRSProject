@@ -40,14 +40,17 @@ public class Employee extends User {
 	protected String firstTime;
 	
 
-	@OneToOne(cascade = CascadeType.MERGE)
+	@OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "rid")
 	private Restaurant restaurant;
 	
 	//@JsonIgnore
-    @OneToOne(cascade = CascadeType.MERGE)
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "regid")
     private Region region;
+    
+    @Column(name = "type")
+    private String type;
 
 	/*@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JoinColumn(name = "rid")
@@ -146,14 +149,22 @@ public class Employee extends User {
 		this.restaurant = restaurant;
 	}
 
-	@JsonIgnore
+	//@JsonIgnore
 	public Region getRegion() {
 		return region;
 	}
 
-	@JsonProperty
+	//@JsonProperty
 	public void setRegion(Region region) {
 		this.region = region;
+	}
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
 	}
 
 	

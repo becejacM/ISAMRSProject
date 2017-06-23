@@ -10,7 +10,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "regions")
-@JsonIgnoreProperties(value = {"restaurant"})
+//@JsonIgnoreProperties(value = {"restaurant"})
 public class Region {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -69,10 +69,12 @@ public class Region {
         this.color = color;
     }
 
+    @JsonProperty
     public Restaurant getRestaurant() {
         return restaurant;
     }
 
+    @JsonIgnore
     public void setRestaurant(Restaurant restaurant) {
         this.restaurant = restaurant;
     }

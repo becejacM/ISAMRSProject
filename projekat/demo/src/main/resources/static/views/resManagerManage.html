@@ -27,18 +27,24 @@
 				
 		</div>
 	</nav>
-<div >
+
+<div>
 Manage restaurant
+<button class="btn btn-default navbar-btn" background-color= "Transparent"  ng-click="vm.showTables()">TABLES</button>
+<button class="btn btn-default navbar-btn" background-color= "Transparent"ng-click="vm.setMenu()">MENU</button>
+<div ng-show="vm.tablesMode">
+
 <button class="btn btn-default navbar-btn" background-color= "Transparent"  ng-click="vm.show()">SHOW</button>
-<!-- <button class="btn btn-default navbar-btn" background-color= "Transparent"  ng-click="">ADD REGION</button>  -->
 <button class="btn btn-default navbar-btn" background-color= "Transparent"  ng-click="vm.addTable()">ADD TABLE</button>
 <button class="btn btn-default navbar-btn" background-color= "Transparent"  ng-click="vm.deleteTable()">DELETE TABLE</button>
-<button class="btn btn-default navbar-btn" background-color= "Transparent"ng-click="vm.setMenu()">MENU</button>
 <button class="btn btn-default navbar-btn" background-color= "Transparent"ng-click="vm.addRegion()">ADD NEW REGION</button>
+
 <button class="btn btn-default navbar-btn" background-color= "Transparent"ng-click="vm.calendarShift()">ASIGN SHIFT</button>
 </div>
 
-<button ng-hide="vm.editMode" class="btn btn-primary" aria-label="Edit table" ng-click="vm.editTable()">
+
+
+<button class="btn btn-primary" aria-label="Edit table" ng-click="vm.editTable()">
           <md-icon aria-label="Edit table" class="material-icons">EDIT TABLE</md-icon>
         </button>
         
@@ -65,4 +71,6 @@ Manage restaurant
 
 <div>
 <canvas id="c"></canvas>
+</div>
+</div>
 </div>

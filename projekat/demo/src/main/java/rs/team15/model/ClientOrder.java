@@ -28,15 +28,15 @@ public class ClientOrder implements Serializable{
     private Date deadline;
 
     @JsonIgnore
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
     @JoinColumn(name = "rsid")
     private Reservation reservation;
 
     @Column(name = "clientId")
     private Integer clientId;
 
-    @JsonIgnore
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
+    //@JsonIgnore
+    @ManyToOne()
     @JoinColumn(name = "tableId")
     private TableR table;
 
@@ -162,7 +162,7 @@ public class ClientOrder implements Serializable{
 		return employee;
 	}
 
-
+	
 	public void setEmployee(Employee employee) {
 		this.employee = employee;
 	}
@@ -211,7 +211,7 @@ public class ClientOrder implements Serializable{
                 '}';
     }
 
-    @JsonIgnore
+    //@JsonIgnore
     public Reservation getReservation() {
         return reservation;
     }

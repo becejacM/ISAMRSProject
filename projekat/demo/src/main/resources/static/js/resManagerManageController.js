@@ -38,6 +38,7 @@
         vm.addTable = addTable;
         vm.deleteTable = deleteTable;
         vm.table = null;
+        vm.tablesMode = false;
         
         vm.editMode = false;
         vm.enableButton = false;
@@ -45,6 +46,7 @@
         vm.save = save;
         vm.created = null;
         vm.selectedMode = false;
+        vm.showTables = showTables;
         
         var canvas = new fabric.Canvas('c');
   	  	canvas.setDimensions({width:800, height:500});
@@ -67,6 +69,11 @@
                 vm.rest = response.data;
                 loadRegions();
             });
+        }
+        
+        function showTables(){
+        	vm.tablesMode = true;
+        	//show();
         }
         
         function setMenu(){
@@ -142,9 +149,15 @@
       	  }
       	  
 	      //alert(vm.regs.length);
-	      if(vm.regs.length != 0)
-	    	  //alert(vm.regs[0]);
+	      if(vm.regs.length != 0){
+	    	//alert(vm.regs[0]);
 		      vm.table.region = vm.regs[0];
+	      }
+	      else {
+	    	  alert('You don\'t have any regions! Add region first so that you could add tables.');
+	    	  return;
+	      }
+	    	  
     	  
     	  var rect = new fabric.Rect({
   	  		width: 50, height: 50, originX: 'center', originY: 'center', fill: "#" + vm.table.region.color
@@ -340,19 +353,24 @@
         }
         
         function editTable() {
-        	if(canvas.getActiveObject() === null) return;
-            vm.editMode = true;
-            vm.realUser = vm.user;
-            vm.activeObject = canvas.getActiveObject();
-            //alert(canvas.getActiveObject().get('id'));
-            var id = canvas.getActiveObject().get('id');
-            //t.tableInRestaurantNo = id;
-            RestaurantService.FindTable(id)
-	          .then(function (response) {
-	        	  	vm.table = response.data;
-	        	  	//alert('broj stola: ' + vm.table.tableInRestaurantNo);
-	              
-	          });
+        	if(canvas.getActiveObject() == null) {
+        		return;
+        	}
+        	else {
+        		vm.editMode = true;
+                vm.realUser = vm.user;
+                vm.activeObject = canvas.getActiveObject();
+                //alert(canvas.getActiveObject().get('id'));
+                var id = canvas.getActiveObject().get('id');
+                //t.tableInRestaurantNo = id;
+                RestaurantService.FindTable(id)
+    	          .then(function (response) {
+    	        	  	vm.table = response.data;
+    	        	  	//alert('broj stola: ' + vm.table.tableInRestaurantNo);
+    	              
+    	          });
+        	}
+            
         }
         
         function save() {
