@@ -96,6 +96,7 @@ insert into reservations(rsid,date_of,length,name_rest,status,time_of,rid,tid,ui
 
 insert into reservations(rsid,date_of,length,name_rest,status,time_of,rid,tid,uid) values (3,'03.07.2017','17:00','venecia','reserved','14:00',1,2,7);
 insert into reservations(rsid,date_of,length,name_rest,status,time_of,rid,tid,uid) values (4,'04.07.2017','13:00','venecia','reserved','11:00',1,1,7);
+insert into reservations(rsid,date_of,length,name_rest,status,time_of,rid,tid,uid) values (5,'05.07.2017','12:00','venecia','finished','11:00',1,1,7);
 
 -- ADDING FRIENDINVITATIONS
 
@@ -107,8 +108,10 @@ insert into friendinvitations(fid,status,second,resid,first) values (3,'pending'
 
 insert into client_orders(oid, client_id, date_of, deadline, order_number, status, total_price, version, eid, rsid, rid, table_id) values (1,7,'2017-06-22 21:46:55.682', null, 1, 'created',0.0,0,null,2,1,null);
 insert into client_orders(oid, client_id, date_of, deadline, order_number, status, total_price, version, eid, rsid, rid, table_id) values (2,7,'2017-06-22 21:47:55.682', null, 2, 'created',0.0,0,null,3,1,null);
+insert into client_orders(oid, client_id, date_of, deadline, order_number, status, total_price, version, eid, rsid, rid, table_id) values (3,7,'2017-06-22 21:47:55.682', null, 3, 'created',0.0,0,null,5,1,null);
 
 -- ADDING ORDER_ITEMS
 
 insert into order_items(oiid,amount,item_number,price,restaurant_id,state,oi_table_id,version,miid,oid) values(1,1,1,300.0,1,'created',null,0,3,1);
 insert into order_items(oiid,amount,item_number,price,restaurant_id,state,oi_table_id,version,miid,oid) values(2,1,1,300.0,1,'created',null,0,3,2);
+insert into order_items(oiid,amount,item_number,price,restaurant_id,state,oi_table_id,version,miid,oid) values(3,1,1,300.0,1,'created',null,0,3,3);
