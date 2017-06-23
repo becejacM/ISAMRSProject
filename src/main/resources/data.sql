@@ -23,8 +23,8 @@ INSERT INTO sys_managers (sm_id) VALUES(1);
 
 -- ADDING RESTAURANTS
 
-INSERT INTO restaurants (rid, address, end_time, image, info, name, start_time, type, sm_id) VALUES (1, 'Safarikova, Novi Sad, Srbija', 20, 'pictures/user.png', 'lep', 'venecia', 8, 'italian', 1);
-INSERT INTO restaurants (rid, address, end_time, image, info, name, start_time, type, sm_id) VALUES (2, 'Zmaj Jovina, Novi Sad, Srbija', 22, 'pictures/user.png', 'lep', 'atina', 10, 'greek', 1);
+INSERT INTO restaurants (rid, address, end_time, image, info, name, start_time, type, sm_id, supid) VALUES (1, 'Safarikova, Novi Sad, Srbija', 20, 'pictures/user.png', 'lep', 'venecia', 8, 'italian', 1, null);
+INSERT INTO restaurants (rid, address, end_time, image, info, name, start_time, type, sm_id, supid) VALUES (2, 'Zmaj Jovina, Novi Sad, Srbija', 22, 'pictures/user.png', 'lep', 'atina', 10, 'greek', 1, null);
 
 -- ADDING RESTAURANT MANAGERS
 
