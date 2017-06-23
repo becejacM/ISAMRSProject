@@ -75,8 +75,116 @@
         service.SaveEditedOrder = SaveEditedOrder;
         service.SaveEditedItem = SaveEditedItem;
         service.MakeBill = MakeBill;
+        service.CreateBid = CreateBid;
+        service.GetAllBids = GetAllBids;
+        service.GetAllBidsSup = GetAllBidsSup;
+        service.CreateWanted = CreateWanted;
+        service.GetAllWanted = GetAllWanted;
+        service.CreateOffer = CreateOffer;
+        service.GetAllOffers = GetAllOffers;
+        service.EditOffer = EditOffer;
+        service.AcceptOffer = AcceptOffer;
+        service.DeactivateBid = DeactivateBid;
+        service.SetAccepted = SetAccepted;
+        service.GetMyOffers = GetMyOffers;
 
         return service;
+        
+        function GetMyOffers(email) {
+            //return $http.get('/api/users').then(handleSuccess, handleError('Error getting all users'));
+        	return $http.get('/api/myoffers/'+email)
+            .then(function(response) {
+                return response;
+            }); 
+        }
+        
+        function SetAccepted(offer, bid) {
+            //return $http.get('/api/users/' + email).then(handleSuccess, handleError('Error getting user by email'));
+            return $http.put('/api/offer/acc/'+ bid, offer)
+            .then(function(response) {
+                return response;
+            }); 
+        }
+        
+        function CreateOffer(offer, bid, email) {
+            //return $http.get('/api/users/' + email).then(handleSuccess, handleError('Error getting user by email'));
+            return $http.post('/api/offer/' + bid + '/' + email, offer)
+            .then(function(response) {
+                return response;
+            }); 
+        }
+        
+        function AcceptOffer(offers, bid, email) {
+            //return $http.get('/api/users/' + email).then(handleSuccess, handleError('Error getting user by email'));
+            return $http.put('/api/offer/accept/'+ bid + '/' + email, offers)
+            .then(function(response) {
+                return response;
+            }); 
+        }
+        
+        function DeactivateBid(bid) {
+            //return $http.get('/api/users/' + email).then(handleSuccess, handleError('Error getting user by email'));
+            return $http.put('/api/bid/deactivate', bid)
+            .then(function(response) {
+                return response;
+            }); 
+        }
+        
+        function EditOffer(offer, bid, email) {
+            //return $http.get('/api/users/' + email).then(handleSuccess, handleError('Error getting user by email'));
+            return $http.put('/api/offer/update/'+ bid + '/' + email, offer)
+            .then(function(response) {
+                return response;
+            }); 
+        }
+        
+        function GetAllOffers(bid) {
+            //return $http.get('/api/users').then(handleSuccess, handleError('Error getting all users'));
+        	return $http.get('/api/alloffers/'+bid)
+            .then(function(response) {
+                return response;
+            }); 
+        }
+        
+        function CreateWanted(wanted, bid) {
+            //return $http.get('/api/users/' + email).then(handleSuccess, handleError('Error getting user by email'));
+            return $http.post('/api/wanted/' + bid, wanted)
+            .then(function(response) {
+                return response;
+            }); 
+        }
+        
+        function GetAllBids(name) {
+            //return $http.get('/api/users').then(handleSuccess, handleError('Error getting all users'));
+        	return $http.get('/api/bids/'+name)
+            .then(function(response) {
+                return response;
+            }); 
+        }
+        
+        function GetAllWanted(name) {
+            //return $http.get('/api/users').then(handleSuccess, handleError('Error getting all users'));
+        	return $http.get('/api/wanteds/'+name)
+            .then(function(response) {
+                return response;
+            }); 
+        }
+        
+        function GetAllBidsSup(email) {
+            //return $http.get('/api/users').then(handleSuccess, handleError('Error getting all users'));
+        	return $http.get('/api/bidssup/'+email)
+            .then(function(response) {
+                return response;
+            }); 
+        }
+        
+        function CreateBid(bid, id) {
+            //return $http.get('/api/users/' + email).then(handleSuccess, handleError('Error getting user by email'));
+            return $http.post('/api/bid/'+id, bid)
+            .then(function(response) {
+                return response;
+            }); 
+        }
 
         function Reserve(datum, vreme, trajanje, nameRest,idstola, iduser) {
             //return $http.get('/api/users/' + email).then(handleSuccess, handleError('Error getting user by email'));

@@ -30,7 +30,12 @@
         vm.registerWorker = registerWorker;
         vm.registerSuplier = registerSuplier;
         vm.resManagerProfil = resManagerProfil;
+        vm.r = r;
 
+        function r(){
+        	AuthenticationService.SetCredentials(vm.cuser.email, vm.cuser.password, "ResManagerHome");
+        	$location.path('/ResManagerHome');
+        }
 
         function resManagerProfil(){
         	

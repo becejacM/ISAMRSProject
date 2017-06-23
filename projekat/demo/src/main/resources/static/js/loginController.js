@@ -77,6 +77,19 @@
                 		}
                 		
                 	}
+                	else if(angular.equals(response.data.role, "suplier")){
+                		if(angular.equals(response.data.firstTime, "yes")){
+                			alert(response.data.firstTime);
+                			AuthenticationService.SetCredentials(vm.email, vm.password, "supplierChangePassword", response.data.token);
+                    		$location.path('/supplierChangePassword');
+                		}
+                		else {
+                			alert(response.data.firstTime);
+                			AuthenticationService.SetCredentials(vm.email, vm.password, "supplierHome", response.data.token);
+                    		$location.path('/supplierHome');
+                		}
+                		
+                	}
                     
                 } else {
                 	FlashService.Error('Password or email do not exist. Please check if you are registered and verified your email',false);
