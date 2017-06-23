@@ -1,6 +1,7 @@
 package rs.team15.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.*;
@@ -17,7 +18,7 @@ public class Reservation {
     @Column(name = "rsid")
     private Long rsid;
 
-    @JsonIgnore
+    //@JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REFRESH)
     @JoinColumn(name = "rid")
     private Restaurant restaurant;
@@ -35,17 +36,21 @@ public class Reservation {
 		this.nameRest = nameRest;
 	}
 
-	@Column(name = "date")
-    private String date;
+	@Column(name = "dateOf")
+    private String dateOf;
 
-    @Column(name = "time")
-    private String time;
+    @Column(name = "timeOf")
+    private String timeOf;
     
     @Column(name = "length")
     private String length;
     
     @Column(name = "status")
     private String status;
+    
+    @OneToOne()
+    @JoinColumn(name = "grid")
+    private Grade grade;
     
     /*@Version
 	private Long version;
@@ -57,9 +62,27 @@ public class Reservation {
 	public void setVersion(Long version) {
 		this.version = version;
 	}*/
+    
+    
 
 	public String getStatus() {
 		return status;
+	}
+
+	public String getDate() {
+		return dateOf;
+	}
+
+	public void setDate(String date) {
+		this.dateOf = date;
+	}
+
+	public Grade getGrade() {
+		return grade;
+	}
+
+	public void setGrade(Grade grade) {
+		this.grade = grade;
 	}
 
 	public void setStatus(String status) {
@@ -82,7 +105,7 @@ public class Reservation {
     @JoinColumn(name = "uid")
     private User userid;
 
-    @JsonIgnore
+    //@JsonIgnore
     public TableR getTid() {
 		return tableRes;
 	}
@@ -90,8 +113,9 @@ public class Reservation {
 	public void setTid(TableR tid) {
 		this.tableRes = tid;
 	}
-
-    @OneToMany(mappedBy = "reservation", fetch = FetchType.LAZY)
+    
+    @JsonIgnoreProperties(value={"reservation"})
+    @OneToMany(mappedBy = "reservation", fetch = FetchType.LAZY, cascade = {CascadeType.MERGE , CascadeType.REMOVE})
     private Set <FriendInvitation> invitations = new HashSet <FriendInvitation>(0);
     
 	@JsonIgnore
@@ -106,8 +130,8 @@ public class Reservation {
 	public Reservation(Restaurant restaurant, String date, String time, String length, TableR tid) {
 		super();
 		this.restaurant = restaurant;
-		this.date = date;
-		this.time = time;
+		this.dateOf = date;
+		this.timeOf = time;
 		this.length = length;
 		this.tableRes = tid;
 	}
@@ -125,7 +149,7 @@ public class Reservation {
     }
 
     //@JsonIgnore
-    @JsonIgnore
+    //@JsonIgnore
     public Restaurant getRestaurant() {
         return restaurant;
     }
@@ -137,19 +161,19 @@ public class Reservation {
     }
 
     public String getReservationDateTime() {
-        return date;
+        return dateOf;
     }
 
     public String getTime() {
-		return time;
+		return timeOf;
 	}
 
 	public void setTime(String time) {
-		this.time = time;
+		this.timeOf = time;
 	}
 
 	public void setReservationDateTime(String reservationDateTime) {
-        this.date = reservationDateTime;
+        this.dateOf = reservationDateTime;
     }
 
     public String getLength() {
@@ -165,7 +189,7 @@ public class Reservation {
         return "Reservation{" +
                 "reservationId=" + rsid +
                 ", restaurant=" + restaurant +
-                ", reservationDateTime=" + date +
+                ", reservationDateTime=" + dateOf +
                 ", length=" + length +
                 '}';
     }

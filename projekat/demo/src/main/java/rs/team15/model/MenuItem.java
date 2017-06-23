@@ -8,7 +8,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "menu_items")
-//@JsonIgnoreProperties(value = {"restaurant"})
+@JsonIgnoreProperties(value = {"restaurant"})
 public class MenuItem {
 
     @Id

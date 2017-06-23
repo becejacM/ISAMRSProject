@@ -37,7 +37,7 @@
     		//alert(vm.cuser.email);
         })();
         function r(){
-        	AuthenticationService.SetCredentials(vm.cuser.email, vm.cuser.password, "SysManagerHome");
+        	AuthenticationService.SetCredentials(vm.cuser.email, vm.cuser.password, "SysManagerHome", vm.user.token);
         	$location.path('/SysManagerHome');
         }
         
@@ -58,7 +58,7 @@
                 	}
                 	else if (response.data.email!==null) {
                     	FlashService.Success('Registration successful', true);
-                    	AuthenticationService.SetCredentials(vm.cuser.email, vm.cuser.password, "SysManagerHome");
+                    	AuthenticationService.SetCredentials(vm.cuser.email, vm.cuser.password, "SysManagerHome", vm.user.token);
                         $location.path('/SysManagerHome');
                     } else {
                         FlashService.Error(response.message);

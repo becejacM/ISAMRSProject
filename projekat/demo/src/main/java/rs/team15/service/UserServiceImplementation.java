@@ -153,5 +153,8 @@ public class UserServiceImplementation implements UserService{
 		return userRepository.findByToken(token);
 	}
 
+	public User updateVisits(User u){
+		return userRepository.save(u);
+	}
 	
 }

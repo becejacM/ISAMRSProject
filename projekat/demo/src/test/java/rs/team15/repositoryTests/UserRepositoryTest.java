@@ -25,33 +25,31 @@ public class UserRepositoryTest {
 	
 	@Test
 	public void createUserRepository(){
-		/*User u = new User(Long.parseLong("2"),"milana.becejac@gmail.com","Milana","Becejac","pass");
-		userRepository.save(u);*/
-		User find = userRepository.findByEmail("milana.becejac@gmail.com");
-		assertEquals(find.getFirstName(), "milana");
+		User find = userRepository.findByEmail("guest1@gmail.com");
+		assertEquals(find.getFirstName(), "guest1");
 	}
 	
 	@Test
 	public void findByEmail(){
-		User find = userRepository.findByEmail("milana.becejac@gmail.com");
-		assertEquals(find.getFirstName(), "milana");
+		User find = userRepository.findByEmail("guest1@gmail.com");
+		assertEquals(find.getFirstName(), "guest1");
 	}
 	
 	@Test
 	public void findByEmailAndPassword(){
-		User find = userRepository.findByEmailAndPassword("milana.becejac@gmail.com","milana");
-		assertEquals(find.getFirstName(), "milana");
+		User find = userRepository.findByEmailAndPassword("guest1@gmail.com","12345");
+		assertEquals(find.getFirstName(), "guest1");
 	}
 	
 	@Test
 	public void findByFirstName(){
-		Collection<Guest> g= userRepository.findByFirstName("milana");
+		Collection<Guest> g= userRepository.findByFirstName("guest1");
 		assertNotNull(g);
 	}
 	
 	@Test
 	public void findByToken(){
-		User find = userRepository.findByToken("cmljYXJkbWlraUBnbWFpbC5jb206bWlsYW5h");
-		assertEquals(find.getFirstName(), "mill");
+		User find = userRepository.findByToken("Z3Vlc3QxQGdtYWlsLmNvbToxMjM0");
+		assertEquals(find.getFirstName(), "guest1");
 	}
 }

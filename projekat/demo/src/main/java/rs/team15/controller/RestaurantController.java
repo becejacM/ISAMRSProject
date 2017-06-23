@@ -58,6 +58,7 @@ import rs.team15.service.MenuItemService;
 import rs.team15.service.OfferService;
 import rs.team15.service.OrderService;
 import rs.team15.service.RegionService;
+import rs.team15.service.ReservationService;
 import rs.team15.service.RestaurantService;
 import rs.team15.service.ShiftService;
 import rs.team15.service.SystemManagerService;
@@ -93,6 +94,9 @@ public class RestaurantController {
 	private RegionService regionService;
 	
 	@Autowired
+	private ReservationService reservationService;
+
+  @Autowired
 	private EmployeeService employeeService;
 	
 	@Autowired
@@ -106,6 +110,8 @@ public class RestaurantController {
 	
 	@Autowired
 	private OfferService offerService;
+
+  
 
 	
 	@RequestMapping(
@@ -605,6 +611,15 @@ public class RestaurantController {
 		java.util.Date date2 = format.parse(datum+" "+trajanje);
 		logger.info(date.toString());
 		logger.info(date2.toString());
+		if(date.after(date2)){
+			Collection<TableR> rt = new ArrayList<TableR>();
+			return new ResponseEntity<Collection<TableR>>(rt, HttpStatus.OK);
+		}
+		Date sad = new Date();
+		if(sad.after(date)){
+			Collection<TableR> rt = new ArrayList<TableR>();
+			return new ResponseEntity<Collection<TableR>>(rt, HttpStatus.OK);
+		}
 		Collection<TableR> ret = new ArrayList<TableR>();
 		Boolean available ;
 		for (Iterator<Region> region = r.getRegions().iterator(); region.hasNext();) {
@@ -757,7 +772,6 @@ public class RestaurantController {
             produces = MediaType.APPLICATION_JSON_VALUE
 		)
 	public ResponseEntity<TableR> deleteTable(@RequestBody TableR table) {
-	       
 		TableR deleted = restaurantService.delete(table);
 		logger.info("< delete table {}", table.getTableInRestaurantNo());
 		
@@ -801,7 +815,7 @@ public class RestaurantController {
 		)
 	public ResponseEntity<OrderItem> addOneItem(@RequestBody OrderItem item, @PathVariable Integer id) {
 		ClientOrder o = orderService.find(id);
-		logger.info("< got order {} ", id);
+		logger.info("< got order {} ", o.getOrderNumber());
 		item.setPrice(item.getMenuItem().getPrice() * item.getAmount());
 		item.setOrder(o);
 		item.setState("waiting");
@@ -844,23 +858,33 @@ public class RestaurantController {
 	}
 	
 	@RequestMapping(
-            value    = "api/orders/saveOrder/{id:.+}",
+            value    = "api/orders/saveOrder/{table:.+}",
             method   = RequestMethod.PUT,
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
 		)
-	public ResponseEntity<ClientOrder> saveOrder(@RequestBody Set<OrderItem> items, @PathVariable Integer id) {
-		ClientOrder o = orderService.find(id);
-		o.setItems(items);
+	public ResponseEntity<ClientOrder> saveOrder(@RequestBody ClientOrder order, @PathVariable Integer table) {
+		//ClientOrder o = orderService.find(id);
+		TableR t = tableService.findByrno(table);
+		logger.info("< table: {}", t.getTableInRestaurantNo());
+		order.setTable(t);
+		order.setStatus("waiting");
+		ClientOrder created = orderService.create(order);
+		Set<OrderItem> items = created.getItems();
 		logger.info("< items num {}", items.size());
 		double sum = 0;
 		for(OrderItem i : items){
+			i.setOrder(created);
+			i.setState("waiting");
+			i.setPrice(i.getMenuItem().getPrice() * i.getAmount());
+			OrderItem oi = orderService.addNew(i);
 			sum += i.getPrice();
 		}
-		o.setTotalPrice(sum);
-		ClientOrder created = orderService.update(o);
+		created.setTotalPrice(sum);
+		ClientOrder updated = orderService.update(created);
 		
-		return new ResponseEntity<ClientOrder>(created, HttpStatus.OK);
+		
+		return new ResponseEntity<ClientOrder>(updated, HttpStatus.CREATED);
 	}
 	
 	@RequestMapping(
@@ -881,16 +905,16 @@ public class RestaurantController {
 	}
 	
 	@RequestMapping(
-            value    = "/api/orders/getAll2/{id:.+}",
+            value    = "/api/orders/getAll2/{id:.+}/{type:.+}",
             method   = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE
 			)
-	public ResponseEntity<Collection<OrderItem>> getAllDishes(@PathVariable String id) {
+	public ResponseEntity<Collection<OrderItem>> getAllDishes(@PathVariable String id, @PathVariable String type) {
 		Collection<ClientOrder> orders = orderService.findByRestaurant(id);
 		Collection<OrderItem> dishes = new ArrayList<OrderItem>();
 		for(ClientOrder o : orders){
 			for(OrderItem i : o.getItems()){
-				if(i.getMenuItem().getType().equals("dish") && i.getState().equals("waiting")){
+				if(i.getMenuItem().getType().equals("dish") && i.getMenuItem().getSpecType().equals(type) && i.getState().equals("waiting")){
 					logger.info("<added order: {}", o.getOrderNumber());
 					dishes.add(i);
 				}
@@ -1008,6 +1032,30 @@ public class RestaurantController {
 		}
 		if(check == false){
 			order.setStatus("finished");
+			
+			Reservation res = order.getReservation();
+			if(res == null){
+				
+			}
+			else {
+				boolean check2 = false;
+				TableR table = res.getTid();
+				Collection<ClientOrder> co = orderService.findByReservationAndTable(res.getReservationId(), table.getTableId());
+				logger.info("< num of client orders: {}", co.size());
+				for(ClientOrder oo : co){
+					if(!oo.getStatus().equals("finished")){
+						check2 = true;
+						break;
+					}
+				}
+				if(check2 == false){
+					res.setStatus("finished");
+					User u = res.getUid();
+					u.setBrojPoseta(u.getBrojPoseta() + 1);
+					User update = userService.updateVisits(u);
+					Reservation updateR = reservationService.update(res);
+				}
+			}
 		}
 		//order.setStatus("in progress");
 		logger.info("< size before: {}", order.getItems().size());
@@ -1119,25 +1167,152 @@ public class RestaurantController {
 	}
 	
 	@RequestMapping(
-            value    = "api/orders/makeBill/{email:.+}",
-            method   = RequestMethod.POST,
-            consumes = MediaType.APPLICATION_JSON_VALUE,
+            value    = "api/orders/makeBill/{id:.+}/{email:.+}",
+            method   = RequestMethod.GET,
+            //consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
 		)
-	public ResponseEntity<Bill> makeBill(@RequestBody ClientOrder order, @PathVariable String email) {
-		Employee e = (Employee) userService.findByEmail(email);
-		logger.info("< create bill: {}", e.getEmail());
+	public ResponseEntity<Bill> makeBill(@PathVariable Integer id, @PathVariable String email) {
+		Waiter w = (Waiter) userService.findByEmail(email);
+		logger.info("< create bill: {}", w.getEmail());
+		ClientOrder order = orderService.find(id);
 		Bill bill = new Bill();
 		bill.setDate(new Date());
 		logger.info("< create bill: {}", bill.getDate());
-		bill.setEmployee(e);
+		bill.setWaiter(w);
 		order.setStatus("done");
 		ClientOrder o = orderService.update(order);
 		bill.setOrder(o);
 		bill.setTotalPrice(order.getTotalPrice());
 		logger.info("< create bill: {}", bill.getTotalPrice());
-		logger.info("< create bill: {} {}", bill.getEmployee().getFirstName());
+		logger.info("< create bill: {} {}", bill.getWaiter().getFirstName());
 		Bill created = orderService.createBill(bill);
 		return new ResponseEntity<Bill>(created, HttpStatus.CREATED);
+	}
+	
+	@RequestMapping(
+            value    = "/api/orders/getTables/{id:.+}",
+            method   = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE
+			)
+	public ResponseEntity<Collection<TableR>> getTables(@PathVariable String id) throws ParseException {
+		Employee e = (Employee) userService.findByEmail(id);
+		logger.info("<employee: {}", e.getEmail());
+		logger.info("<employee reg: {}", e.getRegion().getName());
+		Collection<TableR> tablesOfReg = tableService.findTablesByRegId(e.getRegion());
+		logger.info("< num of tables: {}", tablesOfReg.size() );
+		Collection<TableR> availables = new ArrayList<TableR>();
+		Collection<Reservation> ress = reservationService.findByStatus("reserved");
+		Collection<ClientOrder> orders = orderService.findAll();
+		Collection<TableR> taken = new ArrayList<TableR>();
+		logger.info("> size {}", orders.size());
+		Collection<ClientOrder> oo = new ArrayList<ClientOrder>();
+		for(ClientOrder co : orders){
+			if(!co.getStatus().equals("done")){
+				logger.info("dodajem");
+				oo.add(co);
+			}
+		}
+		Date d = new Date();
+		logger.info("< {}", d);
+		DateFormat format = new SimpleDateFormat("dd.MM.yyyy HH:mm", Locale.ENGLISH);
+		
+		boolean available;
+		for (TableR t : tablesOfReg) {
+		    available = true;
+		    for (Reservation r : ress) {
+		    	String s1 = r.getReservationDateTime() + " " + r.getTime();
+				String s2 = r.getReservationDateTime() + " " + r.getLength();
+				Date date1 = format.parse(s1);
+				logger.info("< od: {}", date1);
+				Date date2 = format.parse(s2);
+				logger.info("< do: {}", date2);
+				if((d.after(date1) && d.before(date2)) && r.getTid().equals(t)){
+					logger.info("zauzet");
+				    available = false;
+				    taken.add(t);
+					}
+				}
+		    /*if(available){
+			    availables.add(t);
+		    }*/
+		}
+		
+		boolean available2;
+		for (TableR t : tablesOfReg) {
+		    available2 = true;
+		    for (ClientOrder c : oo) {
+		    	if(c.getTable() != null) {
+		    		
+					if(c.getTable().equals(t)){
+						logger.info("zauzet");
+					    available2 = false;
+					    taken.add(t);
+						}
+				}
+		    }
+		    /*if(available2 && !availables.contains(t)){
+		    	logger.info("dodajjjjj");
+			    availables.add(t);
+		    }*/
+		}
+		
+		for(TableR t : tablesOfReg){
+			if(!taken.contains(t)){
+				availables.add(t);
+			}
+		}
+		
+		logger.info("> number of availables: {}", availables.size());
+		
+		return new ResponseEntity<Collection<TableR>>(availables, HttpStatus.OK);
+	}
+	
+	@RequestMapping(
+            value    = "/api/orders/getPending/{email:.+}",
+            method   = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE
+			)
+	public ResponseEntity<Collection<ClientOrder>> getPending(@PathVariable String email) {
+		Employee e = (Employee) userService.findByEmail(email);
+		logger.info("< get waiter {}", e.getEmail());
+		Restaurant r = e.getRestaurant();
+		logger.info("< get rest {}", e.getRestaurant().getName());
+		Region reg = e.getRegion();
+		logger.info("< get region {}", e.getRegion().getName());
+		Collection<ClientOrder> co = orderService.findByStatusAndRestaurant("created", r);
+		logger.info("< client orders size {}", co.size());
+		Collection<ClientOrder> orders = new ArrayList<ClientOrder>();
+		for(ClientOrder c : co){
+			if(c.getReservation().getTid().getRegion().equals(reg)){
+				orders.add(c);
+			}
+		}
+		logger.info("< get orders {}", orders.size());
+		return new ResponseEntity<Collection<ClientOrder>>(orders, HttpStatus.OK);
+	}
+	
+	@RequestMapping(
+            value    = "api/orders/takeOrder/{email:.+}/{id:.+}",
+            method   = RequestMethod.PUT,
+            produces = MediaType.APPLICATION_JSON_VALUE
+		)
+	public ResponseEntity<ClientOrder> takeOrder(@PathVariable String email, @PathVariable Integer id) {
+		Employee e = (Employee) userService.findByEmail(email);
+		logger.info("< empl {}", e.getFirstName());
+		ClientOrder co = orderService.find(id);
+		co.setEmployee(e);
+		co.setStatus("waiting");
+		double sum = 0;
+		for(OrderItem oi : co.getItems()){
+			double p = oi.getMenuItem().getPrice() * oi.getAmount();
+			oi.setPrice(p);
+			oi.setState("waiting");
+			OrderItem item = orderService.updateItem(oi);
+			sum += p;
+		}
+		co.setTotalPrice(sum);
+		ClientOrder created = orderService.update(co);		
+		return new ResponseEntity<ClientOrder>(created, HttpStatus.OK);
 	}
 }

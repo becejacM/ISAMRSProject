@@ -19,6 +19,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import rs.team15.model.ClientOrder;
+import rs.team15.model.Grade;
 import rs.team15.model.OrderItem;
 import rs.team15.model.Region;
 import rs.team15.model.Reservation;
@@ -26,6 +27,7 @@ import rs.team15.model.Restaurant;
 import rs.team15.model.TableR;
 import rs.team15.model.User;
 import rs.team15.repository.ClientOrderRepository;
+import rs.team15.repository.GradeRepository;
 import rs.team15.repository.OrderItemRepository;
 import rs.team15.repository.ReservationRepository;
 import rs.team15.repository.RestaurantRepository;
@@ -59,6 +61,9 @@ public class ReservationServiceImplementation implements ReservationService{
 	@Autowired
 	TableService tableService;
 	
+	@Autowired
+	GradeRepository gradeRepository;
+	
 	@Override
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
 	public Reservation create(String datum, String vreme, String trajanje, String id, String idStola,  String idUser) {
@@ -69,12 +74,14 @@ public class ReservationServiceImplementation implements ReservationService{
 			Reservation r = new Reservation();
 			Restaurant rest = restaurantRepository.findByName(id);
 			if(rest==null){
+				System.out.println("ovdeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");
 				return null;
 			}
 			logger.info(idStola);
 			
 			User u = userRepository.findByEmail(idUser);
 			if(u==null){
+				System.out.println("ovdeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee22222222222");
 				return null;
 			}
 			logger.info(u.getEmail());
@@ -92,10 +99,12 @@ public class ReservationServiceImplementation implements ReservationService{
 			
 			
 			TableR tt = tableRepository.findByTableInRestaurantNo(Integer.parseInt(idStola));
-			TableR t= tableRepository.findOne(tt.getTableId());
-			if(t==null){
+			if(tt==null){
+				System.out.println("ovdeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee33333333333333");
 				return null;
 			}
+			TableR t= tableRepository.findOne(tt.getTableId());
+			
 			
 			
 			DateFormat format = new SimpleDateFormat("dd.MM.yyyy HH:mm", Locale.ENGLISH);
@@ -125,6 +134,7 @@ public class ReservationServiceImplementation implements ReservationService{
 							logger.info(dateDo.toString());
 							if(reservation.getStatus().equals("reserved")){
 								if((date.after(dateOd) && date.before(dateDo))||(date2.after(dateOd) && date2.before(dateDo)) ){
+									System.out.println("ovdeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee4444444444444444444");
 							    	return null;
 								}
 							}
@@ -152,6 +162,8 @@ public class ReservationServiceImplementation implements ReservationService{
 		}
 		catch (Exception e) {
 			logger.info("fscfscsdcsdsd");
+			System.out.println("ovdeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee999999999999");
+
 			e.printStackTrace();
 			return null;
 		}
@@ -199,11 +211,34 @@ public class ReservationServiceImplementation implements ReservationService{
 	@Override
 	public ClientOrder addOrder(ClientOrder co) {
 		// TODO Auto-generated method stub
+		ClientOrder o = orderRepository.findOne();
+		int i = 1;
+		if(o == null){
+			co.setOrderNumber(i);
+		}
+		else {
+			i = o.getOrderNumber() + 1;
+			logger.info("<< number: {}", i);
+			co.setOrderNumber(i);
+		}
+		
 		return orderRepository.save(co);
 	}
 
 	@Override
 	public OrderItem addOrderItem(OrderItem oi) {
+		
+		OrderItem ii = orderItemRepository.findOne();
+		int i = 1;
+		if(ii == null){
+			oi.setItemNumber(i);
+		}
+		else {
+			i = ii.getItemNumber() + 1;
+			logger.info("<< number: {}", i);
+			oi.setItemNumber(i);
+		}
+		
 		// TODO Auto-generated method stub
 		return orderItemRepository.save(oi);
 	}
@@ -218,6 +253,21 @@ public class ReservationServiceImplementation implements ReservationService{
 	public Collection<Reservation> findByStatusAndUserId(String status, Long id) {
 		// TODO Auto-generated method stub
 		return reservationRepository.findByStatusAndUseridId(status, id);
+	}
+
+	@Override
+	public Grade add(Grade grade) {
+		return gradeRepository.save(grade);
+	}
+
+	@Override
+	public Reservation update(Reservation reservation) {
+		return reservationRepository.save(reservation);
+	}
+
+	@Override
+	public Collection<Reservation> findByStatus(String status) {
+		return reservationRepository.findByStatus(status);
 	}
 
 	

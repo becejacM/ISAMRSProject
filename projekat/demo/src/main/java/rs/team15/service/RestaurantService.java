@@ -30,5 +30,6 @@ public interface RestaurantService {
     
     TableR update2(TableR table);
     
+    Restaurant findOne(Long id);
     
 }

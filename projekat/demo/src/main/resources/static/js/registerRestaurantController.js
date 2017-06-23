@@ -31,12 +31,12 @@
 
         function managerProfil(){
         	
-        	AuthenticationService.SetCredentials(vm.user.email, vm.user.password, "SysManagerProfil");
+        	AuthenticationService.SetCredentials(vm.user.email, vm.user.password, "SysManagerProfil", vm.user.token);
         	$location.path('/SysManagerProfil');
         }
         
         function registerManager(){
-        	AuthenticationService.SetCredentials(vm.user.email, vm.user.password, "registerManager");
+        	AuthenticationService.SetCredentials(vm.user.email, vm.user.password, "registerManager", vm.user.token);
         	$location.path('/registerManager');
         }
         function registerRestaurant() {
@@ -60,7 +60,7 @@
                         $location.path('/registerRestaurant');
                     }*/
                 	FlashService.Success('Registration successful', true);
-                	AuthenticationService.SetCredentials(vm.user.email, vm.user.password, "SysManagerHome");
+                	AuthenticationService.SetCredentials(vm.user.email, vm.user.password, "SysManagerHome", vm.user.token);
                     $location.path('/SysManagerHome');
                 });
         }

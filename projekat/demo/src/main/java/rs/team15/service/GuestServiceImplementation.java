@@ -31,6 +31,7 @@ public class GuestServiceImplementation implements GuestService{
 	 
 	 @Autowired
 	 FriendInvitationRepository friendInvitationRepository;
+	 
 	@Override
 	public Guest getGuest(Long id) {
 		// TODO Auto-generated method stub

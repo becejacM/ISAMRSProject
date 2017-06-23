@@ -39,6 +39,7 @@
         vm.addTable = addTable;
         vm.deleteTable = deleteTable;
         vm.table = null;
+        vm.tablesMode = false;
         
         vm.editMode = false;
         vm.enableButton = false;
@@ -46,6 +47,7 @@
         vm.save = save;
         vm.created = null;
         vm.selectedMode = false;
+        vm.showTables = showTables;
         
         var canvas = new fabric.Canvas('c');
   	  	canvas.setDimensions({width:800, height:500});
@@ -70,18 +72,23 @@
             });
         }
         
+        function showTables(){
+        	vm.tablesMode = true;
+        	//show();
+        }
+        
         function setMenu(){
-        	AuthenticationService.SetCredentials(vm.user.email, vm.user.password, "setMenuItem");
+        	AuthenticationService.SetCredentials(vm.user.email, vm.user.password, "setMenuItem", vm.user.token);
         	$location.path('/setMenuItem');
         }
         
         function addRegion(){
-        	AuthenticationService.SetCredentials(vm.user.email, vm.user.password, "addRegion");
+        	AuthenticationService.SetCredentials(vm.user.email, vm.user.password, "addRegion", vm.user.token);
         	$location.path('/addRegion');
         }
         
         function calendarShift(){
-        	AuthenticationService.SetCredentials(vm.user.email, vm.user.password, "calendarShift");
+        	AuthenticationService.SetCredentials(vm.user.email, vm.user.password, "calendarShift", vm.user.token);
         	$location.path('/calendarShift');
         }
         
@@ -148,9 +155,15 @@
       	  }
       	  
 	      //alert(vm.regs.length);
-	      if(vm.regs.length != 0)
-	    	  //alert(vm.regs[0]);
+	      if(vm.regs.length != 0){
+	    	//alert(vm.regs[0]);
 		      vm.table.region = vm.regs[0];
+	      }
+	      else {
+	    	  alert('You don\'t have any regions! Add region first so that you could add tables.');
+	    	  return;
+	      }
+	    	  
     	  
     	  var rect = new fabric.Rect({
   	  		width: 50, height: 50, originX: 'center', originY: 'center', fill: "#" + vm.table.region.color
@@ -314,22 +327,22 @@
 
         function resManagerProfil(){
         	
-        	AuthenticationService.SetCredentials(vm.user.email, vm.user.password, "ResManagerProfil");
+        	AuthenticationService.SetCredentials(vm.user.email, vm.user.password, "ResManagerProfil", vm.user.token);
         	$location.path('/ResManagerProfil');
         }
         
         function registerWorker(){
-        	AuthenticationService.SetCredentials(vm.user.email, vm.user.password, "registerWorker");
+        	AuthenticationService.SetCredentials(vm.user.email, vm.user.password, "registerWorker", vm.user.token);
         	$location.path('/registerWorker');
         }
         
         function manage(){
-        	AuthenticationService.SetCredentials(vm.user.email, vm.user.password, "manage");
+        	AuthenticationService.SetCredentials(vm.user.email, vm.user.password, "manage", vm.user.token);
         	$location.path('/manage');
         }
         
         function registerSuplier(){
-        	AuthenticationService.SetCredentials(vm.user.email, vm.user.password, "registerSuplier");
+        	AuthenticationService.SetCredentials(vm.user.email, vm.user.password, "registerSuplier", vm.user.token);
         	$location.path('/registerSuplier');
         }
         function logout(){
@@ -346,19 +359,24 @@
         }
         
         function editTable() {
-        	if(canvas.getActiveObject() === null) return;
-            vm.editMode = true;
-            vm.realUser = vm.user;
-            vm.activeObject = canvas.getActiveObject();
-            //alert(canvas.getActiveObject().get('id'));
-            var id = canvas.getActiveObject().get('id');
-            //t.tableInRestaurantNo = id;
-            RestaurantService.FindTable(id)
-	          .then(function (response) {
-	        	  	vm.table = response.data;
-	        	  	//alert('broj stola: ' + vm.table.tableInRestaurantNo);
-	              
-	          });
+        	if(canvas.getActiveObject() == null) {
+        		return;
+        	}
+        	else {
+        		vm.editMode = true;
+                vm.realUser = vm.user;
+                vm.activeObject = canvas.getActiveObject();
+                //alert(canvas.getActiveObject().get('id'));
+                var id = canvas.getActiveObject().get('id');
+                //t.tableInRestaurantNo = id;
+                RestaurantService.FindTable(id)
+    	          .then(function (response) {
+    	        	  	vm.table = response.data;
+    	        	  	//alert('broj stola: ' + vm.table.tableInRestaurantNo);
+    	              
+    	          });
+        	}
+            
         }
         
         function save() {

@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import rs.team15.model.Bill;
 import rs.team15.model.ClientOrder;
 import rs.team15.model.OrderItem;
+import rs.team15.model.Restaurant;
 import rs.team15.repository.BillRepository;
 import rs.team15.repository.ClientOrderRepository;
 import rs.team15.repository.OrderItemRepository;
@@ -54,6 +55,7 @@ public class OrderServiceImplementation implements OrderService {
 			i = oi.getItemNumber() + 1;
 			logger.info("<< number: {}", i);
 			item.setItemNumber(i);
+			logger.info("<< number: {}", item.getItemNumber());
 		}
 		return orderItemRepository.save(item);
 	}
@@ -97,6 +99,21 @@ public class OrderServiceImplementation implements OrderService {
 	@Override
 	public Bill createBill(Bill bill) {
 		return billRepository.save(bill);
+	}
+
+	@Override
+	public Collection<ClientOrder> findAll() {
+		return orderRepository.findAll();
+	}
+
+	@Override
+	public Collection<ClientOrder> findByStatusAndRestaurant(String status, Restaurant r) {
+		return orderRepository.findByStatusAndRestaurant(status, r);
+	}
+
+	@Override
+	public Collection<ClientOrder> findByReservationAndTable(Long r, Long t) {
+		return orderRepository.findByReservation_RsidAndTable_Tid(r, t);
 	}
 
 }

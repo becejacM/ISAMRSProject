@@ -27,25 +27,25 @@ public class FriendshipRepositoryTest {
 	
 	@Test
 	public void findRequestsTest(){
-		Collection<User> users = friendshipRepository.findRequests("pending", Long.parseLong("16"));
+		Collection<User> users = friendshipRepository.findRequests("pending", Long.parseLong("9"));
 		assertNotNull(users);
 	}
 	
 	@Test
 	public void findSendersTest(){
-		Collection<User> users = friendshipRepository.findSenders("accept", Long.parseLong("15"));
+		Collection<User> users = friendshipRepository.findSenders("accept", Long.parseLong("7"));
 		assertNotNull(users);
 	}
 	
 	@Test
 	public void findReceiversTest(){
-		Collection<User> users = friendshipRepository.findReceivers("pending", Long.parseLong("15"));
+		Collection<User> users = friendshipRepository.findReceivers("pending", Long.parseLong("8"));
 		assertNotNull(users);
 	}
 	
 	@Test
 	public void getFriendshipTest(){
-		Friendship f = friendshipRepository.getFriendship("accept",Long.parseLong("16"), Long.parseLong("19"));
+		Friendship f = friendshipRepository.getFriendship("accept",Long.parseLong("7"), Long.parseLong("8"));
 		assertNotNull(f);
 	}
 	@Test
@@ -56,7 +56,7 @@ public class FriendshipRepositoryTest {
 		userRepository.save(u2);
 		Friendship f = new Friendship(u,u2,"pending");
 		friendshipRepository.save(f);*/
-		Collection<User> users = friendshipRepository.findRequests("pending", Long.parseLong("16"));
+		Collection<User> users = friendshipRepository.findRequests("pending", Long.parseLong("9"));
 		assertNotNull(users);
 	}
 	

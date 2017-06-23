@@ -162,7 +162,7 @@ public class Restaurant implements Serializable {
         this.menuItemMenu = menuItemMenu;
     }
 
-    @JsonProperty
+    @JsonIgnore
     public Set <Region> getRegions() {
         return regions;
     }

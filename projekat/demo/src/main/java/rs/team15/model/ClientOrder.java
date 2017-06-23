@@ -21,22 +21,22 @@ public class ClientOrder implements Serializable{
     @Column(name = "oid")
     private Long oid;
 
-    @Column(name = "date")
-    private Date date;
+    @Column(name = "dateOf")
+    private Date dateOf;
 
     @Column(name = "deadline")
     private Date deadline;
 
     @JsonIgnore
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
     @JoinColumn(name = "rsid")
     private Reservation reservation;
 
     @Column(name = "clientId")
     private Integer clientId;
 
-    @JsonIgnore
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
+    //@JsonIgnore
+    @ManyToOne()
     @JoinColumn(name = "tableId")
     private TableR table;
 
@@ -104,11 +104,11 @@ public class ClientOrder implements Serializable{
     }
 
     public Date getDate() {
-        return date;
+        return dateOf;
     }
 
     public void setDate(Date date) {
-        this.date = date;
+        this.dateOf = date;
     }
 
     public Date getDeadline() {
@@ -162,7 +162,7 @@ public class ClientOrder implements Serializable{
 		return employee;
 	}
 
-
+	
 	public void setEmployee(Employee employee) {
 		this.employee = employee;
 	}
@@ -204,14 +204,14 @@ public class ClientOrder implements Serializable{
     public String toString() {
         return "ClientOrder{" +
                 "orderId=" + oid +
-                ", date=" + date +
+                ", date=" + dateOf +
                 ", deadline=" + deadline +
                 ", table=" + table +
                 ", items=" + items +
                 '}';
     }
 
-    @JsonIgnore
+    //@JsonIgnore
     public Reservation getReservation() {
         return reservation;
     }

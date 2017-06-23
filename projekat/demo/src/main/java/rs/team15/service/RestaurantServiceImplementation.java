@@ -113,6 +113,12 @@ public class RestaurantServiceImplementation implements RestaurantService{
 		return tableRepository.save(updated);
 	}
 
+	@Override
+	public Restaurant findOne(Long id) {
+		// TODO Auto-generated method stub
+		return restaurantRepository.findOne(id);
+	}
+
 	/*@Override
 	public Region findRegion(String id) {
 		return restaurantRepository.findRegion(id);
