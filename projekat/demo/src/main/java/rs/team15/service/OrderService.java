@@ -5,6 +5,7 @@ import java.util.Collection;
 import rs.team15.model.Bill;
 import rs.team15.model.ClientOrder;
 import rs.team15.model.OrderItem;
+import rs.team15.model.Restaurant;
 
 public interface OrderService {
 	
@@ -27,5 +28,11 @@ public interface OrderService {
 	OrderItem delete(OrderItem item);
 	
 	Bill createBill(Bill bill);
+	
+	Collection<ClientOrder> findAll();
+	
+	Collection<ClientOrder> findByStatusAndRestaurant(String status, Restaurant r);
+	
+	Collection<ClientOrder> findByReservationAndTable(Long r, Long t);
 	
 }

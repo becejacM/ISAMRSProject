@@ -28,6 +28,7 @@
         vm.addedMode = true;
         vm.editMode = false;
         vm.showBillMode = false;
+        vm.pendingMode = false;
         vm.currentOrder = null;
         vm.createNewOrder = createNewOrder;
         vm.allMenuItems = [];
@@ -35,6 +36,7 @@
         vm.orderItem = null;
         vm.wholeOrder = null;
         vm.items = [];
+        vm.addedItems = [];
         vm.save = save;
         vm.num = null;
         vm.orders = [];
@@ -56,6 +58,14 @@
         vm.finishBill = finishBill;
         vm.currentDate = null;
         vm.orderb = null;
+        vm.tables = [];
+        vm.check = check;
+        vm.loadPending = loadPending;
+        vm.pendingOrders = pendingOrders;
+        vm.pending = [];
+        vm.take = take;
+        vm.remove3 = remove3;
+        vm.canEdit = canEdit;
         
         
         (function initController() {
@@ -105,6 +115,7 @@
                     vm.wholeOrder.employee = vm.user;
                     vm.wholeOrder.restaurant = vm.user.restaurant;
                     loadOrders();
+                    check();
                 });
         }
         
@@ -129,39 +140,104 @@
         	});
         }
         
+        function check(){
+        	RestaurantService.GetAvailableTables(vm.user.email)
+        	.then(function(response){
+        		vm.tables = response.data;
+        	});
+        }
         
+        function pendingOrders(){
+        	vm.pendingMode = true;
+        	vm.createNewMode = false;
+        	vm.billsMode = false;
+        	vm.seeAllMode = false;
+        	vm.showBillMode = false;
+        	loadPending();
+        }
+        
+        function loadPending(){
+        	RestaurantService.GetPendingOrders(vm.user.email)
+        	.then(function(response){
+        		vm.pending = response.data;
+        	});
+        }
+        
+        function canEdit(o){
+        	if(o.clientId == null){
+        		return true;
+        	}
+        	return false;
+        }
+        
+        function take(o){
+        	RestaurantService.TakeOrder(vm.user.email, o.orderNumber)
+        	.then(function(response){
+        		remove3(o);
+        	});
+        }
+        
+        function remove3(order){
+        	var i = vm.pending.indexOf(order);
+    		alert(i.toString());
+    		if(i === -1){
+    			
+    		}
+    		else {
+    			vm.pending.splice(i, 1);
+    		}
+        }
         
         function createNewOrder(){
-        	vm.items = [];
-        	vm.seeAllMode = false;
-        	vm.billsMode = false;
-        	vm.createNewMode = true;
-        	vm.showBillMode = false;
-        	vm.realUser = vm.user;
-        	alert(vm.wholeOrder.restaurant.name);
-        	vm.wholeOrder = new Object();
-        	vm.wholeOrder.employee = vm.user;
-        	RestaurantService.AddOrder(vm.wholeOrder)
-        	.then(function(response){
-        		vm.num = response.data.orderNumber;
+        	if(vm.tables.length === 0){
+        		alert('No tables currently available in your region! Please try again later.');
+        	}
+        	else {
+        		alert('available ' + vm.tables.length + ' tables');
         		vm.items = [];
-        	});
+            	vm.seeAllMode = false;
+            	vm.billsMode = false;
+            	vm.createNewMode = true;
+            	vm.showBillMode = false;
+            	vm.pendingMode = false;
+            	vm.realUser = vm.user;
+            	alert(vm.wholeOrder.restaurant.name);
+            	/*vm.wholeOrder = new Object();
+            	vm.wholeOrder.waiter = vm.user;
+            	RestaurantService.AddOrder(vm.wholeOrder)
+            	.then(function(response){
+            		vm.num = response.data.orderNumber;
+            		vm.items = [];
+            	});*/
+        	}
+        	
+        	
         }
         
         function addOneItem(){
         	alert(vm.orderItem.amount + " " + vm.orderItem.menuItem.name);
         	vm.addedMode = false;
-        	RestaurantService.AddOneItem(vm.orderItem, vm.num)
+        	//alert(vm.num);
+        	vm.orderItem.price = vm.orderItem.amount * vm.orderItem.menuItem.price;
+        	vm.items.push(vm.orderItem);
+        	
+        	vm.addedItems.push(vm.orderItem);
+        	vm.orderItem = null;
+        	/*RestaurantService.AddOneItem(vm.orderItem, vm.num)
         	.then(function (response){
         		vm.items.push(response.data);
         		alert('added');
-        	});
+        		alert(vm.wholeOrder.table.tableInRestaurantNo);
+        	});*/
         }
         
         function save(){
         	alert(vm.items.length);
+        	alert(vm.wholeOrder.table.tableInRestaurantNo);
+        	var t = vm.wholeOrder.table.tableInRestaurantNo;
+        	vm.wholeOrder.items = vm.addedItems;
         	vm.createNewMode = false;
-        	RestaurantService.SaveOrder(vm.items, vm.num)
+        	RestaurantService.SaveOrder(vm.wholeOrder, t)
         	.then(function(response){
         		//FlashService.Success('Order successfully made!', true);
         		alert('order made');
@@ -173,6 +249,7 @@
         	vm.billsMode = false;
         	vm.seeAllMode = true;
         	vm.showBillMode = false;
+        	vm.pendingMode = false;
         	loadOrders();
         }
         
@@ -247,6 +324,7 @@
         	vm.seeAllMode = false;
         	vm.billsMode = true;
         	vm.showBillMode = false;
+        	vm.pendingMode = false;
         	loadFinished();
         }
         
@@ -255,7 +333,7 @@
         	vm.showBillMode = true;
         	vm.currentBill = new Object();
         	vm.currentBill.order = order;
-        	vm.currentBill.employee = vm.user;
+        	vm.currentBill.waiter = vm.user;
         	vm.currentBill.totalPrice = order.totalPrice;
         	var d = new Date();
         	vm.currentBill.date = d;
@@ -265,7 +343,7 @@
         }
         
         function finishBill(){
-        	RestaurantService.MakeBill(vm.orderb, vm.user.email)
+        	RestaurantService.MakeBill(vm.orderb.orderNumber, vm.user.email)
         	.then(function (response){
     			alert('finished');
     			vm.showBillMode = false;

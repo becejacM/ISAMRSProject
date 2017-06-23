@@ -109,11 +109,11 @@ public class UserController {
 		Restaurant r = new Restaurant();
 		Region reg = new Region();
 		employee.setImage("pictures/user.png");
-		employee.setRestaurant(r);
+		//employee.setRestaurant(r);
 		employee.setLogin("no");
 		employee.setVerified("no");
 		employee.setFirstTime("yes");
-		employee.setRegion(reg);
+		//employee.setRegion(reg);
 		User u = userService.findOne(employee.getEmail());
 		if(u!=null){
 			u.setMessage("User with that email allready exists");
@@ -141,11 +141,11 @@ public class UserController {
         Restaurant r = new Restaurant();
         Region reg = new Region();
 		employee.setImage("pictures/user.png");
-		employee.setRestaurant(r);
+		//employee.setRestaurant(r);
 		employee.setLogin("no");
 		employee.setVerified("no");
 		employee.setFirstTime("yes");
-		employee.setRegion(reg);
+		//employee.setRegion(reg);
 		User u = userService.findOne(employee.getEmail());
 		if(u!=null){
 			u.setMessage("User with that email allready exists");
@@ -173,11 +173,11 @@ public class UserController {
 		Restaurant r = new Restaurant();
 		Region reg = new Region();
 		employee.setImage("pictures/user.png");
-		employee.setRestaurant(r);
+		//employee.setRestaurant(r);
 		employee.setLogin("no");
 		employee.setVerified("no");
 		employee.setFirstTime("yes");
-		employee.setRegion(reg);
+		//employee.setRegion(reg);
 		User u = userService.findOne(employee.getEmail());
 		if(u!=null){
 			u.setMessage("User with that email allready exists");

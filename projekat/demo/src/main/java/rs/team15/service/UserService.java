@@ -27,5 +27,7 @@ public interface UserService {
     
     void createImageFromBase64String(String base64, String path);
     
+    User updateVisits(User u);
+    
     
 }

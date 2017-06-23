@@ -76,10 +76,20 @@
             <span ng-show="form.shoeSize.$dirty && form.shoeSize.$error.required" class="help-block">Shoe size is required</span>
         </div>
         <div class="form-group" ng-class="{'has-error': form.role.$error.required}">
-        <select name="role" id="role" class="form-control" ng-model="vm.employee.role" required >
+        <label for="role">Role</label>
+        <select name="role" id="role" ng-change="vm.check()" class="form-control" ng-model="vm.employee.role" required >
 		  <option value="cook">Cook</option>
 		  <option value="waiter">Waiter</option>
 		  <option value="bartender">Bartender</option>
+		</select>
+		</div>
+		<div ng-show="vm.cookMode" class="form-group" ng-class="{'has-error': form.role.$error.required}">
+		<label for="type">Type</label>
+        <select name="type" id="type" class="form-control" ng-model="vm.employee.type"  >
+		  <option value="cooked">Cooked</option>
+		  <option value="fried">Fried</option>
+		  <option value="desert">Desert</option>
+		  <option value="salad">Salad</option>
 		</select>
 		</div>
         <div class="form-actions">

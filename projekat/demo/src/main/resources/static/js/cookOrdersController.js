@@ -79,8 +79,8 @@
         }
         
         function loadOrders(){
-        	alert(vm.user.restaurant.name);
-        	RestaurantService.LoadAllOrders2(vm.user.restaurant.name)
+        	alert(vm.user.type);
+        	RestaurantService.LoadAllOrders2(vm.user.restaurant.name, vm.user.type)
         	.then(function(response){
         		vm.orders = response.data;
         	});

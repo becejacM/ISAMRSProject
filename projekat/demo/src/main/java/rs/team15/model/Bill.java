@@ -26,8 +26,8 @@ public class Bill {
 	private ClientOrder order;
 	
 	@OneToOne()
-	@JoinColumn(name = "eid")
-	private Employee employee;
+	@JoinColumn(name = "wid")
+	private Waiter waiter;
 	
 	@Column(name = "date")
 	private Date date;
@@ -37,11 +37,11 @@ public class Bill {
 	
 	public Bill(){}
 
-	public Bill(Long bid, ClientOrder order, Employee employee, Date date, double totalPrice) {
+	public Bill(Long bid, ClientOrder order, Waiter waiter, Date date, double totalPrice) {
 		super();
 		this.bid = bid;
 		this.order = order;
-		this.employee = employee;
+		this.waiter = waiter;
 		this.date = date;
 		this.totalPrice = totalPrice;
 	}
@@ -62,12 +62,12 @@ public class Bill {
 		this.order = order;
 	}
 
-	public Employee getEmployee() {
-		return employee;
+	public Waiter getWaiter() {
+		return waiter;
 	}
 
-	public void setEmployee(Employee employee) {
-		this.employee = employee;
+	public void setWaiter(Waiter waiter) {
+		this.waiter = waiter;
 	}
 
 	public Date getDate() {

@@ -32,6 +32,9 @@
 		<button class="btn btn-primary" aria-label="See orders" ng-click="vm.seeOrders()">
           <md-icon aria-label="See orders" class="material-icons">See orders</md-icon>
         </button>
+        <button class="btn btn-primary" aria-label="See orders" ng-click="vm.pendingOrders()">
+          <md-icon aria-label="See orders" class="material-icons">Pending orders</md-icon>
+        </button>
         <button class="btn btn-primary" aria-label="Create new" ng-click="vm.createNewOrder()">
           <md-icon aria-label="Create new" class="material-icons">Create new order</md-icon>
         </button>
@@ -46,6 +49,12 @@
  Choose meal and set the amount, then click add
 <form name="form" ng-submit="vm.addOneItem()" role="form">
 	        <table>
+	        <tr><td>Choose table:</td><td>
+	        <div class="form-group" >
+	        <select name="table" id="table" class="form-control" ng-model="vm.wholeOrder.table" required
+	        	ng-options="item as item.tableInRestaurantNo for item in vm.tables">	
+			</select></div>
+	        </td></tr>
 	        <tr><td><div class="form-group" >
 	        <label for="order">Meal</label>
 	        <select name="order" id="order" class="form-control" ng-model="vm.orderItem.menuItem" required
@@ -94,7 +103,28 @@
     </thead>
     <tbody ng-repeat="o in vm.orders">
         <tr><td>{{o.orderNumber}}</td><td>{{o.totalPrice}}</td><td>{{o.status}}</td>
-        <td><button class="btn btn-primary" ng-click="vm.edit(o.orderNumber)">Edit</button></td>
+        <td><button ng-disabled="!vm.canEdit(o)" class="btn btn-primary" ng-click="vm.edit(o.orderNumber)">Edit</button></td>
+    </tbody>
+  </table>
+</div>
+</div>
+
+<div ng-show="vm.pendingMode">
+<div class="container">            
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Date</th>
+        <th>From</th>
+        <th>To</th>
+        <th>Status</th>
+        <th>Take</th>
+      </tr>
+    </thead>
+    <tbody ng-repeat="o in vm.pending">
+        <tr><td>{{o.reservation.date}}</td><td>{{o.reservation.time}}</td><td>{{o.reservation.length}}</td>
+        <td>{{o.status}}</td>
+        <td><button class="btn btn-primary" ng-click="vm.take(o)">Take</button></td>
     </tbody>
   </table>
 </div>
@@ -173,8 +203,8 @@
     <thead>
     </thead>
     <tbody>
-	<tr><td>Restaurant: </td><td>{{vm.currentBill.employee.restaurant.name}}</td></tr>
-	<tr><td>Waiter: </td><td>{{vm.currentBill.employee.firstName}} {{vm.currentBill.employee.lastName}}</td></tr>
+	<tr><td>Restaurant: </td><td>{{vm.currentBill.waiter.restaurant.name}}</td></tr>
+	<tr><td>Waiter: </td><td>{{vm.currentBill.waiter.firstName}} {{vm.currentBill.waiter.lastName}}</td></tr>
 	<tr><td>Date: </td><td>{{vm.currentDate}}</td></tr>
     </tbody>
   </table>

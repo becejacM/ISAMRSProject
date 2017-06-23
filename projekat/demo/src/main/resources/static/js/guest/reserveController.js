@@ -124,6 +124,12 @@
         
         vm.callF = callF;
         vm.showFinished = showFinished;
+        vm.gradeMode = false;
+        vm.grade = grade;
+        vm.currentR = null;
+        vm.currentGrade = null;
+        vm.addGrade = addGrade;
+        vm.ifGraded = ifGraded;
         
         vm.buttons = true;
         (function initController() {
@@ -146,6 +152,7 @@
         	vm.allFinishedMode = false;
             vm.callFMode=false;
             vm.addMealMode=false;
+            vm.gradeMode = false;
         }
         
         function noMode(){
@@ -159,6 +166,7 @@
         	vm.allFinishedMode = false;
             vm.callFMode=false;
             vm.addMealMode=false;
+            vm.gradeMode = false;
         }
         
         function showInvitations(){
@@ -181,6 +189,7 @@
                 	vm.allFinishedMode = false;
                     vm.callFMode=false;
                     vm.addMealMode=false;
+                    vm.gradeMode = false;
             	}
                 
             });
@@ -198,12 +207,48 @@
         	vm.allFinishedMode = true;
             vm.callFMode=false;
             vm.addMealMode=false;
-
+            vm.gradeMode = false;
         }
         
         vm.finished=finished;
         function finished(){
         	loadAllFinished();
+        }
+        
+        function grade(r){
+        	vm.gradeMode = true;
+        	vm.currentR = r;
+        	vm.currentGrade = new Object();
+        	//vm.currentGrade.reservation = r;
+        	vm.currentGrade.restaurant = r.restaurant;
+        	alert(vm.currentGrade.restaurant.name);
+        }
+        
+        function ifGraded(r){
+        	if(r.grade === null){
+        		return true;
+        	}
+        	return false;
+        }
+        
+        /*function addGrade(){
+        	alert('ocena ' + vm.currentGrade.generalGrade);
+        	RestaurantService.AddGrade(vm.currentGrade)
+        	.then(function (response) {
+        		alert(response.data.generalGrade);
+        		updateRes();
+            });
+        }*/
+        
+        function addGrade(){
+        	//alert('update ressss');
+        	vm.currentR.grade = vm.currentGrade;
+        	//alert('ssss ' + vm.currentR.grade.generalGrade);
+        	RestaurantService.AddGrade(vm.currentR)
+        	.then(function (response) {
+                vm.gradeMode = false;
+                
+            });
         }
         
         function showRestStep1(){
@@ -397,7 +442,7 @@
         	canvas.border = 2;
         	for (var j=0; j < vm.regions.length; j++) {
 
-        		if(vm.regions[j].deleted === "no")
+        		if(vm.regions[j].deleted === "no"){
         			canvas.add(new fabric.Rect({
         				width: vm.regions[j].width, height: vm.regions[j].height, left: vm.regions[j].datax, top: vm.regions[j].datay, angle: 0,fill: '#'+vm.regions[j].region.color}));
 
@@ -421,8 +466,8 @@
         				angle: 0
         			});
         			canvas.add(group);
-
         		}
+        	}
         }
         
         function showA(){
@@ -646,6 +691,7 @@
             	}
             });
         }
+        
         
         function createOrder(){
         	var order2 = {
