@@ -89,7 +89,19 @@ public class ClientOrder implements Serializable{
         return oid;
     }
 
-    public Long getVersion() {
+    public ClientOrder(TableR table, Employee employee, double totalPrice, Integer orderNumber, Restaurant restaurant,
+			String status) {
+		super();
+		this.table = table;
+		this.employee = employee;
+		this.totalPrice = totalPrice;
+		this.orderNumber = orderNumber;
+		this.restaurant = restaurant;
+		this.status = status;
+	}
+
+
+	public Long getVersion() {
 		return version;
 	}
 

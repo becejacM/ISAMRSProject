@@ -39,7 +39,6 @@ public class OrderItem implements Serializable{
 
     @Version
     @Column(name = "version")
-
     private long version ;
 
     public long getVersion() {

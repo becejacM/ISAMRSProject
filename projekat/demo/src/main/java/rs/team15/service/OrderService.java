@@ -35,4 +35,8 @@ public interface OrderService {
 	
 	Collection<ClientOrder> findByReservationAndTable(Long r, Long t);
 	
+	OrderItem take(Integer id);
+	
+	OrderItem deleteI(Integer id);
+	
 }

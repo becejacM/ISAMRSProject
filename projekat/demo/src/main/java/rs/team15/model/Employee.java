@@ -62,11 +62,11 @@ public class Employee extends User {
 		super();
 	}
 
-	public Employee(Long id, String email, String firstName, String lastName, String password, Date birthday, String dressSize, String shoeSize, Restaurant restaurant, Region region){
+	public Employee(String email, String firstName, String lastName, String password, Date birthday, String dressSize, String shoeSize, Restaurant restaurant, Region region){
 
 	//public Employee(Long id, String email, String firstName, String lastName, String password, Date birthday, String dressSize, String shoeSize, Restaurant restaurant, String region){
 
-    	this.id = id;
+    	//this.id = id;
     	this.email = email;
 		this.fname = firstName;
 		this.lname = lastName;
