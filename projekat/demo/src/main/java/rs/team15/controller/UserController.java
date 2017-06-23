@@ -44,6 +44,7 @@ import rs.team15.model.Guest;
 import rs.team15.model.Region;
 import rs.team15.model.Restaurant;
 import rs.team15.model.RestaurantManager;
+import rs.team15.model.Suplier;
 import rs.team15.model.SystemManager;
 import rs.team15.model.User;
 import rs.team15.model.Waiter;
@@ -54,6 +55,7 @@ import rs.team15.service.EmployeeService;
 import rs.team15.service.GuestService;
 import rs.team15.service.RestaurantManagerService;
 import rs.team15.service.RestaurantService;
+import rs.team15.service.SuplierService;
 import rs.team15.service.SystemManagerService;
 import rs.team15.service.UserService;
 import rs.team15.service.WaiterService;
@@ -90,6 +92,9 @@ public class UserController {
 	
 	@Autowired
 	private RestaurantService restaurantService;
+	
+	@Autowired
+	private SuplierService suplierService;
 
 	@Autowired
     MailSender mailSender;
@@ -102,6 +107,43 @@ public class UserController {
 	 */
 	@Autowired
 	private Environment env;
+	
+	@RequestMapping(value = "/api/users/createSuplier/{name:.+}",
+            method = RequestMethod.POST,
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+	
+    public ResponseEntity<User> registerSuplier(@RequestBody Suplier suplier,@PathVariable String name) {
+		Restaurant rest = restaurantService.findById(name);
+		logger.info("rrrrrrrrrrrrresssssssssssssssssrssss "+rest.getName());
+		suplier.setImage("pictures/user.png");
+		List<Restaurant> l = suplier.getRestaurants();
+		l.add(rest);
+		System.out.println("restoran "+l.get(0).getName());
+		suplier.setRole("suplier");
+		suplier.setRestaurants(l);
+		List<Restaurant> test = suplier.getRestaurants();
+		System.out.println("\nrestoran "+test.get(0).getName());
+		suplier.setLogin("no");
+		suplier.setVerified("no");
+		suplier.setFirstTime("yes");
+		User u = userService.findOne(suplier.getEmail());
+		if(u!=null){
+			u.setMessage("User with that email allready exists");
+			return new ResponseEntity<User>(u, HttpStatus.OK);
+		}
+		if(suplier.getFirstName().length()<3 || suplier.getFirstName().length()>10 
+				|| suplier.getLastName().length()<3 || suplier.getLastName().length()>20){
+			User u1 = new User();
+			u1.setMessage("Size of first name or last name is incompatible");
+			return new ResponseEntity<User>(u1, HttpStatus.OK);
+		}
+        User created = suplierService.create(suplier);
+		logger.info("< create user");
+		return new ResponseEntity<User>(created, HttpStatus.CREATED);
+	}
+	
 	
 	@RequestMapping(value = "/api/users/createCook/{name:.+}",
             method = RequestMethod.POST,

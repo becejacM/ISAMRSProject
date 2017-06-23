@@ -3,6 +3,8 @@ package rs.team15.controller;
 import java.awt.Menu;
 //import java.sql.Date;
 import java.util.Date;
+import java.util.Dictionary;
+import java.util.Hashtable;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -26,11 +28,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import rs.team15.model.Bid;
 import rs.team15.model.Bill;
 import rs.team15.model.ClientOrder;
 import rs.team15.model.Employee;
 import rs.team15.model.Guest;
 import rs.team15.model.MenuItem;
+import rs.team15.model.Offer;
 import rs.team15.model.OrderItem;
 import rs.team15.model.Region;
 import rs.team15.model.Reservation;
@@ -38,16 +42,20 @@ import rs.team15.model.Restaurant;
 
 import rs.team15.model.RestaurantManager;
 import rs.team15.model.Shift;
+import rs.team15.model.Suplier;
 import rs.team15.model.SystemManager;
 
 import rs.team15.model.TableR;
 import rs.team15.model.User;
 import rs.team15.model.Waiter;
+import rs.team15.model.Wanted;
 import rs.team15.repository.TableRepository;
 import rs.team15.repository.EmployeeRepository;
 import rs.team15.repository.RestaurantRepository;
+import rs.team15.service.BidService;
 import rs.team15.service.EmployeeService;
 import rs.team15.service.MenuItemService;
+import rs.team15.service.OfferService;
 import rs.team15.service.OrderService;
 import rs.team15.service.RegionService;
 import rs.team15.service.ReservationService;
@@ -56,6 +64,7 @@ import rs.team15.service.ShiftService;
 import rs.team15.service.SystemManagerService;
 import rs.team15.service.TableService;
 import rs.team15.service.UserService;
+import rs.team15.service.WantedService;
 
 @RestController
 public class RestaurantController {
@@ -92,6 +101,15 @@ public class RestaurantController {
 	
 	@Autowired
 	private ShiftService shiftService;
+	
+	@Autowired
+	private BidService bidService;
+	
+	@Autowired
+	private WantedService wantedService;
+	
+	@Autowired
+	private OfferService offerService;
 
   
 
@@ -111,6 +129,201 @@ public class RestaurantController {
 		}
 		logger.info("< get rest");
 		return new ResponseEntity<Collection<Restaurant>>(rest, HttpStatus.OK);
+	}
+	
+	//create offer
+		@RequestMapping(value = "/api/offer/{bid:.+}/{email:.+}",
+	            method = RequestMethod.POST,
+	            consumes = MediaType.APPLICATION_JSON_VALUE,
+	            produces = MediaType.APPLICATION_JSON_VALUE)
+	    public ResponseEntity <Offer> CreateOffer(@RequestBody Offer offer,@PathVariable String bid,@PathVariable String email) {
+			Suplier u = (Suplier) userService.findByEmail(email);
+			offer.setSuplier(u);
+			Bid b = bidService.findByName(bid);
+			offer.setBid(b);
+			offer.setStatus("pending");
+			Offer created = offerService.create(offer);
+			logger.info("< create offer");
+			return new ResponseEntity<Offer>(created, HttpStatus.OK);
+		}
+		
+		//update offer
+		@RequestMapping(value = "/api/offer/update/{bid:.+}/{email:.+}",
+			    method = RequestMethod.PUT,
+			    consumes = MediaType.APPLICATION_JSON_VALUE,
+			    produces = MediaType.APPLICATION_JSON_VALUE)
+		public ResponseEntity <Offer> EditOffer(@RequestBody Offer offer,@PathVariable String bid,@PathVariable String email) {
+			Suplier u = (Suplier) userService.findByEmail(email);
+			offer.setSuplier(u);
+			Bid b = bidService.findByName(bid);
+			offer.setBid(b);
+			offer.setStatus("pending");
+			Offer created = offerService.create(offer);
+			logger.info("< create offer");
+			return new ResponseEntity<Offer>(created, HttpStatus.OK);
+		}
+		
+		//update offer
+				@RequestMapping(value = "/api/offer/acc/{bid:.+}",
+					    method = RequestMethod.PUT,
+					    consumes = MediaType.APPLICATION_JSON_VALUE,
+					    produces = MediaType.APPLICATION_JSON_VALUE)
+				public ResponseEntity <Offer> EditOffer(@RequestBody Offer offer,@PathVariable String bid) {
+					//Suplier u = (Suplier) userService.findByEmail(email);
+					//offer.setSuplier(u);
+					Bid b = bidService.findByName(bid);
+					offer.setBid(b);
+					offer.setStatus("accepted");
+					Offer created = offerService.create(offer);
+					logger.info("< create offer");
+					return new ResponseEntity<Offer>(created, HttpStatus.OK);
+				}
+		
+		
+		
+		//get offers
+		@RequestMapping(
+	            value    = "/api/alloffers/{name:.+}",
+	            method   = RequestMethod.GET,
+	            produces = MediaType.APPLICATION_JSON_VALUE
+				)
+		public ResponseEntity<List<Offer>> getOffers(@PathVariable String name) {
+			logger.info("> get bid");
+			Bid b = bidService.findByName(name);
+			List<Offer> w = offerService.findAllByB(b);
+			logger.info("aaaaaaaaaaaaaaaaaaaaa"+w.size());
+			return new ResponseEntity<List<Offer>>(w, HttpStatus.OK);
+		}
+		
+		@RequestMapping(
+	            value    = "/api/myoffers/{email:.+}",
+	            method   = RequestMethod.GET,
+	            produces = MediaType.APPLICATION_JSON_VALUE
+				)
+		public ResponseEntity<List<Offer>> getMyOffers(@PathVariable String email) {
+			logger.info("> get bid");
+			Suplier s = (Suplier) userService.findByEmail(email);
+			List<Offer> w = offerService.findBySuplier(s);
+			logger.info("aaaaaaaaaaaaaaaaaaaaa"+w.size());
+			return new ResponseEntity<List<Offer>>(w, HttpStatus.OK);
+		}
+		
+		//accept offer
+		@RequestMapping(value = "/api/offer/accept/{name}/{email:.+}",
+	            method = RequestMethod.PUT,
+	            consumes = MediaType.APPLICATION_JSON_VALUE,
+	            produces = MediaType.APPLICATION_JSON_VALUE)
+	    public ResponseEntity <Offer> AcceptOffer(@RequestBody List<Offer> offers,@PathVariable String name,@PathVariable String email) {
+			for(Offer o: offers){
+				//Suplier u = (Suplier) userService.findByEmail(email);
+				//o.setSuplier(u);
+				Bid b = bidService.findByName(name);
+				o.setBid(b);
+				o.setStatus("declined");
+				Offer created = offerService.create(o);
+			}
+			Offer created = offers.get(0);
+			return new ResponseEntity<Offer>(created, HttpStatus.OK);
+		}
+	
+	//create wanted
+		@RequestMapping(value = "/api/wanted/{id:.+}",
+	            method = RequestMethod.POST,
+	            consumes = MediaType.APPLICATION_JSON_VALUE,
+	            produces = MediaType.APPLICATION_JSON_VALUE)
+	    public ResponseEntity <Wanted> CreateWanted(@RequestBody Wanted wanted,@PathVariable String id) {
+			Bid b = bidService.findByName(id);
+			wanted.setBid(b);
+	        Wanted created = wantedService.create(wanted);
+			logger.info("< create wanted");
+			return new ResponseEntity<Wanted>(created, HttpStatus.OK);
+		}
+		
+		@RequestMapping(
+	            value    = "/api/wanteds/{name:.+}",
+	            method   = RequestMethod.GET,
+	            produces = MediaType.APPLICATION_JSON_VALUE
+				)
+		public ResponseEntity<List<Wanted>> getWanted(@PathVariable String name) {
+			logger.info("> get bid");
+			Bid b = bidService.findByName(name);
+			List<Wanted> w = wantedService.findAllByB(b);
+			return new ResponseEntity<List<Wanted>>(w, HttpStatus.OK);
+		}
+	
+	//create bid
+	@RequestMapping(value = "/api/bid/{id}",
+            method = RequestMethod.POST,
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity <Bid> CreateBid(@RequestBody Bid bid,@PathVariable String id) {
+		Restaurant res = restaurantService.findById(id);
+		bid.setRestaurant(res);
+        Date curr = new Date();
+        bid.setStarted("active");
+        //bid.setStarted("closed");
+        List<Offer> l = bid.getOffers();
+        bid.setOffers(l);
+        Bid created = bidService.create(bid);
+		logger.info("< create bid");
+		return new ResponseEntity<Bid>(created, HttpStatus.OK);
+	}
+	
+	//create bid
+		@RequestMapping(value = "/api/bid/deactivate",
+	            method = RequestMethod.PUT,
+	            consumes = MediaType.APPLICATION_JSON_VALUE,
+	            produces = MediaType.APPLICATION_JSON_VALUE)
+	    public ResponseEntity <Bid> DeactivateBid(@RequestBody Bid bid) {
+			//Restaurant res = restaurantService.findById(id);
+			//bid.setRestaurant(res);
+	        //Date curr = new Date();
+	        bid.setStarted("closed");
+	        //bid.setStarted("closed");
+	        //List<Offer> l = bid.getOffers();
+	        //bid.setOffers(l);
+	        Bid created = bidService.create(bid);
+			logger.info("< create bid");
+			return new ResponseEntity<Bid>(created, HttpStatus.OK);
+		}
+	
+	@RequestMapping(
+            value    = "/api/bids/{name}",
+            method   = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE
+			)
+	public ResponseEntity<List<Bid>> getBids(@PathVariable String name) {
+		logger.info("> get bid");
+		Restaurant rest = restaurantService.findById(name);
+		List<Bid> bid = bidService.findAllByRest(rest);
+		System.out.println(bid.size());
+		logger.info("< get bid " + bid.size());
+		return new ResponseEntity<List<Bid>>(bid, HttpStatus.OK);
+	}
+	
+	//get bids for suplier
+	@RequestMapping(
+            value    = "/api/bidssup/{email:.+}",
+            method   = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE
+			)
+	public ResponseEntity<List<Bid>> getBidsSup(@PathVariable String email) {
+		logger.info("> get sbid");
+		Suplier s = (Suplier) userService.findByEmail(email);
+		logger.info("\nssasssssssssssssssss "+s.getRestaurants().size());
+		List<Restaurant> rest = s.getRestaurants();
+		System.out.println("rrrrrrrrrrrrrreeeeeees"+rest.size());
+		List<Bid> bid = new ArrayList<Bid>();
+		for(Restaurant r : rest){
+			
+			List<Bid> all = bidService.findAllByRest(r);
+			for(Bid b : all){
+				bid.add(b);
+			}
+		}
+		System.out.println(bid.size());
+		logger.info("< get sbid " + bid.size());
+		return new ResponseEntity<List<Bid>>(bid, HttpStatus.OK);
 	}
 	
 	@RequestMapping(

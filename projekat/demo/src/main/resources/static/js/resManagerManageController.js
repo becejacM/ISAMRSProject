@@ -33,6 +33,7 @@
         vm.setMenu = setMenu;
         vm.addRegion = addRegion;
         vm.calendarShift = calendarShift;
+        vm.supply = supply;
         
         vm.show = show;
         vm.addTable = addTable;
@@ -89,6 +90,11 @@
         function calendarShift(){
         	AuthenticationService.SetCredentials(vm.user.email, vm.user.password, "calendarShift", vm.user.token);
         	$location.path('/calendarShift');
+        }
+        
+        function supply(){
+        	AuthenticationService.SetCredentials(vm.user.email, vm.user.password, "supply");
+        	$location.path('/supply');
         }
         
         function loadRegions(){

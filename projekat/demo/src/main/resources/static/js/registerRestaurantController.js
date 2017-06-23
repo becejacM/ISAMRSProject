@@ -21,8 +21,10 @@
         vm.registerManager = registerManager;
         vm.registerRestaurant = registerRestaurant;
         
+        vm.r = r;
+        
         (function initController() {
-        	alert("restoraniiiiii");
+        	//alert("restoraniiiiii");
         	loadCurrentUser();
             loadAllUsers();
         })();
@@ -39,7 +41,7 @@
         }
         function registerRestaurant() {
             //vm.dataLoading = true;
-            alert("Usao u rest")
+            //alert("Usao u rest")
             RestaurantService.CreateRestaurant(vm.restaurant, vm.user.email)
                 .then(function (response) {
                 	alert("Milana");
@@ -74,7 +76,10 @@
         }
         
         
-        
+        function r(){
+        	AuthenticationService.SetCredentials(vm.user.email, vm.user.password, "SysManagerHome");
+        	$location.path('/SysManagerHome');
+        }
         
         function loadAllUsers() {
             UserService.GetAll()

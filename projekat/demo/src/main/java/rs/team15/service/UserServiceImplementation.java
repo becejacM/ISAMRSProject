@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import rs.team15.model.Bartender;
 import rs.team15.model.Cook;
 import rs.team15.model.Employee;
+import rs.team15.model.Suplier;
 import rs.team15.model.User;
 import rs.team15.model.Waiter;
 import rs.team15.repository.UserRepository;
@@ -99,6 +100,10 @@ public class UserServiceImplementation implements UserService{
         	e.setFirstTime("no");
         	Bartender b = (Bartender)userUpdate;
         	b.setFirstTime("no");
+        }
+        else if(userUpdate.getRole().equals("suplier")){
+        	Suplier e = (Suplier)userUpdate;
+        	e.setFirstTime("no");
         }
         
         

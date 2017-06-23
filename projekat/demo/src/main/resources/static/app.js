@@ -213,6 +213,12 @@
             	controllerAs: 'vm'
         	})
         	
+        	.when('/registerSuplier',{
+            	controller: 'registerSuplierController',
+            	templateUrl: 'views/registerSuplier.html',
+            	controllerAs: 'vm'
+        	})
+        	
         	.when('/setMenuItem',{
             	controller: 'setMenuItemController',
             	templateUrl: 'views/setMenuItem.html',
@@ -230,7 +236,42 @@
             	templateUrl: 'views/calendarShift.html',
             	controllerAs: 'vm'
         	})
+        	
+        	.when('/supplierHome',{
+            	controller: 'supplierHomeController',
+            	templateUrl: 'views/supplierHome.html',
+            	controllerAs: 'vm'
+        	})
+        	
+        	.when('/supplierProfil',{
+            	controller: 'supplierProfilController',
+            	templateUrl: 'views/supplierProfil.html',
+            	controllerAs: 'vm'
+        	})
+        	
+        	.when('/supplierChangePassword',{
+            	controller: 'supplierChangePasswordController',
+            	templateUrl: 'views/supplierChangePassword.html',
+            	controllerAs: 'vm'
+        	})
 
+        	.when('/supply',{
+            	controller: 'supplyController',
+            	templateUrl: 'views/supply.html',
+            	controllerAs: 'vm'
+        	})
+        	
+        	.when('/allOffers',{
+            	controller: 'allOffersController',
+            	templateUrl: 'views/allOffers.html',
+            	controllerAs: 'vm'
+        	})
+        	
+        	.when('/biding',{
+            	controller: 'bidingController',
+            	templateUrl: 'views/biding.html',
+            	controllerAs: 'vm'
+        	})
 
             .otherwise({controller: 'LoginController',
                 templateUrl: 'views/login.html',

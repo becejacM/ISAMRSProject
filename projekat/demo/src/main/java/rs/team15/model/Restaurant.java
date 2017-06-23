@@ -61,6 +61,18 @@ public class Restaurant implements Serializable {
     @OneToMany(mappedBy = "restaurant", fetch = FetchType.LAZY)
     private Set <Reservation> reservations = new HashSet <Reservation>(0);
     
+    @ManyToOne(cascade = CascadeType.MERGE)
+    @JoinColumn(name = "supid")
+    private Suplier suplier;
+    
+	public Suplier getSuplier() {
+		return suplier;
+	}
+
+	public void setSuplier(Suplier suplier) {
+		this.suplier = suplier;
+	}
+
 	@JsonIgnore
 	public Set<Reservation> getReservations() {
 		return reservations;

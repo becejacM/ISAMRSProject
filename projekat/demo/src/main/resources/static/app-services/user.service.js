@@ -32,6 +32,7 @@
         service.deleteF = deleteF;
         service.reject = reject;
         service.GetAllWorkers = GetAllWorkers;
+        service.CreateSuplier = CreateSuplier;
 
         return service;
 
@@ -63,6 +64,15 @@
         function CreateWaiter(user,name) {
         	console.log("create");
             return $http.post('/api/users/createWaiter/'+name, user)
+            .then(function (response) {
+                return response;
+            });               
+
+        }
+        
+        function CreateSuplier(user,name) {
+        	console.log("create");
+            return $http.post('/api/users/createSuplier/'+name, user)
             .then(function (response) {
                 return response;
             });               

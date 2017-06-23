@@ -1,0 +1,119 @@
+<nav id="myNavbar"
+		class="navbar navbar-default navbar-inverse navbar-fixed-top"
+		role="navigation">
+		<div class="container">
+		<div class="navbar-header">
+				<a class="navbar-brand" href="">Restaurants</a>
+			</div>
+			
+			<div id="guestProfil" class="navbar-header">
+				<button class="btn btn-default navbar-btn" background-color= "Transparent" ng-click="vm.home()">ABOUT US</button>
+			</div>
+			<div id="guestProfil2" class="navbar-header">
+				<button class="btn btn-default navbar-btn" background-color= "Transparent"  ng-click="vm.resManagerProfil()">MY PROFIL</button>
+			</div>
+			<div id="guestProfil3" class="navbar-header">
+				<button class="btn btn-default navbar-btn" background-color= "Transparent"  ng-click="vm.manage()">MANAGE</button>
+			</div>
+			<div id="guestProfil4" class="navbar-header">
+				<button class="btn btn-default navbar-btn" background-color= "Transparent"  ng-click="vm.registerWorker()">REGISTER WORKER</button>
+			</div>
+			<div id="guestProfil5" class="navbar-header">
+				<button class="btn btn-default navbar-btn" background-color= "Transparent"  ng-click="vm.registerSuplier()">REGISTER SUPLIER</button>
+			</div>
+			<div id="guestProfil6" class="navbar-header">
+				<button class="btn btn-default navbar-btn" background-color= "Transparent"ng-click="vm.logout()">LOGOUT</button>
+			</div>
+				
+		</div>
+	</nav>
+<div >
+<h2>Supply groceries</h2>
+<button class="btn btn-default navbar-btn" background-color= "Transparent" ng-show="list" ng-click="vm.createBid()">CREATE GROCERY ORDER</button>
+<div ng-show="createdOrder" class="col-md-6 col-md-offset-3">
+    <h2>Create grocery order</h2>
+    <form name="form" ng-submit="vm.saveBid()" role="form" ng-show="createOrder">
+	  <div class="form-group" ng-class="{ 'has-error': form.name.$dirty && form.name.$error.required}">
+            <label for="name">Order name</label>
+            <input type="text" name="name" id="name" class="form-control" ng-model="vm.bid.name" required />
+            <span ng-show="form.name.$dirty && form.name.$error.required" class="help-block">Grocery name is required</span>
+        </div>
+        <div class="form-group" ng-class="{ 'has-error': form.start.$dirty && form.start.$error.required }">
+            <label for="start">Start date and time</label>
+            <input type="datetime-local" name="start" id="start" class="form-control" ng-model="vm.bid.start" required />
+            <span ng-show="form.start.$dirty && form.start.$error.required" class="help-block">Start date and time is required</span>
+        </div>
+        <div class="form-group" ng-class="{ 'has-error': form.end.$dirty && form.end.$error.required}">
+            <label for="end">End date and time</label>
+            <input type="datetime-local" name="end" id="end" class="form-control" ng-model="vm.bid.end" required />
+            <span ng-show="form.end.$dirty && form.end.$error.required" class="help-block">End date and time is required</span>
+        </div>
+        <div class="form-actions">
+            <button type="submit" ng-disabled="form.$invalid || vm.dataLoading" class="btn btn-primary">Done</button>
+            <button class="btn btn-default navbar-btn" background-color= "Transparent"  ng-click="vm.r()">Cancel</button>
+        </div>
+    </form>
+    <h2>{{vm.bid.name}}</h2>
+    <button class="btn btn-info" ng-click="vm.addGrocery()">Add grocery</button>
+    <form name="form1" ng-submit="vm.saveGrocery()" role="form1" ng-show="addGrocery">
+	  <div class="form-group" ng-class="{ 'has-error': form1.name.$dirty && form1.name.$error.required}">
+            <label for="name">Grocery name</label>
+            <input type="text" name="name" id="name" class="form-control" ng-model="vm.grocery.name" required />
+            <span ng-show="form1.name.$dirty && form1.name.$error.required" class="help-block">Grocery name is required</span>
+        </div>
+        <div class="form-group" ng-class="{ 'has-error': form1.value.$dirty && form1.value.$error.required }">
+            <label for="value">Grocery value</label>
+            <input type="text" name="start" id="start" class="form-control" ng-model="vm.grocery.value" required />
+            <span ng-show="form1.value.$dirty && form1.value.$error.required" class="help-block">Start date and time is required</span>
+        </div>
+        <select name="type" id="type" class="form-control" ng-model="vm.grocery.type" required >
+		  <option value="food">Food</option>
+		  <option value="drink">Drink</option>
+		</select>
+        <div class="form-actions">
+            <button type="submit" ng-disabled="form1.$invalid || vm.dataLoading" class="btn btn-primary">Save</button>
+            <button class="btn btn-default navbar-btn" background-color= "Transparent"  ng-click="vm.ret()">Cancel</button>
+        </div>
+    </form>
+    <button class="btn btn-info" ng-click="vm.makeOrder()">Make Order</button>
+</div>
+<div ng-show="see">
+<h2>Grocery orders</h2>
+<table class="table table-condensed">
+	<tr>
+        <th>Name</th>
+        <th>Start</th>
+        <th>End</th>
+        <th></th>
+      </tr>
+	<tr ng-repeat="ord in vm.orders">
+		<td>{{ord.name}}</td>
+		<td>{{ord.start | formatDate}}</td>
+		<td>{{ord.end | formatDate}}</td>
+		<td><button class="btn btn-info" ng-click="vm.seeOrder(ord)">See</button></td>
+	</tr>
+</table>
+</div>
+<br>
+<br>
+<div ng-show="listOffers">
+<h3>{{vm.bid.name}}&nbsp|{{vm.bid.start | formatDate}}&nbsp|{{vm.bid.end | formatDate}}</h3>
+<h3>Offers</h3>
+<table class="table table-condensed">
+	<tr>
+		<th>Suplier</th>
+        <th>Delivery</th>
+        <th>Warranty</th>
+        <th>Price</th>
+        <th></th>
+      </tr>
+	<tr ng-repeat="o in vm.offers">
+		<td>{{o.suplier.name}}</td>
+		<td>{{o.delivery}}</td>
+		<td>{{o.warranty}}</td>
+		<td>{{o.price}}</td>
+		<td><button class="btn btn-info" ng-click="vm.acceptOffer(o)">Accept</button></td>
+	</tr>
+</table>
+</div>
+</div>
