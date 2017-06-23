@@ -22,7 +22,7 @@
         vm.tables = tables;
         
         (function initController() {
-        	alert("bartender home");
+        	//alert("bartender home");
         	loadCurrentUser();
             loadAllUsers();
         })();

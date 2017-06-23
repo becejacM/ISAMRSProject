@@ -40,12 +40,12 @@
                 	}
                 	else if(angular.equals(response.data.role, "waiter")){
                 		if(angular.equals(response.data.firstTime, "yes")){
-                			alert(response.data.firstTime);
+                			//alert(response.data.firstTime);
                 			AuthenticationService.SetCredentials(vm.email, vm.password, "waiterChangePassword", response.data.token);
                     		$location.path('/waiterChangePassword');
                 		}
                 		else {
-                			alert(response.data.firstTime);
+                			//alert(response.data.firstTime);
                 			AuthenticationService.SetCredentials(vm.email, vm.password, "waiterHome", response.data.token);
                     		$location.path('/waiterHome');
                 		}
@@ -53,12 +53,12 @@
                 	}
                 	else if(angular.equals(response.data.role, "cook")){
                 		if(angular.equals(response.data.firstTime, "yes")){
-                			alert(response.data.firstTime);
+                			//alert(response.data.firstTime);
                 			AuthenticationService.SetCredentials(vm.email, vm.password, "cookChangePassword", response.data.token);
                     		$location.path('/cookChangePassword');
                 		}
                 		else {
-                			alert(response.data.firstTime);
+                			//alert(response.data.firstTime);
                 			AuthenticationService.SetCredentials(vm.email, vm.password, "cookHome", response.data.token);
                     		$location.path('/cookHome');
                 		}
@@ -66,12 +66,12 @@
                 	}
                 	else if(angular.equals(response.data.role, "bartender")){
                 		if(angular.equals(response.data.firstTime, "yes")){
-                			alert(response.data.firstTime);
+                			//alert(response.data.firstTime);
                 			AuthenticationService.SetCredentials(vm.email, vm.password, "bartenderChangePassword", response.data.token);
                     		$location.path('/bartenderChangePassword');
                 		}
                 		else {
-                			alert(response.data.firstTime);
+                			//alert(response.data.firstTime);
                 			AuthenticationService.SetCredentials(vm.email, vm.password, "bartenderHome", response.data.token);
                     		$location.path('/bartenderHome');
                 		}
@@ -79,12 +79,12 @@
                 	}
                 	else if(angular.equals(response.data.role, "suplier")){
                 		if(angular.equals(response.data.firstTime, "yes")){
-                			alert(response.data.firstTime);
+                			//alert(response.data.firstTime);
                 			AuthenticationService.SetCredentials(vm.email, vm.password, "supplierChangePassword", response.data.token);
                     		$location.path('/supplierChangePassword');
                 		}
                 		else {
-                			alert(response.data.firstTime);
+                			//alert(response.data.firstTime);
                 			AuthenticationService.SetCredentials(vm.email, vm.password, "supplierHome", response.data.token);
                     		$location.path('/supplierHome');
                 		}

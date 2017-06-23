@@ -122,7 +122,7 @@
         	canvas.remove(o);
         	
         	var id = o.id;
-        	alert(id);
+        	//alert(id);
         	
         	var table = new Object();
   	      	table.tableInRestaurantNo = id;
@@ -187,7 +187,7 @@
           .then(function (response) {
         	  	//alert(vm.table.height);
               	//FlashService.Success('Table successfully added', true);
-              	alert(response.data.tableInRestaurantNo);
+              	//alert(response.data.tableInRestaurantNo);
               	group.id = response.data.tableInRestaurantNo;
           });
       	  
@@ -401,8 +401,8 @@
         	  RestaurantService.UpdateTable2(vm.table)
 	          .then(function (response) {
 	        	  
-	        	  alert(canvas.getActiveObject().item(0).get('type'));
-	        	  alert(canvas.getActiveObject().item(1).get('type'));
+	        	  //alert(canvas.getActiveObject().item(0).get('type'));
+	        	  //alert(canvas.getActiveObject().item(1).get('type'));
 	        	  canvas.getActiveObject().item(0).set('fill', "#" + response.data.region.color);
 	        	  //canvas.renderAll();
 	        	  canvas.getActiveObject().item(1).setText((response.data.numOfChairs).toString());

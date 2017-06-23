@@ -3,6 +3,11 @@
 
     angular
         .module('app')
+        .filter("formatDate", function(){
+		   return function(input){
+		      return  moment(input).format('DD MM YYYY, HH:MM'); 
+		   }
+        })
         .controller('BartenderProfileController', BartenderProfileController);
 
     BartenderProfileController.$inject = ['$location','UserService', 'AuthenticationService', '$rootScope', 'FlashService'];
@@ -22,7 +27,7 @@
         vm.tables = tables;
         
         (function initController() {
-        	alert("bartender profile");
+        	//alert("bartender profile");
         	loadCurrentUser();
             loadAllUsers();
         })();
@@ -59,7 +64,7 @@
         function previewFile(){
       	   //var preview = document.querySelector('img'); //selects the query named img
       	   //var file    = document.querySelector('input[type=file]').files[0]; //sames as here
-      		alert("usao u pic");
+      		//alert("usao u pic");
       	   var preview = document.getElementById('avatar');
       	   var file = document.getElementById("avatarFile").files[0];
 
@@ -69,8 +74,8 @@
       	       vm.basePic = fileLoadedEvent.target.result;
       	       preview.src = reader.result;
       	       vm.user.image=fileLoadedEvent.target.result;
-          	   alert(vm.user.image);
-          	   alert("Fds");
+          	   //alert(vm.user.image);
+          	   //alert("Fds");
       	   }
 
       	   if (file) {
