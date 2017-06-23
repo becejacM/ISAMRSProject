@@ -32,6 +32,7 @@
         vm.resManagerProfil = resManagerProfil;
         vm.setMenu = setMenu;
         vm.addRegion = addRegion;
+        vm.calendarShift = calendarShift;
         
         vm.show = show;
         vm.addTable = addTable;
@@ -76,13 +77,18 @@
         }
         
         function setMenu(){
-        	AuthenticationService.SetCredentials(vm.user.email, vm.user.password, "setMenuItem");
+        	AuthenticationService.SetCredentials(vm.user.email, vm.user.password, "setMenuItem", vm.user.token);
         	$location.path('/setMenuItem');
         }
         
         function addRegion(){
-        	AuthenticationService.SetCredentials(vm.user.email, vm.user.password, "addRegion");
+        	AuthenticationService.SetCredentials(vm.user.email, vm.user.password, "addRegion", vm.user.token);
         	$location.path('/addRegion');
+        }
+        
+        function calendarShift(){
+        	AuthenticationService.SetCredentials(vm.user.email, vm.user.password, "calendarShift", vm.user.token);
+        	$location.path('/calendarShift');
         }
         
         function loadRegions(){
@@ -315,22 +321,22 @@
 
         function resManagerProfil(){
         	
-        	AuthenticationService.SetCredentials(vm.user.email, vm.user.password, "ResManagerProfil");
+        	AuthenticationService.SetCredentials(vm.user.email, vm.user.password, "ResManagerProfil", vm.user.token);
         	$location.path('/ResManagerProfil');
         }
         
         function registerWorker(){
-        	AuthenticationService.SetCredentials(vm.user.email, vm.user.password, "registerWorker");
+        	AuthenticationService.SetCredentials(vm.user.email, vm.user.password, "registerWorker", vm.user.token);
         	$location.path('/registerWorker');
         }
         
         function manage(){
-        	AuthenticationService.SetCredentials(vm.user.email, vm.user.password, "manage");
+        	AuthenticationService.SetCredentials(vm.user.email, vm.user.password, "manage", vm.user.token);
         	$location.path('/manage');
         }
         
         function registerSuplier(){
-        	AuthenticationService.SetCredentials(vm.user.email, vm.user.password, "registerSuplier");
+        	AuthenticationService.SetCredentials(vm.user.email, vm.user.password, "registerSuplier", vm.user.token);
         	$location.path('/registerSuplier');
         }
         function logout(){

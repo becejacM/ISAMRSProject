@@ -37,19 +37,22 @@ import rs.team15.model.Reservation;
 import rs.team15.model.Restaurant;
 
 import rs.team15.model.RestaurantManager;
+import rs.team15.model.Shift;
 import rs.team15.model.SystemManager;
 
 import rs.team15.model.TableR;
 import rs.team15.model.User;
 import rs.team15.model.Waiter;
 import rs.team15.repository.TableRepository;
-
+import rs.team15.repository.EmployeeRepository;
 import rs.team15.repository.RestaurantRepository;
+import rs.team15.service.EmployeeService;
 import rs.team15.service.MenuItemService;
 import rs.team15.service.OrderService;
 import rs.team15.service.RegionService;
 import rs.team15.service.ReservationService;
 import rs.team15.service.RestaurantService;
+import rs.team15.service.ShiftService;
 import rs.team15.service.SystemManagerService;
 import rs.team15.service.TableService;
 import rs.team15.service.UserService;
@@ -84,6 +87,14 @@ public class RestaurantController {
 	@Autowired
 	private ReservationService reservationService;
 
+  @Autowired
+	private EmployeeService employeeService;
+	
+	@Autowired
+	private ShiftService shiftService;
+
+  
+
 	
 	@RequestMapping(
             value    = "/api/restaurants",
@@ -100,6 +111,19 @@ public class RestaurantController {
 		}
 		logger.info("< get rest");
 		return new ResponseEntity<Collection<Restaurant>>(rest, HttpStatus.OK);
+	}
+	
+	@RequestMapping(
+            value    = "/api/shifts",
+            method   = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE
+			)
+	public ResponseEntity<List<Shift>> getShifts() {
+		logger.info("> get rest");
+		List<Shift> rest = shiftService.findAll();
+		System.out.println(rest.size());
+		logger.info("< get rest");
+		return new ResponseEntity<List<Shift>>(rest, HttpStatus.OK);
 	}
 	
 	@RequestMapping(
@@ -147,6 +171,80 @@ public class RestaurantController {
 		logger.info("< create user");
 		return new ResponseEntity<Restaurant>(created, HttpStatus.OK);
 	}
+	
+	//create shift
+	@RequestMapping(value = "/api/shift/createShift/{email:.+}/{color}",
+            method = RequestMethod.POST,
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity <Shift> CreateShift(@RequestBody Shift shift,@PathVariable String email,@PathVariable String color) {
+		logger.info("< create shiiiiiiifffftr "+shift.isDraggable());
+        User u = userService.findByEmail(email);
+        Long id = u.getId();
+        Employee em = employeeService.getEmployee(id);
+        shift.setEmployee(em);
+        shift.setColor(color);
+        Shift created = shiftService.create(shift);
+		return new ResponseEntity<Shift>(created, HttpStatus.OK);
+	}
+	
+	//edit shift
+		@RequestMapping(
+	            value    = "api/shift/edit/{email:.+}/{color}",
+	            method   = RequestMethod.PUT,
+	            consumes = MediaType.APPLICATION_JSON_VALUE,
+	            produces = MediaType.APPLICATION_JSON_VALUE
+	    )
+	    public ResponseEntity<Shift> editShift(@RequestBody Shift shift,@PathVariable String email,@PathVariable String color) {
+			logger.info("> update shift");
+			User u = userService.findByEmail(email);
+	        Long id = u.getId();
+	        Employee em = employeeService.getEmployee(id);
+	        shift.setEmployee(em);
+	        shift.setColor(color);
+	        Shift updated = shiftService.create(shift);
+	        logger.info("< update shift");
+	        //logger.info("hello" + updated.getEmail() + " " + updated.getPassword());
+	        return new ResponseEntity<Shift>(updated, HttpStatus.OK);
+	    }
+		
+		//asign region
+		@RequestMapping(
+	            value    = "api/asignregion/{id}",
+	            method   = RequestMethod.PUT,
+	            consumes = MediaType.APPLICATION_JSON_VALUE,
+	            produces = MediaType.APPLICATION_JSON_VALUE
+	    )
+	    public ResponseEntity<Employee> asignRegion(@RequestBody User user,@PathVariable Integer id) {
+			logger.info("> asign region");
+			Region r = regionService.findById(id);
+			Employee employee = employeeService.getEmployee(user.getId());
+	        employee.setRegion(r);
+	        Employee updated = (Employee) employeeService.create(employee);
+	        logger.info("< asign region");
+	        //logger.info("hello" + updated.getEmail() + " " + updated.getPassword());
+	        return new ResponseEntity<Employee>(updated, HttpStatus.OK);
+	    }
+		
+		//delete shift
+		@RequestMapping(
+			            value    = "api/shift/delete/{email:.+}/{color}",
+			            method   = RequestMethod.PUT,
+			            consumes = MediaType.APPLICATION_JSON_VALUE,
+			            produces = MediaType.APPLICATION_JSON_VALUE
+		)
+	    public ResponseEntity<Shift> deleteShift(@RequestBody Shift shift,@PathVariable String email,@PathVariable String color) {
+					logger.info("> delete shift");
+					User u = userService.findByEmail(email);
+			        Long id = u.getId();
+			        Employee em = employeeService.getEmployee(id);
+			        shift.setEmployee(em);
+			        shift.setColor(color);
+			        shiftService.delete(shift);
+			        logger.info("< delete shift");
+			        //logger.info("hello" + updated.getEmail() + " " + updated.getPassword());
+			        return new ResponseEntity<Shift>(HttpStatus.OK);
+		}
 	
 	//add dishes
 	@RequestMapping(value = "/api/dishes/{name}",
@@ -300,6 +398,15 @@ public class RestaurantController {
 		java.util.Date date2 = format.parse(datum+" "+trajanje);
 		logger.info(date.toString());
 		logger.info(date2.toString());
+		if(date.after(date2)){
+			Collection<TableR> rt = new ArrayList<TableR>();
+			return new ResponseEntity<Collection<TableR>>(rt, HttpStatus.OK);
+		}
+		Date sad = new Date();
+		if(sad.after(date)){
+			Collection<TableR> rt = new ArrayList<TableR>();
+			return new ResponseEntity<Collection<TableR>>(rt, HttpStatus.OK);
+		}
 		Collection<TableR> ret = new ArrayList<TableR>();
 		Boolean available ;
 		for (Iterator<Region> region = r.getRegions().iterator(); region.hasNext();) {

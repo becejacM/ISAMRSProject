@@ -21,8 +21,8 @@ public class ClientOrder implements Serializable{
     @Column(name = "oid")
     private Long oid;
 
-    @Column(name = "date")
-    private Date date;
+    @Column(name = "dateOf")
+    private Date dateOf;
 
     @Column(name = "deadline")
     private Date deadline;
@@ -104,11 +104,11 @@ public class ClientOrder implements Serializable{
     }
 
     public Date getDate() {
-        return date;
+        return dateOf;
     }
 
     public void setDate(Date date) {
-        this.date = date;
+        this.dateOf = date;
     }
 
     public Date getDeadline() {
@@ -204,7 +204,7 @@ public class ClientOrder implements Serializable{
     public String toString() {
         return "ClientOrder{" +
                 "orderId=" + oid +
-                ", date=" + date +
+                ", date=" + dateOf +
                 ", deadline=" + deadline +
                 ", table=" + table +
                 ", items=" + items +

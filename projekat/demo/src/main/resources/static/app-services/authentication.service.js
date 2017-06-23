@@ -71,9 +71,9 @@
             $rootScope.globals = {};
             $cookies.remove('globals');
             $window.sessionStorage.setItem('globals', null);
-            $window.localStorage.setItem('globals', null);
+            $window.localStorage.removeItem('globals');
             $window.sessionStorage.setItem('AUTH_TOKEN', null);
-            $window.localStorage.setItem('AUTH_TOKEN', null);
+            $window.localStorage.removeItem('AUTH_TOKEN');
             $http.defaults.headers.common.Authorization = 'Basic';
         }
     }

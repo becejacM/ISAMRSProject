@@ -273,6 +273,29 @@ public class ReservationController {
 	}
 	
 	@RequestMapping(
+            value    = "/api/reservations/getCalledFriendsf/{id:.+}",
+            method   = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE
+)
+		public ResponseEntity<Collection<FriendInvitation>> getCalledFriendsf(@PathVariable String id) {
+			logger.info("> find invites "+id);
+			Collection<FriendInvitation> f = guestService.getByReservation_rsid(Long.parseLong(id));
+			Collection<FriendInvitation> unique = new ArrayList<FriendInvitation>();
+			for(FriendInvitation fr : f){
+				Boolean b = true;
+				for(FriendInvitation fr2 : unique){
+					if(fr.getSender().getId().equals(fr2.getSender().getId())){
+						b=false;
+					}
+				}
+				if(b){
+					unique.add(fr);
+				}
+			}
+			return new ResponseEntity<Collection<FriendInvitation>>(unique, HttpStatus.OK);
+	}
+	
+	@RequestMapping(
             value    = "/api/reservations/getMakedMeals/{id:.+}",
             method   = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE
@@ -349,18 +372,21 @@ public class ReservationController {
 			logger.info("nuuuuuuuuuuuuuuuuulllllllllllllll");
 			return new ResponseEntity<ClientOrder>(order, HttpStatus.NO_CONTENT);
 		}
-		
+		Restaurant r = restaurantService.findOne(Long.parseLong(rid));
+		order.setRestaurant(r);
 		ClientOrder co = reservationService.addOrder(order);
-		
-			
+		double t = 0;
 		for (OrderItem oi : order.getItems()) {
 			logger.info(oi.getMenuItem().getName());
 			OrderItem i = oi;
             i.setMenuItem(menuItemService.findOne(i.getMenuItem().getMenuItemId()));
 			i.setVersion(0L);
 			//i.setAmount(i.getAmount());
+			i.setPrice(i.getAmount()*i.getMenuItem().getPrice());
+			t+=i.getPrice();
             i.setOrder(co);
             i.setRestaurantId(Long.parseLong(rid));
+
 
             OrderItem oi2 = orderItemRepository.findOne();
     		int ii = 1;
@@ -375,7 +401,11 @@ public class ReservationController {
     		}
             
             OrderItem nItem = orderItemRepository.save(i);
+
+            //OrderItem nItem = reservationService.addOrderItem(i);
+
 		}
+		co.setTotalPrice(t);
 		logger.info("< create order");
 		return new ResponseEntity<ClientOrder>(co, HttpStatus.OK);
 	}

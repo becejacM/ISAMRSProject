@@ -38,21 +38,21 @@
 
         function managerProfil(){
         	
-        	AuthenticationService.SetCredentials(vm.user.email, vm.user.password, "SysManagerProfil");
+        	AuthenticationService.SetCredentials(vm.user.email, vm.user.password, "SysManagerProfil", vm.user.token);
         	$location.path('/SysManagerProfil');
         }
         
         function registerManager(){
-        	AuthenticationService.SetCredentials(vm.user.email, vm.user.password, "registerManager");
+        	AuthenticationService.SetCredentials(vm.user.email, vm.user.password, "registerManager", vm.user.token);
 
         	$location.path('/registerManager');
         }
         function registerRestaurant(){
-        	AuthenticationService.SetCredentials(vm.user.email, vm.user.password, "registerRestaurant");
+        	AuthenticationService.SetCredentials(vm.user.email, vm.user.password, "registerRestaurant", vm.user.token);
         	$location.path('/registerRestaurant');
         }
         function registerSysManager(){
-        	AuthenticationService.SetCredentials(vm.user.email, vm.user.password, "registerSysManager");
+        	AuthenticationService.SetCredentials(vm.user.email, vm.user.password, "registerSysManager", vm.user.token);
         	$location.path('/registerSysManager');
         }
         function logout(){

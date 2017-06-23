@@ -2,6 +2,8 @@ package rs.team15.serviceTests;
 
 import static org.junit.Assert.assertNotNull;
 
+import java.util.Collection;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,15 +43,58 @@ public class FriendInvitationServiceTests {
 	@Test
 	public void createF(){
 
-		User u = userService.findByEmail("milana.becejac@gmail.com");
+		User u = userService.findByEmail("guest1@gmail.com");
 		System.out.println(u.getEmail());
-				//new User(Long.parseLong("1"),"milana.becejac@gmail.com","Milana","Becejac","pass");
-		//userService.create(u);
-		User u2 = userService.findByEmail("pipi@gmail.com");
-		Reservation r = reservationService.findByResId(Long.parseLong("58"));
-		FriendInvitation f = new FriendInvitation(u, u2,r);
-		guestService.addFriendInvite(u.getId(), u2.getId(), r);
-		//Collection<User> users = friendshipRepository.findRequests("pending", Long.parseLong("1"));
+		User u2 = userService.findByEmail("guest33@gmail.com");
+		Reservation r = reservationService.findByResId(Long.parseLong("1"));
+		FriendInvitation f = guestService.addFriendInvite(u.getId(), u2.getId(), r);
 		assertNotNull(f);
 	}
+	
+	
+	@Test
+	public void findRequestsTest(){
+		Collection<FriendInvitation> users = guestService.findFI(Long.parseLong("9"));
+		assertNotNull(users);
+	}
+	
+	
+	
+	@Test
+	public void getFriendInvitationIAccpetTest(){
+		Collection<FriendInvitation> f = guestService.findFIAccept("accept",Long.parseLong("9"));
+		assertNotNull(f);
+	}
+	
+	@Test
+	public void getByResIdTest(){
+		Collection<FriendInvitation> f = guestService.getByReservation_rsid(Long.parseLong("1"));
+		assertNotNull(f);
+	}
+	
+	
+	@Test
+	public void accept(){
+
+		User u = userService.findByEmail("guest2@gmail.com");
+		System.out.println(u.getEmail());
+		User u2 = userService.findByEmail("guest33@gmail.com");
+		Reservation r = reservationService.findByResId(Long.parseLong("1"));
+		FriendInvitation f = guestService.addFriendInvite(u.getId(), u2.getId(), r);
+		FriendInvitation ff = guestService.acceptInvite(f.getFid());
+		assertNotNull(ff);
+	}
+	
+	@Test
+	public void reject(){
+
+		User u = userService.findByEmail("guest3@gmail.com");
+		System.out.println(u.getEmail());
+		User u2 = userService.findByEmail("guest33@gmail.com");
+		Reservation r = reservationService.findByResId(Long.parseLong("1"));
+		FriendInvitation f = guestService.addFriendInvite(u.getId(), u2.getId(), r);
+		FriendInvitation ff = guestService.rejectInvite(f.getFid());
+		assertNotNull(ff);
+	}
+	
 }

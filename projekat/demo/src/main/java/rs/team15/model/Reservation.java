@@ -36,11 +36,11 @@ public class Reservation {
 		this.nameRest = nameRest;
 	}
 
-	@Column(name = "date")
-    private String date;
+	@Column(name = "dateOf")
+    private String dateOf;
 
-    @Column(name = "time")
-    private String time;
+    @Column(name = "timeOf")
+    private String timeOf;
     
     @Column(name = "length")
     private String length;
@@ -130,8 +130,8 @@ public class Reservation {
 	public Reservation(Restaurant restaurant, String date, String time, String length, TableR tid) {
 		super();
 		this.restaurant = restaurant;
-		this.date = date;
-		this.time = time;
+		this.dateOf = date;
+		this.timeOf = time;
 		this.length = length;
 		this.tableRes = tid;
 	}
@@ -161,19 +161,19 @@ public class Reservation {
     }
 
     public String getReservationDateTime() {
-        return date;
+        return dateOf;
     }
 
     public String getTime() {
-		return time;
+		return timeOf;
 	}
 
 	public void setTime(String time) {
-		this.time = time;
+		this.timeOf = time;
 	}
 
 	public void setReservationDateTime(String reservationDateTime) {
-        this.date = reservationDateTime;
+        this.dateOf = reservationDateTime;
     }
 
     public String getLength() {
@@ -189,7 +189,7 @@ public class Reservation {
         return "Reservation{" +
                 "reservationId=" + rsid +
                 ", restaurant=" + restaurant +
-                ", reservationDateTime=" + date +
+                ", reservationDateTime=" + dateOf +
                 ", length=" + length +
                 '}';
     }

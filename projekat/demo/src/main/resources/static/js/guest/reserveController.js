@@ -508,6 +508,7 @@
         		  if(e.target === null) 
         			  alert("no");
         		  else {
+        	        	FlashService.clearFlashMessageP();
         			  var id = e.target.get('id');
 	            		var o = canvas.getActiveObject();
         			  RestaurantService.Reserve(vm.c,vm.step1par.vreme,vm.step1par.trajanje, vm.rest.name, id, vm.user.email)
@@ -588,14 +589,20 @@
       	 
       	}
         function step3(){
-        	FlashService.Success('Reservation successfuly created.',false);
-              geocodeAddress();
-              loadAllRests();
-          	vm.allReservationsMode = false;
-          	vm.allRestsMode = false;
-          	vm.restModeStep1 = false;
-          	vm.restModeStep2 = false;
-          	vm.restModeStep3 = true;
+        	if(vm.currReservation===null){
+            	FlashService.Error('Please make reservation to continue.',false);
+        	}
+        	else{
+        		FlashService.Success('Reservation successfuly created.',false);
+                geocodeAddress();
+                loadAllRests();
+            	vm.allReservationsMode = false;
+            	vm.allRestsMode = false;
+            	vm.restModeStep1 = false;
+            	vm.restModeStep2 = false;
+            	vm.restModeStep3 = true;
+        	}
+        	
         }
         
         function callF(r){
@@ -628,7 +635,7 @@
             .then(function (response) {
             	if(response.status===204){
             		finish();
-                	FlashService.Error('This restaurant don\'t have any meals. Reservation successfuly finished.',false);
+                	FlashService.Error('This restaurant doesn\'t have any meals. Reservation successfuly finished.',false);
             	}
             	else{
                 	vm.allMI = response.data;
@@ -686,7 +693,7 @@
             	}
             	else{
             		vm.allFinished=response.data;
-            		alert(vm.allFinished.length);
+            		//alert(vm.allFinished.length);
             		showFinished();
             	}
             });
@@ -816,6 +823,24 @@
 
             });
 
+        }
+        
+        vm.getCalledFriendsf = getCalledFriendsf;
+        
+        function getCalledFriendsf(reservationId)
+        {
+        	vm.friends = [];
+        	RestaurantService.getCalledFriendsf(reservationId)
+            .then(function (response) {
+            	vm.friends[reservationId]= response.data;
+            	/*angular.forEach(vm.friends, function(value, key){
+              	     alert(key + ': ' + value);
+              	     angular.forEach(value, function(value, key){
+                  	     alert(key + ': ' + value);
+                  	});
+              	});*/
+            });
+        	
         }
         vm.SortableTableRest=SortableTableRest;
         function SortableTableRest() {

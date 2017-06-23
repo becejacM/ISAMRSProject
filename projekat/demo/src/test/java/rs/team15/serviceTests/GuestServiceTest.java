@@ -30,17 +30,17 @@ public class GuestServiceTest {
 	public void createGuestServicePass(){
 		//Guest u = new Guest(Long.parseLong("2"),"milana.becejac@gmail.com","Milana","Becejac","pass");
 		//GuestService.create(u);
-		User find = userService.findOne("milana.becejac@gmail.com");
+		User find = userService.findOne("guest1@gmail.com");
 		
 		User f = GuestService.getGuest(find.getId());
-		assertEquals(f.getFirstName(), "miki");
+		assertEquals(f.getFirstName(), "guest1");
 	}
 	
 	@Test
 	public void createGuestServiceFail(){
 		//Guest u = new Guest(Long.parseLong("3"),"marko.stajic@gmail.com","Marko","Stajic","pass");
 		//GuestService.create(u);
-		User find = userService.findOne("stajic94@live.com");
+		User find = userService.findOne("guest1@gmail.com");
 		
 		User f = GuestService.getGuest(find.getId());
 		assertEquals(f.getFirstName(), "Milana");
@@ -55,20 +55,20 @@ public class GuestServiceTest {
 	
 	@Test
 	public void findByFurstNamePass(){
-		Collection<Guest> guests2 = GuestService.getGuestByFirstName("miki");
+		Collection<Guest> guests2 = GuestService.getGuestByFirstName("guest1");
 		
 		assertNotNull(guests2);
 	}
 	
 	@Test
 	public void findByFurstNameFail(){
-		Collection<Guest> guests3 = GuestService.getGuestByFirstName("Sandra");
+		Collection<Guest> guests3 = GuestService.getGuestByFirstName("g");
 		assertNotNull(guests3);
 	}
 	
 	@Test
 	public void getGuest(){
-		Guest guests2 = GuestService.getGuest(Long.parseLong("8"));
+		Guest guests2 = GuestService.getGuest(Long.parseLong("7"));
 		assertNotNull(guests2);
 	}
 }

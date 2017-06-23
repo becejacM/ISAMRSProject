@@ -15,6 +15,7 @@
         service.cancel = cancel;
         service.callFriend = callFriend;
         service.getCalledFriends = getCalledFriends;
+        service.getCalledFriendsf = getCalledFriendsf;
         service.getMakedMeals = getMakedMeals;
         service.showInvitations=showInvitations;
         service.accept = accept;
@@ -52,6 +53,11 @@
         service.EditDrink = EditDrink;
         //service.GetRegion = GetRegion;
         service.CreateRegion = CreateRegion;
+        service.CreateShifts = CreateShifts;
+        service.GetAllShifts = GetAllShifts;
+        service.EditShift = EditShift;
+        service.DeleteShift = DeleteShift;
+        service.AsignRegion = AsignRegion;
         
         service.GetMenuItems = GetMenuItems;
         service.AddOneItem = AddOneItem;
@@ -154,6 +160,13 @@
         
         function getCalledFriends(reservationId){
         	return $http.get('api/reservations/getCalledFriends/' + reservationId)
+            .then(function(response) {
+                return response;
+            }); 
+        }
+        
+        function getCalledFriendsf(reservationId){
+        	return $http.get('api/reservations/getCalledFriendsf/' + reservationId)
             .then(function(response) {
                 return response;
             }); 
@@ -269,6 +282,38 @@
             });               
 
      }
+        
+        function CreateShifts(shift,email,color) {
+        	alert("coloooooooooooor" + color);
+            return $http.post('/api/shift/createShift/'+email+'/'+color, shift)
+            .then(function(response) {
+                return response;
+            });               
+        }
+        
+        function EditShift(shift,email,color){
+        	return $http.put('api/shift/edit/'+email + '/' + color, shift)
+        	.then(function(response){
+        		return response;
+        	});
+        }
+        
+        function DeleteShift(shift,email,color){
+        	return $http.put('api/shift/delete/'+email + '/' + color, shift)
+        	.then(function(response){
+        		return response;
+        	});
+        }
+        
+        function GetAllShifts() {
+        	alert("usao");
+            return $http.get('/api/shifts')
+            .then(function(response) {
+                return response;
+            });               
+
+     }
+        
         function UpdateTable(table) {
             return $http.put('/api/users/updateTable', table).then(handleSuccess, handleError('Error updating table'));
             /*.then(function(response) {
@@ -356,6 +401,13 @@
         
         function GetRestaurantRegions(id){
         	return $http.get('/api/getregions/' + id)
+        	.then(function(response){
+        		return response;
+        	});
+        }
+        
+        function AsignRegion(worker, region){
+        	return $http.put('api/asignregion/'+region, worker)
         	.then(function(response){
         		return response;
         	});

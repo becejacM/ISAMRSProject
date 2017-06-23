@@ -51,14 +51,14 @@
 
         function resManagerProfil(){
         	
-        	AuthenticationService.SetCredentials(vm.user.email, vm.user.password, "ResManagerProfil");
+        	AuthenticationService.SetCredentials(vm.user.email, vm.user.password, "ResManagerProfil", vm.user.token);
         	$location.path('/ResManagerProfil');
         }
         
         function registerWorker(){
         	alert("Usao u worker")
         	if(angular.equals(vm.employee.role, "cook")){
-        		UserService.CreateCook(vm.employee)
+        		UserService.CreateCook(vm.employee, vm.user.restaurant.name)
         		.then(function (response) {
                 	if(response.data.message){
                 		alert("miki");
@@ -67,7 +67,7 @@
                 	}
                 	else if (response.data.email!==null) {
                     	FlashService.Success('Registration successful', true);
-                    	AuthenticationService.SetCredentials(vm.user.email, vm.user.password, "ResManagerHome");
+                    	AuthenticationService.SetCredentials(vm.user.email, vm.user.password, "ResManagerHome", vm.user.token);
                         $location.path('/ResManagerHome');
                     } else {
                         FlashService.Error(response.message);
@@ -76,7 +76,7 @@
                     }
                 });
         	}else if(angular.equals(vm.employee.role, "waiter")){
-        		UserService.CreateWaiter(vm.employee)
+        		UserService.CreateWaiter(vm.employee,vm.user.restaurant.name)
         		.then(function (response) {
                 	if(response.data.message){
                 		alert("miki");
@@ -85,7 +85,7 @@
                 	}
                 	else if (response.data.email!==null) {
                     	FlashService.Success('Registration successful', true);
-                    	AuthenticationService.SetCredentials(vm.user.email, vm.user.password, "ResManagerHome");
+                    	AuthenticationService.SetCredentials(vm.user.email, vm.user.password, "ResManagerHome", vm.user.token);
                         $location.path('/ResManagerHome');
                     } else {
                         FlashService.Error(response.message);
@@ -94,7 +94,7 @@
                     }
                 });
         	}else if(angular.equals(vm.employee.role, "bartender")){
-        		UserService.CreateBartender(vm.employee)
+        		UserService.CreateBartender(vm.employee,vm.user.restaurant.name)
         		.then(function (response) {
                 	if(response.data.message){
                 		alert("miki");
@@ -103,7 +103,7 @@
                 	}
                 	else if (response.data.email!==null) {
                     	FlashService.Success('Registration successful', true);
-                    	AuthenticationService.SetCredentials(vm.user.email, vm.user.password, "ResManagerHome");
+                    	AuthenticationService.SetCredentials(vm.user.email, vm.user.password, "ResManagerHome", vm.user.token);
                         $location.path('/ResManagerHome');
                     } else {
                         FlashService.Error(response.message);
@@ -115,11 +115,11 @@
         }
         
         function manage(){
-        	AuthenticationService.SetCredentials(vm.user.email, vm.user.password, "manage");
+        	AuthenticationService.SetCredentials(vm.user.email, vm.user.password, "manage", vm.user.token);
         	$location.path('/manage');
         }
         function registerSuplier(){
-        	AuthenticationService.SetCredentials(vm.user.email, vm.user.password, "registerSuplier");
+        	AuthenticationService.SetCredentials(vm.user.email, vm.user.password, "registerSuplier", vm.user.token);
         	$location.path('/registerSuplier');
         }
         function logout(){
