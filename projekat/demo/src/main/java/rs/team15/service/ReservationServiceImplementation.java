@@ -94,11 +94,12 @@ public class ReservationServiceImplementation implements ReservationService{
 			
 			
 			TableR tt = tableRepository.findByTableInRestaurantNo(Integer.parseInt(idStola));
-			TableR t= tableRepository.findOne(tt.getTableId());
-			if(t==null){
+			if(tt==null){
 				System.out.println("ovdeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee33333333333333");
 				return null;
 			}
+			TableR t= tableRepository.findOne(tt.getTableId());
+			
 			
 			
 			DateFormat format = new SimpleDateFormat("dd.MM.yyyy HH:mm", Locale.ENGLISH);

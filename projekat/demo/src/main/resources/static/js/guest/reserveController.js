@@ -544,14 +544,20 @@
       	 
       	}
         function step3(){
-        	FlashService.Success('Reservation successfuly created.',false);
-              geocodeAddress();
-              loadAllRests();
-          	vm.allReservationsMode = false;
-          	vm.allRestsMode = false;
-          	vm.restModeStep1 = false;
-          	vm.restModeStep2 = false;
-          	vm.restModeStep3 = true;
+        	if(vm.currReservation===null){
+            	FlashService.Error('Please make reservation to continue.',false);
+        	}
+        	else{
+        		FlashService.Success('Reservation successfuly created.',false);
+                geocodeAddress();
+                loadAllRests();
+            	vm.allReservationsMode = false;
+            	vm.allRestsMode = false;
+            	vm.restModeStep1 = false;
+            	vm.restModeStep2 = false;
+            	vm.restModeStep3 = true;
+        	}
+        	
         }
         
         function callF(r){
@@ -642,7 +648,7 @@
             	}
             	else{
             		vm.allFinished=response.data;
-            		alert(vm.allFinished.length);
+            		//alert(vm.allFinished.length);
             		showFinished();
             	}
             });
