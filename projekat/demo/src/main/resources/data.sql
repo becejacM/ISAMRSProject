@@ -113,5 +113,5 @@ insert into client_orders(oid, client_id, date_of, deadline, order_number, statu
 -- ADDING ORDER_ITEMS
 
 insert into order_items(oiid,amount,item_number,price,restaurant_id,state,oi_table_id,version,miid,oid) values(1,1,1,300.0,1,'created',null,0,3,1);
-insert into order_items(oiid,amount,item_number,price,restaurant_id,state,oi_table_id,version,miid,oid) values(2,1,1,300.0,1,'created',null,0,3,2);
-insert into order_items(oiid,amount,item_number,price,restaurant_id,state,oi_table_id,version,miid,oid) values(3,1,1,300.0,1,'created',null,0,3,3);
+insert into order_items(oiid,amount,item_number,price,restaurant_id,state,oi_table_id,version,miid,oid) values(2,1,2,300.0,1,'created',null,0,3,2);
+insert into order_items(oiid,amount,item_number,price,restaurant_id,state,oi_table_id,version,miid,oid) values(3,1,3,300.0,1,'created',null,0,3,3);
