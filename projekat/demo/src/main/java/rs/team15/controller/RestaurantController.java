@@ -741,7 +741,8 @@ public class RestaurantController {
             produces = MediaType.APPLICATION_JSON_VALUE
 			)
 	public ResponseEntity<OrderItem> take(@PathVariable Integer id) {
-		OrderItem item = orderService.findItem(id);
+		OrderItem oi = orderService.take(id);
+		/*OrderItem item = orderService.findItem(id);
 		OrderItem r = item;
 		item.setState("in progress");
 		//item.getOrder().setStatus("in progress");
@@ -755,8 +756,11 @@ public class RestaurantController {
 		logger.info("< size after: {}", order.getItems().size());
 		order.getItems().add(updated);
 		logger.info("< size afterrrrr: {}", order.getItems().size());
-		ClientOrder up = orderService.update(order);
-		return new ResponseEntity<OrderItem>(updated, HttpStatus.OK);
+		ClientOrder up = orderService.update(order);*/
+		if(oi == null){
+			return new ResponseEntity<OrderItem>(oi, HttpStatus.NO_CONTENT);
+		}
+		return new ResponseEntity<OrderItem>(oi, HttpStatus.OK);
 	}
 	
 	@RequestMapping(
@@ -906,12 +910,17 @@ public class RestaurantController {
             produces = MediaType.APPLICATION_JSON_VALUE
 		)
 	public ResponseEntity<OrderItem> deleteItem(@PathVariable Integer id) {
-		OrderItem item = orderService.findItem(id);
+		OrderItem oi = orderService.deleteI(id);
+		/*OrderItem item = orderService.findItem(id);
 		logger.info("< deleting item {}", item.getItemNumber());
 		
-		OrderItem deleted = orderService.delete(item);
+		OrderItem deleted = orderService.delete(item);*/
 		
-		return new ResponseEntity<OrderItem>(deleted, HttpStatus.OK);
+		if(oi==null){
+			return new ResponseEntity<OrderItem>(oi, HttpStatus.NO_CONTENT);
+		}
+		
+		return new ResponseEntity<OrderItem>(oi, HttpStatus.OK);
 	}
 	
 	@RequestMapping(

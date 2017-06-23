@@ -70,11 +70,11 @@ public class Reservation {
 	}
 
 	public String getDate() {
-		return date;
+		return dateOf;
 	}
 
 	public void setDate(String date) {
-		this.date = date;
+		this.dateOf = date;
 	}
 
 	public Grade getGrade() {

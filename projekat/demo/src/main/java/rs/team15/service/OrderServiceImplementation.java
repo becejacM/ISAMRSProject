@@ -6,6 +6,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import rs.team15.model.Bill;
 import rs.team15.model.ClientOrder;
@@ -114,6 +116,57 @@ public class OrderServiceImplementation implements OrderService {
 	@Override
 	public Collection<ClientOrder> findByReservationAndTable(Long r, Long t) {
 		return orderRepository.findByReservation_RsidAndTable_Tid(r, t);
+	}
+
+	@Override
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
+	public OrderItem take(Integer id) {
+		
+		try{
+			OrderItem item = orderItemRepository.findByItemNumber(id);
+			OrderItem r = item;
+			item.setState("in progress");
+			
+			logger.info("< take item: {}", item.getItemNumber());
+			OrderItem updated = orderItemRepository.save(item);
+			
+			logger.info("< taken: {}", updated.getMenuItem().getName());
+			ClientOrder order = item.getOrder();
+			order.setStatus("in progress");
+			
+			logger.info("< size before: {}", order.getItems().size());
+			order.getItems().remove(r);
+			
+			logger.info("< size after: {}", order.getItems().size());
+			order.getItems().add(updated);
+			
+			logger.info("< size afterrrrr: {}", order.getItems().size());
+			ClientOrder up = orderRepository.save(order);
+			
+			return updated;
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+
+	@Override
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
+	public OrderItem deleteI(Integer id) {
+		
+		try {
+			OrderItem item = orderItemRepository.findByItemNumber(id);
+			logger.info("< deleting item {}", item.getItemNumber());
+			
+			orderItemRepository.delete(item);
+			return item;
+		}
+		catch (Exception e){
+			e.printStackTrace();
+			return null;
+		}
+		
 	}
 
 }
