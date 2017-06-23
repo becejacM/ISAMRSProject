@@ -179,7 +179,7 @@
         
         function remove3(order){
         	var i = vm.pending.indexOf(order);
-    		alert(i.toString());
+    		//alert(i.toString());
     		if(i === -1){
     			
     		}
@@ -193,7 +193,7 @@
         		alert('No tables currently available in your region! Please try again later.');
         	}
         	else {
-        		alert('available ' + vm.tables.length + ' tables');
+        		//alert('available ' + vm.tables.length + ' tables');
         		vm.items = [];
             	vm.seeAllMode = false;
             	vm.billsMode = false;
@@ -201,7 +201,7 @@
             	vm.showBillMode = false;
             	vm.pendingMode = false;
             	vm.realUser = vm.user;
-            	alert(vm.wholeOrder.restaurant.name);
+            	//alert(vm.wholeOrder.restaurant.name);
             	/*vm.wholeOrder = new Object();
             	vm.wholeOrder.waiter = vm.user;
             	RestaurantService.AddOrder(vm.wholeOrder)
@@ -215,7 +215,7 @@
         }
         
         function addOneItem(){
-        	alert(vm.orderItem.amount + " " + vm.orderItem.menuItem.name);
+        	//alert(vm.orderItem.amount + " " + vm.orderItem.menuItem.name);
         	vm.addedMode = false;
         	//alert(vm.num);
         	vm.orderItem.price = vm.orderItem.amount * vm.orderItem.menuItem.price;
@@ -232,15 +232,15 @@
         }
         
         function save(){
-        	alert(vm.items.length);
-        	alert(vm.wholeOrder.table.tableInRestaurantNo);
+        	//alert(vm.items.length);
+        	//alert(vm.wholeOrder.table.tableInRestaurantNo);
         	var t = vm.wholeOrder.table.tableInRestaurantNo;
         	vm.wholeOrder.items = vm.addedItems;
         	vm.createNewMode = false;
         	RestaurantService.SaveOrder(vm.wholeOrder, t)
         	.then(function(response){
         		//FlashService.Success('Order successfully made!', true);
-        		alert('order made');
+        		//alert('order made');
         	});
         }
         
@@ -258,7 +258,7 @@
         	RestaurantService.FindOrder(id)
         	.then(function(response){
         		vm.currentOrder = response.data;
-        		alert(vm.currentOrder.totalPrice);
+        		//alert(vm.currentOrder.totalPrice);
         		vm.editMode = true;
         	});
         }
@@ -268,11 +268,11 @@
         }
         
         function addNewItem(){
-        	alert(vm.currentOrder.orderNumber);
+        	//alert(vm.currentOrder.orderNumber);
         	RestaurantService.AddOneItem(vm.orderItem, vm.currentOrder.orderNumber)
         	.then(function (response){
         		vm.currentOrder.items.push(response.data);
-        		alert('added');
+        		//alert('added');
         	});
         }
         
@@ -287,7 +287,7 @@
         
         function remove(order){
         	var i = vm.currentOrder.items.indexOf(order);
-    		alert(i.toString());
+    		//alert(i.toString());
     		if(i === -1){
     			
     		}
@@ -298,10 +298,10 @@
         
         function saveEditedItems(){
         	for(var i = 0; i < vm.currentOrder.items.length; i++){
-        		alert(vm.currentOrder.items[i].amount);
+        		//alert(vm.currentOrder.items[i].amount);
         		RestaurantService.SaveEditedItem(vm.currentOrder.items[i].itemNumber, vm.currentOrder.items[i].amount)
         			.then(function (response){
-            			alert('edited item');
+            			//alert('edited item');
             			saveEdited();
             		});	
         	}
@@ -309,17 +309,17 @@
         
         function saveEdited(){
         	//saveEditedItems();
-        	alert(vm.currentOrder.items.length);
+        	//alert(vm.currentOrder.items.length);
         	RestaurantService.SaveEditedOrder(vm.currentOrder.orderNumber)
         		.then(function (response){
-        			alert('successfully edited');
+        			//alert('successfully edited');
         			vm.editMode = false;
         			loadOrders();
         		});
         }
         
         function makeBills(){
-        	alert('dsdss');
+        	//alert('dsdss');
         	vm.createNewMode = false;
         	vm.seeAllMode = false;
         	vm.billsMode = true;
@@ -345,7 +345,7 @@
         function finishBill(){
         	RestaurantService.MakeBill(vm.orderb.orderNumber, vm.user.email)
         	.then(function (response){
-    			alert('finished');
+    			//alert('finished');
     			vm.showBillMode = false;
     			remove2(vm.orderb);
     		});
@@ -353,7 +353,7 @@
         
         function remove2(order){
         	var i = vm.finished.indexOf(order);
-    		alert(i.toString());
+    		//alert(i.toString());
     		if(i === -1){
     			
     		}

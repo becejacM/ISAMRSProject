@@ -51,7 +51,7 @@
             .then(function (response) {
                 vm.rest = response.data;
                 //alert(vm.rest.name);*/
-        		alert(vm.rest.name);
+        		//alert(vm.rest.name);
                 RestaurantService.GetAllTables(vm.rest.name)
 	            .then(function (response) {
 	                vm.regions = response.data;
@@ -112,7 +112,7 @@
             UserService.GetByUsername($rootScope.globals.currentUser.email)
                 .then(function (response) {
                     vm.user = response.data;
-                    alert(vm.user.email);
+                    //alert(vm.user.email);
                     loadRestaurant();
                 });
         }

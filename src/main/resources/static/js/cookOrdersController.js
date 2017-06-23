@@ -79,7 +79,7 @@
         }
         
         function loadOrders(){
-        	alert(vm.user.type);
+        	//alert(vm.user.type);
         	RestaurantService.LoadAllOrders2(vm.user.restaurant.name, vm.user.type)
         	.then(function(response){
         		vm.orders = response.data;
@@ -94,11 +94,11 @@
         }
         
         function take(i){
-        	alert(i.menuItem.name);
+        	//alert(i.menuItem.name);
         	//remove(i);
         	RestaurantService.Take(i.itemNumber)
         	.then(function(response){
-        		alert("sdfdgf");
+        		//alert("sdfdgf");
         		vm.taken.push(response.data);
         		remove(i);
         	});
@@ -106,7 +106,7 @@
         
         function remove(order){
         	var i = vm.orders.indexOf(order);
-    		alert(i.toString());
+    		//alert(i.toString());
     		if(i === -1){
     			
     		}
@@ -117,7 +117,7 @@
         
         function remove2(order){
         	var i = vm.taken.indexOf(order);
-    		alert(i.toString());
+    		//alert(i.toString());
     		if(i === -1){
     			
     		}
@@ -127,7 +127,7 @@
         }
         
        function finish(i){
-    	   alert(i.itemNumber);
+    	   //alert(i.itemNumber);
     	   RestaurantService.Finish(i.itemNumber)
     	   .then(function(response){
     		   remove2(i);

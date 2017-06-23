@@ -27,7 +27,7 @@
         vm.home = home;
         
         (function initController() {
-        	alert("change pass");
+        	//alert("change pass");
         	loadCurrentUser();
             loadAllUsers();
             
@@ -81,7 +81,7 @@
               .then(function (response) {
             		  vm.user = response.data;  
               });
-            alert("asdfghhj");
+            //alert("asdfghhj");
             AuthenticationService.SetCredentials(vm.user.email, vm.user.password, "cookHome");
     		$location.path('/cookHome');
         }

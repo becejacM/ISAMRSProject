@@ -81,7 +81,7 @@
               .then(function (response) {
             		  vm.user = response.data;  
               });
-            alert("asdfghhj");
+            //alert("asdfghhj");
             AuthenticationService.SetCredentials(vm.user.email, vm.user.password, "waiterHome", vm.user.token);
     		$location.path('/waiterHome');
         }

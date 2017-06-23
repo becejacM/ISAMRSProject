@@ -36,12 +36,15 @@
 
 	<div class="korisnik" id="kor">
 		<div class="profilK" id="pkor">
-		<table class="trkorisnik">
+		<table class="table">
+		<tbody>
 		<tr><th>First name</th><td>&nbsp&nbsp{{vm.user.firstName}}</td></tr>
 		<tr><th>Last name</th><td>&nbsp&nbsp{{vm.user.lastName}}</td></tr>
 		<tr><th>Email</th><td>&nbsp&nbsp{{vm.user.email}}</td></tr>
-		<tr><th>Number of visits</th><td>&nbsp&nbsp</td></tr>
-		</table>
+		<tr><th>Birthday</th><td>&nbsp&nbsp{{vm.user.birthday | formatDate}}</td></tr>
+		<tr><th>Shoe size</th><td>&nbsp&nbsp{{vm.user.shoeSize}}</td></tr>
+		<tr><th>Dress size</th><td>&nbsp&nbsp{{vm.user.dressSize}}</td></tr>
+		</tbody></table>
 		</div>
 		<button ng-hide="vm.editMode" class="btn btn-primary" aria-label="Edit profile" ng-click="vm.editProfile()">
           <md-icon aria-label="Edit profile" class="material-icons">EDIT</md-icon>
