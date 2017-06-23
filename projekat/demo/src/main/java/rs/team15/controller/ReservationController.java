@@ -373,7 +373,7 @@ public class ReservationController {
 		}
 		Restaurant r = restaurantService.findOne(Long.parseLong(rid));
 		order.setRestaurant(r);
-		ClientOrder co = orderService.create(order);
+		ClientOrder co = reservationService.addOrder(order);
 		double t = 0;
 		for (OrderItem oi : order.getItems()) {
 			logger.info(oi.getMenuItem().getName());
@@ -385,7 +385,7 @@ public class ReservationController {
 			t+=i.getPrice();
             i.setOrder(co);
             i.setRestaurantId(Long.parseLong(rid));
-            OrderItem nItem = orderService.addNew(i);
+            OrderItem nItem = reservationService.addOrderItem(i);
 		}
 		co.setTotalPrice(t);
 		logger.info("< create order");

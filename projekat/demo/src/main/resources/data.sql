@@ -11,11 +11,11 @@ INSERT INTO app_users (id, email, first_name, last_name, password, image, role, 
 INSERT INTO app_users (id, email, first_name, last_name, password, image, role, verified, login, message, token, broj_poseta) VALUES(4, 'waiter@gmail.com', 'waiter', 'waiter', '12345', 'pictures/user.png', 'waiter', 'no', 'no', null, null, 0);
 INSERT INTO app_users (id, email, first_name, last_name, password, image, role, verified, login, message, token, broj_poseta) VALUES(5, 'cook@gmail.com', 'cook', 'cook', '12345', 'pictures/user.png', 'cook', 'no', 'no', null, null, 0);
 INSERT INTO app_users (id, email, first_name, last_name, password, image, role, verified, login, message, token, broj_poseta) VALUES(6, 'bartender@gmail.com', 'bartender', 'bartender', '12345', 'pictures/user.png', 'bartender', 'no', 'no', null, null, 0);
-INSERT INTO app_users (id, email, first_name, last_name, password, image, role, verified, login, message, token, broj_poseta) VALUES(7, 'guest1@gmail.com', 'guest1', 'guest1', '12345', 'pictures/user.png', 'guest', 'yes', 'no', null, 'Z3Vlc3QxQGdtYWlsLmNvbToxMjM0', 0);
-INSERT INTO app_users (id, email, first_name, last_name, password, image, role, verified, login, message, token, broj_poseta) VALUES(8, 'guest2@gmail.com', 'guest2', 'guest2', '12345', 'pictures/user.png', 'guest', 'yes', 'no', null, null, 0);
-INSERT INTO app_users (id, email, first_name, last_name, password, image, role, verified, login, message, token, broj_poseta) VALUES(9, 'guest3@gmail.com', 'guest3', 'guest3', '12345', 'pictures/user.png', 'guest', 'yes', 'no', null, null, 0);
-INSERT INTO app_users (id, email, first_name, last_name, password, image, role, verified, login, message, token, broj_poseta) VALUES(10, 'guest33@gmail.com', 'guest33', 'guest33', '12345', 'pictures/user.png', 'guest', 'yes', 'no', null, null, 0);
-INSERT INTO app_users (id, email, first_name, last_name, password, image, role, verified, login, message, token, broj_poseta) VALUES(11, 'guest34@gmail.com', 'guest34', 'guest34', '12345', 'pictures/user.png', 'guest', 'yes', 'no', null, null, 0);
+INSERT INTO app_users (id, email, first_name, last_name, password, image, role, verified, login, message, token, broj_poseta) VALUES(7, 'guest1@gmail.com', 'guest1', 'guest1', '12345', 'https://s-media-cache-ak0.pinimg.com/736x/cb/e3/8c/cbe38cfd74bd94003988c9593076de2c.jpg', 'guest', 'yes', 'no', null, 'Z3Vlc3QxQGdtYWlsLmNvbToxMjM0', 0);
+INSERT INTO app_users (id, email, first_name, last_name, password, image, role, verified, login, message, token, broj_poseta) VALUES(8, 'guest2@gmail.com', 'guest2', 'guest2', '12345', 'https://s-media-cache-ak0.pinimg.com/736x/20/3a/80/203a8006d562a97c88967ca64f74ea6b.jpg', 'guest', 'yes', 'no', null, null, 0);
+INSERT INTO app_users (id, email, first_name, last_name, password, image, role, verified, login, message, token, broj_poseta) VALUES(9, 'guest3@gmail.com', 'guest3', 'guest3', '12345', 'https://s-media-cache-ak0.pinimg.com/originals/fa/cc/4f/facc4f266353726780420a6c5222e864.jpg', 'guest', 'yes', 'no', null, null, 0);
+INSERT INTO app_users (id, email, first_name, last_name, password, image, role, verified, login, message, token, broj_poseta) VALUES(10, 'guest33@gmail.com', 'guest33', 'guest33', '12345', 'http://cdn04.cdn.justjaredjr.com/wp-content/uploads/headlines/2017/03/arrow-olicity-future-talked-about.jpg', 'guest', 'yes', 'no', null, null, 0);
+INSERT INTO app_users (id, email, first_name, last_name, password, image, role, verified, login, message, token, broj_poseta) VALUES(11, 'guest34@gmail.com', 'guest34', 'guest34', '12345', 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSyYfHRCIJYIe5J0OViaefPf3jP4-7lAvdW715kWBfWBYgJzW9Nkg', 'guest', 'yes', 'no', null, null, 0);
 
 -- ADDING SYSTEM MANAGER
 
@@ -23,8 +23,8 @@ INSERT INTO sys_managers (sm_id) VALUES(1);
 
 -- ADDING RESTAURANTS
 
-INSERT INTO restaurants (rid, address, end_time, image, info, name, start_time, type, sm_id) VALUES (1, 'Novi Sad, Srbija', 20, 'pictures/user.png', 'lep', 'venecia', 8, 'italian', 1);
-INSERT INTO restaurants (rid, address, end_time, image, info, name, start_time, type, sm_id) VALUES (2, 'Beograd, Srbija', 22, 'pictures/user.png', 'lep', 'atina', 10, 'greek', 1);
+INSERT INTO restaurants (rid, address, end_time, image, info, name, start_time, type, sm_id) VALUES (1, 'Safarikova, Novi Sad, Srbija', 20, 'pictures/user.png', 'lep', 'venecia', 8, 'italian', 1);
+INSERT INTO restaurants (rid, address, end_time, image, info, name, start_time, type, sm_id) VALUES (2, 'Zmaj Jovina, Novi Sad, Srbija', 22, 'pictures/user.png', 'lep', 'atina', 10, 'greek', 1);
 
 -- ADDING RESTAURANT MANAGERS
 
@@ -84,10 +84,10 @@ INSERT INTO restaurant_tables (tid, deleted, height, num_of_chairs, positions, r
 
 -- ADDING MENU ITEMS
 
-INSERT INTO menu_items (miid, deleted, image, info, name, price, spec_type, type, rid) VALUES (1, 0, 'pictures/user.png', 'lep', 'pizza', 150, 'fried', 'dish', 1);
-INSERT INTO menu_items (miid, deleted, image, info, name, price, spec_type, type, rid) VALUES (2, 0, 'pictures/user.png', 'lep', 'giros', 200, 'fried', 'dish', 1);
-INSERT INTO menu_items (miid, deleted, image, info, name, price, spec_type, type, rid) VALUES (3, 0, 'pictures/user.png', 'lep', 'blue lagoon', 300, 'coctail', 'drink', 1);
-INSERT INTO menu_items (miid, deleted, image, info, name, price, spec_type, type, rid) VALUES (4, 0, 'pictures/user.png', 'lep', 'wine', 250, 'alcohol', 'drink', 1);
+INSERT INTO menu_items (miid, deleted, image, info, name, price, spec_type, type, rid) VALUES (1, 0, 'https://s3-media4.fl.yelpcdn.com/bphoto/Lfvt9bBBR9CMW2p8gm8BnQ/ls.jpg', 'lep', 'pizza', 150, 'fried', 'dish', 1);
+INSERT INTO menu_items (miid, deleted, image, info, name, price, spec_type, type, rid) VALUES (2, 0, 'http://www.firmesrbije.com/wp-content/uploads/2012/11/118.jpg', 'lep', 'giros', 200, 'fried', 'dish', 1);
+INSERT INTO menu_items (miid, deleted, image, info, name, price, spec_type, type, rid) VALUES (3, 0, 'http://cdn3.foodviva.com/static-content/food-images/cocktail-recipes/blue-lagoon-cocktail-recipe/blue-lagoon-cocktail-recipe.jpg', 'lep', 'blue lagoon', 300, 'coctail', 'drink', 1);
+INSERT INTO menu_items (miid, deleted, image, info, name, price, spec_type, type, rid) VALUES (4, 0, 'https://s-media-cache-ak0.pinimg.com/originals/2c/43/55/2c43559e407a29dbf06aafbb235d552b.jpg', 'lep', 'wine', 250, 'alcohol', 'drink', 1);
 
 -- ADDING RESERVATIONS
 
